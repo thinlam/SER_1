@@ -1,0 +1,5 @@
+e:\SER\PublishOutput\BuildingBlocks.Domain.dll
+e:\SER\PublishOutput\BuildingBlocks.Domain.deps.json
+e:\SER\PublishOutput\BuildingBlocks.Domain.pdb
+e:\SER\PublishOutput\SequentialGuid.dll
+e:\SER\PublishOutput\BuildingBlocks.Domain.xml
