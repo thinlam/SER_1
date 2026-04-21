@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("QLDA.Persistence")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e77120567b0d461ddf10ac586e1d7476da387507")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9f5d46e1f66c03a497232a50771b46da3414735")]
 [assembly: System.Reflection.AssemblyProductAttribute("QLDA.Persistence")]
 [assembly: System.Reflection.AssemblyTitleAttribute("QLDA.Persistence")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
