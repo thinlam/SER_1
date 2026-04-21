@@ -39,12 +39,8 @@ internal class BaoCaoDuAnGetDanhSachQueryHandler : IRequestHandler<BaoCaoDuAnGet
                 e => e.HinhThucDauTuId == request.SearchDto.HinhThucDauTuId)
             .WhereIf(request.SearchDto.LoaiDuAnId > 0, 
                 e => e.LoaiDuAnId == request.SearchDto.LoaiDuAnId)
-            .WhereFunc(request.SearchDto.DonViPhuTrachChinhId.HasValue, q => q
-                .WhereIf(request.SearchDto.DonViPhuTrachChinhId > 0, 
-                    e => e.DonViPhuTrachChinhId == request.SearchDto.DonViPhuTrachChinhId)
-                .WhereIf(request.SearchDto.DonViPhuTrachChinhId == -1, 
-                    e => e.DonViPhuTrachChinhId == null)
-            );
+            .WhereIf(request.SearchDto.DonViPhuTrachChinhId > 0, 
+                e => e.DonViPhuTrachChinhId == request.SearchDto.DonViPhuTrachChinhId);
 
         // Get total count before pagination
         var totalCount = await queryable.CountAsync(cancellationToken);
