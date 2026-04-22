@@ -115,9 +115,9 @@ public class DuAn : MaterializedPathEntity<Guid>, IAggregateRoot {
     public string? SoQuyetDinhDuToan { get; set; }
 
     /// <summary>
-    /// Ngày quyết định dự toán
+    /// Ngày ký dự toán
     /// </summary>
-    public DateTimeOffset? NgayQuyetDinhDuToan { get; set; }
+    public DateTimeOffset? NgayKyDuToan { get; set; }
     /// <summary>
     /// Dự toán hiện tại
     /// </summary>

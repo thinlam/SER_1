@@ -108,7 +108,7 @@ internal class BaoCaoDuAnGetDanhSachQueryHandler : IRequestHandler<BaoCaoDuAnGet
                 GiaTriGiaiNgan = giaTriGiaiNgan > 0 ? giaTriGiaiNgan : null,
                 HinhThucDauTuId = duAn.HinhThucDauTuId,
                 LoaiDuAnId = duAn.LoaiDuAnId,
-                NgayQuyetDinhDuToan = duAn.NgayQuyetDinhDuToan,
+                NgayQuyetDinhDuToan = duAn.NgayKyDuToan,
                 SoQuyetDinhDuToan = duAn.SoQuyetDinhDuToan,
             };
         }).ToList();

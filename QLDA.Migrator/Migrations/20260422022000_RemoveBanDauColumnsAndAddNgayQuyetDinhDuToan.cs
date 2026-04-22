@@ -47,23 +47,11 @@ namespace QLDA.Migrator.Migrations
                 IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'DuAn' AND COLUMN_NAME = 'DuToanBanDauId')
                     ALTER TABLE [DuAn] DROP COLUMN [DuToanBanDauId];
             ");
-
-            // Rename NgayKyDuToan to NgayQuyetDinhDuToan if NgayKyDuToan exists
-            migrationBuilder.Sql(@"
-                IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'DuAn' AND COLUMN_NAME = 'NgayKyDuToan')
-                    EXEC sp_rename 'DuAn.NgayKyDuToan', 'NgayQuyetDinhDuToan', 'COLUMN';
-            ");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Rename back NgayQuyetDinhDuToan to NgayKyDuToan
-            migrationBuilder.RenameColumn(
-                name: "NgayQuyetDinhDuToan",
-                table: "DuAn",
-                newName: "NgayKyDuToan");
-
             // Add back columns that were removed
             migrationBuilder.AddColumn<long>(
                 name: "DuToanBanDauId",
