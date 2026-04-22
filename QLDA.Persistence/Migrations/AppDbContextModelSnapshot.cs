@@ -1987,6 +1987,9 @@ namespace QLDA.Persistence.Migrations
                     b.Property<DateTimeOffset?>("NgayKyDuToan")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<DateTimeOffset?>("NgayQuyetDinhDuToan")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<int?>("NhomDuAnId")
                         .HasColumnType("int");
 

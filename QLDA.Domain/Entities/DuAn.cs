@@ -118,6 +118,12 @@ public class DuAn : MaterializedPathEntity<Guid>, IAggregateRoot {
     /// Ngày ký dự toán
     /// </summary>
     public DateTimeOffset? NgayKyDuToan { get; set; }
+
+    /// <summary>
+    /// Ngày quyết định dự toán
+    /// </summary>
+    public DateTimeOffset? NgayQuyetDinhDuToan { get; set; }
+
     /// <summary>
     /// Dự toán hiện tại
     /// </summary>
