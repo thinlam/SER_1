@@ -140,7 +140,7 @@ public static class DuAnMappings {
                 SoDuToan = entity.SoDuToan,
                 NamDuToan = entity.NamDuToan,
                 SoQuyetDinhDuToan = entity.SoQuyetDinhDuToan,
-                NgayKyDuToan = entity.NgayQuyetDinhDuToan,
+                NgayKyDuToan = entity.NgayKyDuToan,
             });
         }
 
