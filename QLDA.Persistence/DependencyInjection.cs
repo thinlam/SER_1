@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using BuildingBlocks.CrossCutting.Factories;
+using QLDA.Domain.Entities;
 using QLDA.Domain.Interfaces;
 using QLDA.Persistence.Factories;
 using QLDA.Persistence.Repositories;
@@ -53,6 +54,7 @@ public static class DependencyInjection {
         services.AddScoped(typeof(IUnitOfWork),
             serviceProvider => { return serviceProvider.GetRequiredService<AppDbContext>(); });
         services.AddScoped<IDashboardRepository, DashboardRepository>();
+        services.AddScoped<IDuAnRepository, DuAnRepository>();
 
         return services;
     }
