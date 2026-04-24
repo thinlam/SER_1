@@ -1,11 +1,11 @@
 using QLDA.Domain.Interfaces;
 
 namespace QLDA.Domain.Entities;
- 
-public class NghiemThuPhuLucHopDong : IJunctionEntity, IAggregateRoot
+
+public class NghiemThuPhuLucHopDong : IJunctionEntity<Guid, Guid>, IAggregateRoot
 {
-    public Guid NghiemThuId { get; set; }
-    public Guid PhuLucHopDongId { get; set; }
+    public Guid LeftId { get; set; }
+    public Guid RightId { get; set; }
 
     #region Navigation Properties
 

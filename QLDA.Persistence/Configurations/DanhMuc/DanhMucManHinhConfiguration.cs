@@ -9,16 +9,19 @@ public class DanhMucManHinhConfiguration : AggregateRootConfiguration<DanhMucMan
         builder.ToTable("E_ManHinh");
         builder.ConfigureForEnumDb();
 
+        builder.Property(e => e.Stt)
+            .HasColumnType("int");
+
         builder.HasIndex(e => e.Ten).IsUnique();
         
         builder.HasMany(e => e.DuAnBuocManHinhs)
             .WithOne(e => e.ManHinh)
-            .HasForeignKey(e => e.ManHinhId)
+            .HasForeignKey(e => e.RightId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(e => e.DanhMucBuocManHinhs)
             .WithOne(e => e.ManHinh)
-            .HasForeignKey(e => e.ManHinhId)
+            .HasForeignKey(e => e.RightId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

@@ -1,43 +1,35 @@
+using QLDA.Domain.Entities;
 
-using SharedKernel.CrossCuttingConcerns.ExtensionsMethods;
 namespace QLDA.Application.KeHoachVons.DTOs;
 
-public class KeHoachVonMapping {
-    public static KeHoachVon ToEntity(this KeHoachVonUpdateDto dto) {
+public static class KeHoachVonMapping {
+
+    public static KeHoachVon ToEntity(this KeHoachVonInsertModel model, Guid duAnId) {
         return new KeHoachVon {
-            Id = dto.Id,
-            NguonVonId = dto.NguonVonId,
-            Nam = dto.Nam,
-            SoVon = dto.SoVon,
-            SoVonDieuChinh = dto.SoVonDieuChinh,
-            SoQuyetDinh = dto.SoQuyetDinh,
-            NgayKy = dto.NgayKy,
-            GhiChu = dto.GhiChu
+            Id = GuidExtensions.GetSequentialGuidId(),
+            DuAnId = duAnId,
+            NguonVonId = model.NguonVonId,
+            Nam = model.Nam,
+            SoVon = model.SoVon,
+            SoVonDieuChinh = model.SoVonDieuChinh,
+            SoQuyetDinh = model.SoQuyetDinh,
+            NgayKy = model.NgayKy,
+            GhiChu = model.GhiChu
         };
     }
 
-    public static KeHoachVon ToEntity(this KeHoachVonUpdateDto dto, Guid duAnId) {
-        var entity = dto.ToEntity();
-        entity.DuAnId = duAnId;
-        return entity;
-    }
-
-    public static KeHoachVon ToEntity(this KeHoachVonInsertDto dto) {
+    public static KeHoachVon ToEntity(this KeHoachVonUpdateModel model, Guid duAnId) {
         return new KeHoachVon {
-            NguonVonId = dto.NguonVonId,
-            Nam = dto.Nam,
-            SoVon = dto.SoVon,
-            SoVonDieuChinh = dto.SoVonDieuChinh,
-            SoQuyetDinh = dto.SoQuyetDinh,
-            NgayKy = dto.NgayKy,
-            GhiChu = dto.GhiChu
+            Id = model.Id.GetId(),
+            DuAnId = duAnId,
+            NguonVonId = model.NguonVonId,
+            Nam = model.Nam,
+            SoVon = model.SoVon,
+            SoVonDieuChinh = model.SoVonDieuChinh,
+            SoQuyetDinh = model.SoQuyetDinh,
+            NgayKy = model.NgayKy,
+            GhiChu = model.GhiChu
         };
-    }
-
-    public static KeHoachVon ToEntity(this KeHoachVonInsertDto dto, Guid duAnId) {
-        var entity = dto.ToEntity();
-        entity.DuAnId = duAnId;
-        return entity;
     }
 
     public static KeHoachVonDto ToDto(this KeHoachVon entity) {
@@ -53,14 +45,4 @@ public class KeHoachVonMapping {
             GhiChu = entity.GhiChu
         };
     }
-
-    public static void Update(this KeHoachVon entity, KeHoachVonUpdateDto dto) {
-        entity.NguonVonId = dto.NguonVonId;
-        entity.Nam = dto.Nam;
-        entity.SoVon = dto.SoVon;
-        entity.SoVonDieuChinh = dto.SoVonDieuChinh;
-        entity.SoQuyetDinh = dto.SoQuyetDinh;
-        entity.NgayKy = dto.NgayKy;
-        entity.GhiChu = dto.GhiChu;
-    }
-} 
+}

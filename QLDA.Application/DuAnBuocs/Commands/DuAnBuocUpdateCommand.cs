@@ -33,9 +33,18 @@ public record DuAnBuocUpdateCommandHandler : IRequestHandler<DuAnBuocUpdateComma
                 .Where(e => request.Dto.DanhSachManHinh.Contains(e.Id))
                 .ToListAsync(cancellationToken: cancellationToken);
 
-            entity.PartialView = string.Join(";", danhSachManHinh.Select(e => e.Ten?.Trim()) ?? []);
-        } else {
-            entity.PartialView = string.Empty;
+            // Preserve user's intended order from DTO
+            var sorted = danhSachManHinh
+                .OrderBy(e => request.Dto.DanhSachManHinh.IndexOf(e.Id))
+                .ToList();
+
+            // Preserve user's array order as-is
+            entity.PartialView = string.Join(";", sorted.Select(e => e.Ten?.Trim()));
+
+            var sortedIds = sorted.Select(e => e.Id).ToList();
+            foreach (var mh in entity.DuAnBuocManHinhs ?? []) {
+                mh.Stt = sortedIds.IndexOf(mh.RightId) + 1;
+            }
         }
 
         if (_unitOfWork.HasTransaction) {

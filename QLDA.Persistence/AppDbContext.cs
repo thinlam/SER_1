@@ -2,6 +2,7 @@ using System.Data;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using QLDA.Domain.Entities;
 
 namespace QLDA.Persistence;
 
@@ -42,4 +43,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public IJunctionRepository<TEntity> GetJunctionRepository<TEntity>() where TEntity : class {
         return new JunctionRepository<TEntity>(this);
     }
+
+    // Link table: DuAn <-> CongViec (GiaoViecService)
+    public DbSet<DuAnCongViec> DuAnCongViecs { get; set; } = null!;
 }

@@ -60,9 +60,9 @@ public class DuAnBuocCreateCommandHandler(
             TrachNhiemThucHien = dto.TrachNhiemThucHien,
             Used = true,
             DuAnBuocManHinhs = dto.DanhSachManHinh != null && dto.DanhSachManHinh.Count != 0
-                ? [.. dto.DanhSachManHinh.Select(manHinhId => new DuAnBuocManHinh { ManHinhId = manHinhId })]
+                ? [.. dto.DanhSachManHinh.Select((manHinhId, index) => new DuAnBuocManHinh { RightId = manHinhId, Stt = index + 1 })]
                 : danhMucBuoc.BuocManHinhs?
-                .Select(m => new DuAnBuocManHinh { ManHinhId = m.ManHinhId })
+                .Select(m => new DuAnBuocManHinh { RightId = m.RightId, Stt = m.Stt })
                 .ToList() ?? []
         };
     }

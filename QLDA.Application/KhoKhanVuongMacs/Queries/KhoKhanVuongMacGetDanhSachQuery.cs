@@ -66,7 +66,7 @@ internal class
                 .WhereIf(request.DonViPhuTrachChinhId > 0, e => e.DuAn!.DonViPhuTrachChinhId == request.DonViPhuTrachChinhId)
                 .WhereIf(request.DonViPhuTrachChinhId == -1, e => e.DuAn!.DonViPhuTrachChinhId == null)
             )
-            .WhereIf(request.DonViPhoiHopId.HasValue, e => e.DuAn!.DuAnChiuTrachNhiemXuLys!.Any(i => i.ChiuTrachNhiemXuLyId == request.DonViPhoiHopId && i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop))
+            .WhereIf(request.DonViPhoiHopId.HasValue, e => e.DuAn!.DuAnChiuTrachNhiemXuLys!.Any(i => i.RightId == request.DonViPhoiHopId && i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop))
             .WhereGlobalFilter(
                 request,
                 e => e.NoiDung,
@@ -100,7 +100,7 @@ internal class
                 NgayBatDau = e.DuAn.NgayBatDau,
                 LanhDaoPhuTrachId = e.DuAn.LanhDaoPhuTrachId,
                 DonViPhuTrachChinhId = e.DuAn.DonViPhuTrachChinhId,
-                DonViPhoiHopId = e.DuAn.DuAnChiuTrachNhiemXuLys!.Where(i => i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop).Select(i => i.ChiuTrachNhiemXuLyId).FirstOrDefault(),
+                DonViPhoiHopId = e.DuAn.DuAnChiuTrachNhiemXuLys!.Where(i => i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop).Select(i => i.RightId).FirstOrDefault(),
 
                 #endregion
             })

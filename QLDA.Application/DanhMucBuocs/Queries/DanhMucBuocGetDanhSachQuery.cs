@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.Common.Mapping;
 using QLDA.Application.DanhMucBuocs.DTOs;
 
@@ -37,26 +38,28 @@ public record DanhMucBuocGetDanhSachQueryHandler(IServiceProvider ServiceProvide
         ;
 
 
-        return await query
+        var entities = await query
             .OrderByDescending(e => e.QuyTrinhId)
             .ThenBy(e => e.Level)
             .ThenBy(e => e.Stt)
-            .Select(entity => new DanhMucBuocDto() {
-                Id = entity.Id,
-                ParentId = entity.ParentId,
-                GiaiDoanId = entity.GiaiDoanId,
-                Level = entity.Level,
-                Ma = entity.Ma,
-                MoTa = entity.MoTa,
-                Path = entity.Path,
-                QuyTrinhId = entity.QuyTrinhId,
-                Stt = entity.Stt,
-                Used = entity.Used,
-                Ten = entity.Ten,
-                DanhSachManHinh = entity.BuocManHinhs!
-                    .OrderBy(i => i.Stt)
-                    .Select(i => i.ManHinhId).ToList(),
-            })
-            .PaginatedListAsync(request.Skip(), request.Take(), cancellationToken);
+            .Include(e => e.BuocManHinhs!)
+            .ToListAsync(cancellationToken);
+
+        var dtos = entities.Select(entity => new DanhMucBuocDto() {
+            Id = entity.Id,
+            ParentId = entity.ParentId,
+            GiaiDoanId = entity.GiaiDoanId,
+            Level = entity.Level,
+            Ma = entity.Ma,
+            MoTa = entity.MoTa,
+            Path = entity.Path,
+            QuyTrinhId = entity.QuyTrinhId,
+            Stt = entity.Stt,
+            Used = entity.Used,
+            Ten = entity.Ten,
+            DanhSachManHinh = entity.BuocManHinhs?.OrderByDefault().Select(i => i.RightId).ToList(),
+        });
+
+        return PaginatedList<DanhMucBuocDto>.Create(dtos, request.Skip(), request.Take());
     }
 }

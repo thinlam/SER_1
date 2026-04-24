@@ -1,11 +1,10 @@
 using QLDA.Domain.Entities.DanhMuc;
-using QLDA.Domain.Interfaces;
 
 namespace QLDA.Domain.Entities;
 
-public class DuAnNguonVon : IJunctionEntity, IAggregateRoot {
-    public Guid DuAnId { get; set; }
-    public int NguonVonId { get; set; }
+public class DuAnNguonVon : IJunctionEntity<Guid, int>, IAggregateRoot {
+    public Guid LeftId { get; set; }
+    public int RightId { get; set; }
 
     #region Navigation Properties
 

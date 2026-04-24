@@ -75,6 +75,17 @@ namespace QLDA.WebApi.Controllers {
             return ResultApi.Ok(res);
         }
 
+        /// <summary>
+        /// Báo cáo dự toán dự án
+        /// </summary>
+        [HttpGet("bao-cao-du-toan")]
+        [ProducesResponseType<ResultApi<PaginatedList<BaoCaoDuAnDto>>>(StatusCodes.Status200OK)]
+        [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
+        public async Task<ResultApi> GetBaoCaoDuToan([FromQuery] BaoCaoDuAnSearchDto searchDto) {
+            var res = await Mediator.Send(new BaoCaoDuAnGetDanhSachQuery(searchDto));
+            return ResultApi.Ok(res);
+        }
+
         [ResponseCache(CacheProfileName = "Combobox")]
         [HttpGet("danh-sach-combobox")]
         [ProducesResponseType<ResultApi>(StatusCodes.Status200OK)]
@@ -110,32 +121,6 @@ namespace QLDA.WebApi.Controllers {
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> GetProjectOverdue([FromQuery] DuAnSearchOverdueDto searchDto) {
             var res = await Mediator.Send(new DuAnGetDanhSachTreHanQuery(searchDto));
-            return ResultApi.Ok(res);
-        }
-
-        /// <summary>
-        /// Báo cáo dự toán dự án
-        /// </summary>
-        /// <remarks>
-        /// Lấy danh sách báo cáo dự toán dự án với các thông tin:
-        /// - Tên dự án
-        /// - Phòng phụ trách
-        /// - Phân loại (Chuyển tiếp/Ghi vốn mới)
-        /// - Khái toán kinh phí
-        /// - Thời gian thực hiện
-        /// - Dự toán giao đầu năm
-        /// - Dự toán điều chỉnh/bổ sung
-        /// - Tiến độ thực hiện
-        /// - Giá trị nghiệm thu
-        /// </remarks>
-        /// <param name="searchDto"></param>
-        /// <returns></returns>
-        [HttpGet("bao-cao-du-toan")]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType<ResultApi<PaginatedList<BaoCaoDuAnDto>>>(StatusCodes.Status200OK)]
-        [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
-        public async Task<ResultApi> GetBaoCaoDuToan([FromQuery] BaoCaoDuAnSearchDto searchDto) {
-            var res = await Mediator.Send(new BaoCaoDuAnGetDanhSachQuery(searchDto));
             return ResultApi.Ok(res);
         }
 
@@ -176,7 +161,9 @@ namespace QLDA.WebApi.Controllers {
                 if (duToanMoiNhat != null) {
                     entity.DuToanHienTai = duToanMoiNhat;
                     entity.SoDuToan = duToanMoiNhat.SoDuToan;
+                    entity.SoQuyetDinhDuToan = duToanMoiNhat.SoQuyetDinhDuToan;
                     entity.NamDuToan = duToanMoiNhat.NamDuToan;
+                    entity.NgayKyDuToan = duToanMoiNhat.NgayKyDuToan;
                 }
 
                 //Thêm files

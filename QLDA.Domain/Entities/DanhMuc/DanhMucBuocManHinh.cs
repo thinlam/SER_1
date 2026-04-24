@@ -5,13 +5,10 @@ namespace QLDA.Domain.Entities.DanhMuc;
 /// <summary>
 /// Cân lưu lại id để load màn hình đã chọn
 /// </summary>
-public class DanhMucBuocManHinh : IJunctionEntity, IAggregateRoot {
-    public int BuocId { get; set; }
-    public int ManHinhId { get; set; }
-    /// <summary>
-    /// Thứ tự màn hình trong danh sách (để preserve thứ tự input từ user)
-    /// </summary>
-    public int Stt { get; set; }
+public class DanhMucBuocManHinh : IJunctionEntity<int, int>, IAggregateRoot, IMayHaveStt {
+    public int LeftId { get; set; }
+    public int RightId { get; set; }
+    public int? Stt { get; set; }
 
     #region Navigation Properties
 

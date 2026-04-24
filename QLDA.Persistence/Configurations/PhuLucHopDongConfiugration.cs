@@ -33,7 +33,7 @@ public class PhuLucHopDongConfiguration : AggregateRootConfiguration<PhuLucHopDo
 
         builder.HasMany(e => e.NghiemThuPhuLucHopDongs)
             .WithOne(e => e.PhuLucHopDong)
-            .HasForeignKey(e => e.PhuLucHopDongId)
+            .HasForeignKey(e => e.RightId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

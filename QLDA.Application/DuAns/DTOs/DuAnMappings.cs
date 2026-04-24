@@ -1,8 +1,8 @@
 using QLDA.Application.DuAns.DTOs;
 using QLDA.Application.DuToans.DTOs;
+using QLDA.Application.KeHoachVons.DTOs;
 using QLDA.Application.TepDinhKems.DTOs;
 using QLDA.Domain.Enums;
-using QLDA.Application.KeHoachVons.DTOs;
 
 namespace QLDA.Application.DuAns.DTOs;
 
@@ -38,12 +38,12 @@ public static class DuAnMappings {
             SoDuToanCuoiCung = dto.SoDuToanCuoiCung,
             KhaiToanKinhPhi = dto.KhaiToanKinhPhi,
             DuAnNguonVons = [..dto.DanhSachNguonVon?.Select(nguonVonId => new DuAnNguonVon {
-                DuAnId = id,
-                NguonVonId = nguonVonId
+                LeftId = id,
+                RightId = nguonVonId
             }) ?? []],
             DuAnChiuTrachNhiemXuLys = [..dto.DonViPhoiHopIds?.Select(phoiHopId => new DuAnChiuTrachNhiemXuLy {
-                DuAnId = id,
-                ChiuTrachNhiemXuLyId = phoiHopId,
+                LeftId = id,
+                RightId = phoiHopId,
                 Loai = EChiuTrachNhiemXuLy.DonViPhoiHop
             }) ?? []],
             KeHoachVons = [.. dto.KeHoachVons?.Select(e => e.ToEntity(id)) ?? []]
@@ -90,15 +90,15 @@ public static class DuAnMappings {
         entity.SoDuToanCuoiCung = dto.SoDuToanCuoiCung;
         entity.KhaiToanKinhPhi = dto.KhaiToanKinhPhi;
         entity.DuAnNguonVons = [.. dto.DanhSachNguonVon?.Select(nguonVonId => new DuAnNguonVon {
-            DuAnId = dto.Id,
-            NguonVonId = nguonVonId
+            LeftId = dto.Id,
+            RightId = nguonVonId
         }) ?? []];
         entity.DuAnChiuTrachNhiemXuLys = [..dto.DonViPhoiHopIds?.Select(phoiHopId => new DuAnChiuTrachNhiemXuLy {
-            DuAnId = dto.Id,
-            ChiuTrachNhiemXuLyId = phoiHopId,
+            LeftId = dto.Id,
+            RightId = phoiHopId,
             Loai = EChiuTrachNhiemXuLy.DonViPhoiHop
         }) ?? []];
-        // Note: KeHoachVons NOT updated here - handled by SyncKeHoachVonsAsync in DuAnUpdateCommand
+        // Note: KeHoachVons NOT updated here - handled by SyncHelper.SyncCollection in DuAnUpdateCommand
     }
 
     public static DuAnDto ToDto(this DuAn entity) {
@@ -129,8 +129,9 @@ public static class DuAnMappings {
             LanhDaoPhuTrachId = entity.LanhDaoPhuTrachId,
             DonViPhuTrachChinhId = entity.DonViPhuTrachChinhId,
             SoDuToanCuoiCung = entity.SoDuToanCuoiCung,
-            KhaiToanKinhPhi = entity.KhaiToanKinhPhi,            DanhSachNguonVon = [.. entity.DuAnNguonVons?.Select(nguonVon => nguonVon.NguonVonId) ?? []],
-            DonViPhoiHopIds = [.. entity.DuAnChiuTrachNhiemXuLys?.Where(e => e.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop).Select(chiuTrachNhiemXuLy => chiuTrachNhiemXuLy.ChiuTrachNhiemXuLyId) ?? []],
+            KhaiToanKinhPhi = entity.KhaiToanKinhPhi,
+            DanhSachNguonVon = [.. entity.DuAnNguonVons?.Select(nguonVon => nguonVon.RightId) ?? []],
+            DonViPhoiHopIds = [.. entity.DuAnChiuTrachNhiemXuLys?.Where(e => e.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop).Select(chiuTrachNhiemXuLy => chiuTrachNhiemXuLy.RightId) ?? []],
             DuToans = [.. entity.DuToans?.Where(e => !e.IsDeleted)
                 .OrderBy(e => e.Index)
                 .Select(e => e.ToDto()) ?? []],

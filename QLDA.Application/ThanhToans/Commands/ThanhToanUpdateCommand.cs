@@ -1,5 +1,6 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Providers;
 using QLDA.Application.ThanhToans.DTOs;
 
 namespace QLDA.Application.ThanhToans.Commands;
@@ -12,15 +13,20 @@ internal class ThanhToanUpdateCommandHandler : IRequestHandler<ThanhToanUpdateCo
     private readonly IRepository<ThanhToan, Guid> ThanhToan;
     private readonly IRepository<DuAn, Guid> DuAn;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserProvider _userProvider;
+    private readonly IAppSettingsProvider _settings;
     private readonly Serilog.ILogger _logger = Serilog.Log.ForContext<ThanhToanUpdateCommandHandler>();
 
     public ThanhToanUpdateCommandHandler(IServiceProvider serviceProvider) {
         ThanhToan = serviceProvider.GetRequiredService<IRepository<ThanhToan, Guid>>();
         DuAn = serviceProvider.GetRequiredService<IRepository<DuAn, Guid>>();
         _unitOfWork = ThanhToan.UnitOfWork;
+        _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
+        _settings = serviceProvider.GetRequiredService<IAppSettingsProvider>();
     }
 
     public async Task<ThanhToan> Handle(ThanhToanUpdateCommand request, CancellationToken cancellationToken = default) {
+        ValidatePhongKeToanPermission();
         await ValidateAsync(request, cancellationToken);
 
         var entity = await ThanhToan.GetQueryableSet()
@@ -52,4 +58,11 @@ internal class ThanhToanUpdateCommandHandler : IRequestHandler<ThanhToanUpdateCo
     }
 
     #endregion
+
+    private void ValidatePhongKeToanPermission() {
+        ManagedException.ThrowIf(
+            _userProvider.Info.PhongBanID != _settings.PhongKeToanID,
+            "Chỉ phòng kế toán có quyền thực hiện thao tác này"
+        );
+    }
 }

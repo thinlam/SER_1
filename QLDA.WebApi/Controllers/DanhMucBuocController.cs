@@ -6,9 +6,8 @@ using QLDA.Domain.Constants;
 
 namespace QLDA.WebApi.Controllers {
     [Tags("Danh mục bước")]
-    [Route("api/danh-muc-buoc")]
     public class DanhMucBuocController(IServiceProvider serviceProvider) : AggregateRootController(serviceProvider) {
-        [HttpGet("{id}")]
+        [HttpGet("api/danh-muc-buoc/{id}")]
         [ProducesResponseType<ResultApi>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> Get(int id) {
@@ -29,7 +28,7 @@ namespace QLDA.WebApi.Controllers {
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize(Roles = RoleConstants.GroupAdminOrManager)]
-        [HttpDelete("xoa-tam")]
+        [HttpDelete("api/danh-muc-buoc/xoa-tam")]
         [ProducesResponseType<ResultApi<int>>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> SoftDelete(int id) {
@@ -37,7 +36,7 @@ namespace QLDA.WebApi.Controllers {
             return ResultApi.Ok(res);
         }
 
-        [HttpGet("danh-sach")]
+        [HttpGet("api/danh-muc-buoc/danh-sach")]
         [ProducesResponseType<ResultApi>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> Get(
@@ -56,7 +55,7 @@ namespace QLDA.WebApi.Controllers {
             });
             return ResultApi.Ok(res.Data);
         }
-        [HttpGet("combobox")]
+        [HttpGet("api/danh-muc-buoc/combobox")]
         [ResponseCache(CacheProfileName = "Combobox")]
         [ProducesResponseType<ResultApi>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
@@ -74,7 +73,7 @@ namespace QLDA.WebApi.Controllers {
             return ResultApi.Ok(res.Data);
         }
 
-        [HttpGet("tree-list")]
+        [HttpGet("api/danh-muc-buoc/tree-list")]
         [ProducesResponseType<ResultApi>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> GetTreeList(int quyTrinhId) {
@@ -85,17 +84,17 @@ namespace QLDA.WebApi.Controllers {
         }
 
         [Authorize(Roles = RoleConstants.GroupAdminOrManager)]
-        [HttpPost("them-moi")]
+        [HttpPost("api/danh-muc-buoc/them-moi")]
         [ProducesResponseType<ResultApi<DanhMucBuocDto>>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         [Consumes(MediaTypeNames.Application.Json)]
         public async Task<ResultApi> Create([FromBody] DanhMucBuocInsertDto insertDto) {
-            var entity = await Mediator.Send(new DanhMucBuocInsertCommand(insertDto));
-            return ResultApi.Ok(entity.ToDto());
+            await Mediator.Send(new DanhMucBuocInsertCommand(insertDto));
+            return ResultApi.Ok(1);
         }
 
         [Authorize(Roles = RoleConstants.GroupAdminOrManager)]
-        [HttpPut("cap-nhat")]
+        [HttpPut("api/danh-muc-buoc/cap-nhat")]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType<ResultApi<DanhMucBuocDto>>(StatusCodes.Status200OK)]
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]

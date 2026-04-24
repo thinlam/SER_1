@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.DanhMucBuocs.DTOs;
 using QLDA.Application.DuAnBuocs.Extensions;
 
@@ -13,6 +14,8 @@ internal class DanhMucBuocGetTreeListQueryHandler(IServiceProvider ServiceProvid
     : IRequestHandler<DanhMucBuocGetTreeListQuery, List<DanhMucBuocDto>> {
     private readonly IRepository<DanhMucBuoc, int> DanhMucBuocRepository =
         ServiceProvider.GetRequiredService<IRepository<DanhMucBuoc, int>>();
+    private readonly IRepository<DanhMucManHinh, int> DanhMucManHinh =
+        ServiceProvider.GetRequiredService<IRepository<DanhMucManHinh, int>>();
 
     public async Task<List<DanhMucBuocDto>> Handle(DanhMucBuocGetTreeListQuery query,
         CancellationToken cancellationToken = default) {

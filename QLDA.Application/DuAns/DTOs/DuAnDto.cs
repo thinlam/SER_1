@@ -1,6 +1,7 @@
 
 using System.Text.Json.Serialization;
 using QLDA.Application.DuToans.DTOs;
+using QLDA.Application.KeHoachVons.DTOs;
 
 namespace QLDA.Application.DuAns.DTOs;
 
@@ -178,6 +179,8 @@ public class DuAnDto : IHasKey<Guid> {
     public int? BuocId { get; set; }
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public List<DuToanDto>? DuToans { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<KeHoachVonDto>? KeHoachVons { get; set; }
     /// <summary>
     /// Khái toán kinh phí
     /// </summary>

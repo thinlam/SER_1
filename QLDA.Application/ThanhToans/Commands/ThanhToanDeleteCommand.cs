@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using QLDA.Application.Common;
+using QLDA.Application.Providers;
 
 namespace QLDA.Application.ThanhToans.Commands;
 
@@ -9,14 +10,19 @@ public record ThanhToanDeleteCommandHandler : IRequestHandler<ThanhToanDeleteCom
     private readonly IRepository<ThanhToan, Guid> ThanhToan;
     private readonly IRepository<TepDinhKem, Guid> TepDinhKem;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IUserProvider _userProvider;
+    private readonly IAppSettingsProvider _settings;
 
     public ThanhToanDeleteCommandHandler(IServiceProvider serviceProvider) {
         ThanhToan = serviceProvider.GetRequiredService<IRepository<ThanhToan, Guid>>();
         TepDinhKem = serviceProvider.GetRequiredService<IRepository<TepDinhKem, Guid>>();
         _unitOfWork = ThanhToan.UnitOfWork;
+        _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
+        _settings = serviceProvider.GetRequiredService<IAppSettingsProvider>();
     }
 
     public async Task Handle(ThanhToanDeleteCommand request, CancellationToken cancellationToken) {
+        ValidatePhongKeToanPermission();
         var entity = await ThanhToan.GetOrderedSet()
            .FirstOrDefaultAsync(o => o.Id == request.Id, cancellationToken);
 
@@ -27,5 +33,12 @@ public record ThanhToanDeleteCommandHandler : IRequestHandler<ThanhToanDeleteCom
         await SyncHelper.SetDeleteWithRelatedFiles(TepDinhKem, [entity.Id.ToString()], cancellationToken);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+    }
+
+    private void ValidatePhongKeToanPermission() {
+        ManagedException.ThrowIf(
+            _userProvider.Info.PhongBanID != _settings.PhongKeToanID,
+            "Chỉ phòng kế toán có quyền thực hiện thao tác này"
+        );
     }
 }

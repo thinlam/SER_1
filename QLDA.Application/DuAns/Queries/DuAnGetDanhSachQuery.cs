@@ -38,7 +38,7 @@ internal class DuAnGetDanhSachQueryHandler : IRequestHandler<DuAnGetDanhSachQuer
                 .WhereIf(request.SearchDto.DonViPhuTrachChinhId == -1, e => e.DonViPhuTrachChinhId == null)
             )
             .WhereIf(request.SearchDto.DonViPhoiHopId > 0, e => e
-                .DuAnChiuTrachNhiemXuLys!.Any(i => i.ChiuTrachNhiemXuLyId == request.SearchDto.DonViPhoiHopId && i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop)
+                .DuAnChiuTrachNhiemXuLys!.Any(i => i.RightId == request.SearchDto.DonViPhoiHopId && i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop)
             )
             .WhereFunc(request.SearchDto.LanhDaoPhuTrachId.HasValue, q => q
                 .WhereIf(request.SearchDto.LanhDaoPhuTrachId > 0, e => e.LanhDaoPhuTrachId == request.SearchDto.LanhDaoPhuTrachId)
@@ -59,7 +59,7 @@ internal class DuAnGetDanhSachQueryHandler : IRequestHandler<DuAnGetDanhSachQuer
                 .WhereIf(request.SearchDto.BuocId == -1, e => e.BuocHienTai == null || e.BuocHienTai.BuocId == 0)
             )
             .WhereIf(request.SearchDto.NguonVonId > 0,
-                e => e.DuAnNguonVons!.Select(i => i.NguonVonId).Contains(request.SearchDto.NguonVonId ?? 0))
+                e => e.DuAnNguonVons!.Select(i => i.RightId).Contains(request.SearchDto.NguonVonId ?? 0))
             .WhereIf(request.SearchDto.TuNgay.HasValue, e => e.NgayBatDau >= request.SearchDto.TuNgay!.Value.ToStartOfDayUtc())
             .WhereIf(request.SearchDto.DenNgay.HasValue, e => e.NgayBatDau <= request.SearchDto.DenNgay!.Value.ToEndOfDayUtc())
             .WhereIf(request.SearchDto.NamBatDau > 0, e => e.NgayBatDau!.Value.Year == request.SearchDto.NamBatDau)
@@ -99,7 +99,7 @@ internal class DuAnGetDanhSachQueryHandler : IRequestHandler<DuAnGetDanhSachQuer
                 DonViPhuTrachChinhId = e.DonViPhuTrachChinhId,
                 DonViPhoiHopIds = e.DuAnChiuTrachNhiemXuLys!
                     .Where(i => i.Loai == EChiuTrachNhiemXuLy.DonViPhoiHop)
-                    .Select(i => i.ChiuTrachNhiemXuLyId).ToList(),
+                    .Select(i => i.RightId).ToList(),
 
                 #region Task #9121
                 HinhThucDauTuId = e.HinhThucDauTuId,

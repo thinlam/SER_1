@@ -17,8 +17,8 @@ public static class NghiemThuMappings {
             NoiDung = dto.NoiDung,
             GiaTri = dto.GiaTri,
             NghiemThuPhuLucHopDongs = [..dto.PhuLucHopDongIds?.Select(phuLucHopDongId => new NghiemThuPhuLucHopDong{
-                NghiemThuId = id,
-                PhuLucHopDongId = phuLucHopDongId
+                LeftId = id,
+                RightId = phuLucHopDongId
             })?? []]
         };
     }
@@ -33,8 +33,8 @@ public static class NghiemThuMappings {
             NoiDung = dto.NoiDung,
             GiaTri = dto.GiaTri,
             NghiemThuPhuLucHopDongs = [..dto.PhuLucHopDongIds?.Select(phuLucHopDongId => new NghiemThuPhuLucHopDong{
-                NghiemThuId = dto.Id,
-                PhuLucHopDongId = phuLucHopDongId
+                LeftId = dto.Id,
+                RightId = phuLucHopDongId
             })?? []]
         };
     }
@@ -51,7 +51,7 @@ public static class NghiemThuMappings {
             Ngay = entity.Ngay,
             NoiDung = entity.NoiDung,
             GiaTri = entity.GiaTri,
-            PhuLucHopDongIds = entity.NghiemThuPhuLucHopDongs?.Select(x => x.PhuLucHopDongId).ToList(),
+            PhuLucHopDongIds = entity.NghiemThuPhuLucHopDongs?.Select(x => x.RightId).ToList(),
             DanhSachTepDinhKem = [.. files?.ToDtos() ?? []]
         };
     }
@@ -63,8 +63,8 @@ public static class NghiemThuMappings {
         entity.NoiDung = dto.NoiDung;
         entity.GiaTri = dto.GiaTri;
         entity.NghiemThuPhuLucHopDongs = [..dto.PhuLucHopDongIds?.Select(phuLucHopDongId => new NghiemThuPhuLucHopDong{
-            NghiemThuId = dto.Id,
-            PhuLucHopDongId = phuLucHopDongId
+            LeftId = dto.Id,
+            RightId = phuLucHopDongId
         })?? []];
     }
 }

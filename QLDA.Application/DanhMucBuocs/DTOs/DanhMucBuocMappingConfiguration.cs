@@ -1,3 +1,5 @@
+using QLDA.Application.Common.Constants;
+
 namespace QLDA.Application.DanhMucBuocs.DTOs;
 
 public static class DanhMucBuocMappingConfiguration {
@@ -15,9 +17,7 @@ public static class DanhMucBuocMappingConfiguration {
             Stt = entity.Stt,
             Used = entity.Used,
             Ten = entity.Ten,
-            DanhSachManHinh = entity.BuocManHinhs?
-                .OrderBy(e => e.Stt)
-                .Select(e => e.ManHinhId).ToList(),
+            DanhSachManHinh = entity.BuocManHinhs?.OrderByDefault().Select(e => e.RightId).ToList(),
         };
 
     public static List<DanhMucBuocDto> ToDtos(this List<DanhMucBuoc> entities)
@@ -34,9 +34,7 @@ public static class DanhMucBuocMappingConfiguration {
             GiaiDoanId = dto.Entity.GiaiDoanId,
             SoNgayThucHien = dto.Entity.SoNgayThucHien,
             PartialView = dto.Entity.PartialView,
-            DanhSachManHinh = dto.Entity.BuocManHinhs?
-                .OrderBy(e => e.Stt)
-                .Select(e => e.ManHinhId).ToList(),
+            DanhSachManHinh = dto.Entity.BuocManHinhs?.OrderByDefault().Select(e => e.RightId).ToList(),
             #region Materialized Path 
             Stt = dto.Entity.Stt,
             ParentId = dto.Entity.ParentId,
