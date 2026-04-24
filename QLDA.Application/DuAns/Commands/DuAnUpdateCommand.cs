@@ -12,6 +12,7 @@ public record DuAnUpdateCommand(DuAnUpdateModel Model) : IRequest<DuAn>;
 internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuAn> {
     private readonly IRepository<DuAn, Guid> DuAn;
     private readonly IRepository<DuToan, Guid> DuToan;
+    private readonly IRepository<KeHoachVon, Guid> KeHoachVon;
     private readonly IRepository<DanhMucNguonVon, int> DanhMucNguonVon;
     private readonly IUnitOfWork _unitOfWork;
     private readonly Serilog.ILogger _logger = Serilog.Log.ForContext<DuAnUpdateCommandHandler>();
@@ -19,6 +20,7 @@ internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuA
     public DuAnUpdateCommandHandler(IServiceProvider serviceProvider) {
         DuAn = serviceProvider.GetRequiredService<IRepository<DuAn, Guid>>();
         DuToan = serviceProvider.GetRequiredService<IRepository<DuToan, Guid>>();
+        KeHoachVon = serviceProvider.GetRequiredService<IRepository<KeHoachVon, Guid>>();
         DanhMucNguonVon = serviceProvider.GetRequiredService<IRepository<DanhMucNguonVon, int>>();
         _unitOfWork = DuAn.UnitOfWork;
     }
@@ -37,7 +39,6 @@ internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuA
         // Store the original ParentId to check if it changed
         var originalParentId = entity.ParentId;
         
-        // Update properties but NOT collections (collections handled by Sync methods below)
         entity.Update(request.Model);
 
         // Check if ParentId has changed and handle materialized path update
@@ -59,19 +60,25 @@ internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuA
             existing.GhiChu = request.GhiChu;
         }
           , cancellationToken);
-        
-        await SyncKeHoachVonsAsync(entity, request.Model.KeHoachVons, cancellationToken);
+
+        await SyncHelper.SyncCollection(KeHoachVon, entity.KeHoachVons, [.. request.Model.KeHoachVons?.Select(e => e.ToEntity(entity.Id)) ?? []], (existing, request) => {
+            existing.NguonVonId = request.NguonVonId;
+            existing.Nam = request.Nam;
+            existing.SoVon = request.SoVon;
+            existing.SoVonDieuChinh = request.SoVonDieuChinh;
+            existing.SoQuyetDinh = request.SoQuyetDinh;
+            existing.NgayKy = request.NgayKy;
+            existing.GhiChu = request.GhiChu;
+        }
+          , cancellationToken);
 
         // Update SoDuToanCuoiCung based on the updated DuToans list
         if (entity.DuToans != null && entity.DuToans.Count > 0) {
             var sortedDuToans = entity.DuToans.Where(d => !d.IsDeleted).OrderBy(d => d.Index).ToList();
-            
-            // Set adjusted/final budget from last DuToan if count > 1
             if (sortedDuToans.Count > 1) {
                 var lastDuToan = sortedDuToans.Last();
                 entity.SoDuToanCuoiCung = lastDuToan.SoDuToan;
             } else {
-                // If only 1 DuToan, set SoDuToanCuoiCung to null
                 entity.SoDuToanCuoiCung = null;
             }
         }
@@ -96,12 +103,14 @@ internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuA
             entity.DuToanHienTaiId = duToanMoiNhat.Id;
             entity.SoDuToan = duToanMoiNhat.SoDuToan;
             entity.NamDuToan = duToanMoiNhat.NamDuToan;
+            entity.SoQuyetDinhDuToan = duToanMoiNhat.SoQuyetDinhDuToan;
             entity.NgayKyDuToan = duToanMoiNhat.NgayKyDuToan;
             await DuAn.UpdateAsync(entity, cancellationToken);
         } else if (entity.DuToanHienTaiId != null) {
             entity.DuToanHienTaiId = null;
             entity.SoDuToan = 0;
             entity.NamDuToan = 0;
+            entity.SoQuyetDinhDuToan = null;
             entity.NgayKyDuToan = null;
             await DuAn.UpdateAsync(entity, cancellationToken);
         }
@@ -118,28 +127,6 @@ internal class DuAnUpdateCommandHandler : IRequestHandler<DuAnUpdateCommand, DuA
 
     private async Task UpdateAsync(DuAn entity, CancellationToken cancellationToken) {
         await DuAn.UpdateAsync(entity, cancellationToken);
-    }
-
-    private async Task SyncKeHoachVonsAsync(DuAn entity, List<KeHoachVonUpdateDto>? keHoachVons, CancellationToken cancellationToken) {
-        var existingKeHoachVons = entity.KeHoachVons ?? [];
-        var keHoachVonsToUpdate = keHoachVons?.Where(khv => existingKeHoachVons.Any(e => e.Id == khv.Id)).ToList() ?? [];
-        var keHoachVonsToInsert = keHoachVons?.Where(khv => !existingKeHoachVons.Any(e => e.Id == khv.Id)).ToList() ?? [];
-        var keHoachVonsToDelete = existingKeHoachVons.Where(e => keHoachVons == null || !keHoachVons.Any(khv => khv.Id == e.Id)).ToList();
-
-        foreach (var khv in keHoachVonsToUpdate) {
-            var existingKHV = existingKeHoachVons.First(e => e.Id == khv.Id);
-            existingKHV.Update(khv);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-
-        foreach (var khv in keHoachVonsToInsert) {
-            var newKHV = khv.ToEntity(entity.Id);
-            await _unitOfWork.GetRepository<KeHoachVon, Guid>().AddAsync(newKHV, cancellationToken);
-        }
-
-        foreach (var khv in keHoachVonsToDelete) {
-            await _unitOfWork.GetRepository<KeHoachVon, Guid>().DeleteAsync(khv, cancellationToken);
-        }
     }
     #endregion
 }

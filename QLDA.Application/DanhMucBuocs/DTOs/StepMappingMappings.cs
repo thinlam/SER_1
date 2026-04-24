@@ -1,3 +1,5 @@
+using QLDA.Application.Common.Constants;
+
 namespace QLDA.Application.DanhMucBuocs.DTOs;
 
 public static class StepMappingMappings {
@@ -13,9 +15,7 @@ public static class StepMappingMappings {
             Level = entity.Level,
             Stt = entity.Stt ?? 0,
             PartialView = entity.PartialView,
-            BuocManHinhs = entity.BuocManHinhs?
-                .OrderBy(e => e.Stt)
-                .ToList(),
+            BuocManHinhs = entity.BuocManHinhs?.ToList(),
         };
 
     public static List<StepDto> ToSteps(this List<DanhMucBuoc> entities)
@@ -30,9 +30,7 @@ public static class StepMappingMappings {
             Level = entity.Buoc.Level,
             Stt = entity.Buoc.Stt ?? 0,
             PartialView = entity.Buoc.PartialView,
-            BuocManHinhs = entity.Buoc.BuocManHinhs?
-                .OrderBy(e => e.Stt)
-                .ToList(),
+            BuocManHinhs = entity.Buoc.BuocManHinhs?.ToList(),
             Phase = entity.Buoc.GiaiDoan?.ToPhaseDto()
         };
     public static PhaseDto ToPhaseDto(this DanhMucGiaiDoan entity)

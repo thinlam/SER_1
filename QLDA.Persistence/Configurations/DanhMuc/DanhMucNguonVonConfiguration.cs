@@ -11,9 +11,9 @@ public class DanhMucNguonVonConfiguration : AggregateRootConfiguration<DanhMucNg
 
         builder.HasMany(e => e.DuAnNguonVons)
             .WithOne(e => e.NguonVon)
-            .HasForeignKey(e => e.NguonVonId);
-        
-        builder.HasMany(e => e.GoiThaus)    
+            .HasForeignKey(e => e.RightId);
+
+        builder.HasMany(e => e.GoiThaus)
             .WithOne(e => e.NguonVon)
             .HasForeignKey(e => e.NguonVonId);
     }

@@ -53,7 +53,7 @@ internal class
                 DuAnId = e.DuAnId,
                 BuocId = e.BuocId,
                 HopDongId = e.HopDongId,
-                PhuLucHopDongIds = e.NghiemThuPhuLucHopDongs!.Select(junction => junction.PhuLucHopDongId).ToList(),
+                PhuLucHopDongIds = e.NghiemThuPhuLucHopDongs!.Select(junction => junction.RightId).ToList(),
                 Dot = e.Dot,
                 Ngay = e.Ngay,
                 NoiDung = e.NoiDung,

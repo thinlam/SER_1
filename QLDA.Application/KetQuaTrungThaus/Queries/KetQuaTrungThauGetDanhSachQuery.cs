@@ -52,7 +52,6 @@ internal class
                 LoaiGoiThauId = e.LoaiGoiThauId,
                 NgayEHSMT = e.NgayEHSMT,
                 NgayMoThau = e.NgayMoThau,
-                SoNgayThucHienHopDong = e.SoNgayThucHienHopDong,
                 SoQuyetDinh = e.SoQuyetDinh,
                 NgayQuyetDinh = e.NgayQuyetDinh,
                 DanhSachTepDinhKem = TepDinhKem.GetQueryableSet()

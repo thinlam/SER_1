@@ -131,6 +131,16 @@ public class DuAn : MaterializedPathEntity<Guid>, IAggregateRoot {
     #endregion
 
     /// <summary>
+    /// Khái toán kinh phí
+    /// </summary>
+    public decimal? KhaiToanKinhPhi { get; set; }
+
+    /// <summary>
+    /// Số dự toán cuối cùng (điều chỉnh)
+    /// </summary>
+    public long? SoDuToanCuoiCung { get; set; }
+
+    /// <summary>
     /// Danh mục quy trình
     /// </summary>
     public int? QuyTrinhId { get; set; }
@@ -194,23 +204,13 @@ public class DuAn : MaterializedPathEntity<Guid>, IAggregateRoot {
     /// Danh sách dự toán của dự án
     /// </summary>
     public ICollection<DuToan>? DuToans { get; set; } = [];
-    
-     /// <summary>
-     /// Danh sách kế hoạch vốn của dự án
-     /// </summary>
-     public ICollection<KeHoachVon>? KeHoachVons { get; set; } = [];
+
     /// <summary>
-    /// Khái toán kinh phí
+    /// Danh sách kế hoạch vốn của dự án
     /// </summary>
-    public decimal? KhaiToanKinhPhi { get; set; }
-    
-    /// <summary>
-    /// Số dự toán cuối cùng (điều chỉnh)
-    /// </summary>
-    public long? SoDuToanCuoiCung { get; set; }
+    public ICollection<KeHoachVon>? KeHoachVons { get; set; } = [];
+
     #endregion
-
-
 
     #region Navigation Properties
 
@@ -243,6 +243,7 @@ public class DuAn : MaterializedPathEntity<Guid>, IAggregateRoot {
     public ICollection<NghiemThu>? NghiemThus { get; set; } = [];
     public ICollection<ThanhToan>? ThanhToans { get; set; } = [];
     public ICollection<TamUng>? TamUngs { get; set; } = [];
+    public ICollection<DuAnCongViec>? DuAnCongViecs { get; set; } = [];
 
     #endregion
 }

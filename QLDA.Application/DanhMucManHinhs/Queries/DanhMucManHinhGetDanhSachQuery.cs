@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.Common.Mapping;
 using QLDA.Application.DanhMucManHinhs.DTOs;
 
@@ -30,13 +32,17 @@ public record DanhMucManHinhGetDanhSachQueryHandler(IServiceProvider ServiceProv
                 e => e.Title
             );
 
-        return await query.Select(entity => new DanhMucManHinhDto() {
+        var allItems = await query.ToListAsync(cancellationToken);
+        var ordered = allItems.OrderByDefault();
+
+        var dtos = ordered.Select(entity => new DanhMucManHinhDto() {
             Id = entity.Id,
             Ten = entity.Ten,
             Label = entity.Label,
             Title = entity.Title,
             Used = entity.Used,
-        })
-        .PaginatedListAsync(request.Skip(), request.Take(), cancellationToken);
+        });
+
+        return PaginatedList<DanhMucManHinhDto>.Create(dtos, request.Skip(), request.Take());
     }
 }

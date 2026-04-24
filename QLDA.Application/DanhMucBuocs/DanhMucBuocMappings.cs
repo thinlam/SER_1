@@ -1,3 +1,4 @@
+using QLDA.Application.Common.Constants;
 using QLDA.Application.DanhMucBuocs.DTOs;
 
 namespace QLDA.Application.DanhMucBuocs;
@@ -15,8 +16,8 @@ public static class DanhMucBuocMappings {
             ParentId = dto.ParentId,
             SoNgayThucHien = dto.SoNgayThucHien,
             BuocManHinhs = [ ..dto.DanhSachManHinh?.Select((manHinhId, index) => new DanhMucBuocManHinh() {
-                ManHinhId = manHinhId,
-                Stt = index  // Lưu vị trí theo thứ tự từ request
+                RightId = manHinhId,
+                Stt = index + 1
             }) ?? []]
         };
     }
@@ -30,11 +31,13 @@ public static class DanhMucBuocMappings {
         entity.GiaiDoanId = dto.GiaiDoanId;
         entity.ParentId = dto.ParentId;
         entity.SoNgayThucHien = dto.SoNgayThucHien;
-        entity.BuocManHinhs = [ ..dto.DanhSachManHinh?.Select((manHinhId, index) => new DanhMucBuocManHinh() {
-            BuocId = entity.Id,
-            ManHinhId = manHinhId,
-            Stt = index  // Lưu vị trí theo thứ tự từ request
-        }) ?? []];
+        if (dto.DanhSachManHinh?.Count > 0) {
+            entity.BuocManHinhs = [ ..dto.DanhSachManHinh.Select((manHinhId, index) => new DanhMucBuocManHinh() {
+                LeftId = entity.Id,
+                RightId = manHinhId,
+                Stt = index + 1
+            })];
+        }
     }
 
     public static DanhMucBuocDto ToDto(this DanhMucBuoc entity) {

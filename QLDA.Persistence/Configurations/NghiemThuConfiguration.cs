@@ -35,7 +35,7 @@ public class NghiemThuConfiguration : AggregateRootConfiguration<NghiemThu> {
 
         builder.HasMany(e => e.NghiemThuPhuLucHopDongs)
             .WithOne(e => e.NghiemThu)
-            .HasForeignKey(e => e.NghiemThuId)
+            .HasForeignKey(e => e.LeftId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

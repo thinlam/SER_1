@@ -1,6 +1,7 @@
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.DanhMucBuocs.DTOs;
 using QLDA.Application.DuAnBuocs.Extensions;
 
@@ -63,11 +64,28 @@ internal class DuAnBuocCloneCommandHandler : IRequestHandler<DuAnBuocCloneComman
 
 
         var existing = await DuAnBuoc.GetQueryableSet()
+            .Include(dab => dab.DuAnBuocManHinhs)
             .Where(dab => dab.DuAnId == request.DuAn.Id)
             .ToListAsync(cancellationToken);
 
 
-        var combinedMap = existing.ToDictionary(x => x.BuocId, x => x);
+        // Handle duplicates: group by BuocId, take first
+        var combinedMap = existing
+            .GroupBy(x => x.BuocId)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        // Track duplicates to delete (execute DELETE immediately before processing)
+        var duplicateIds = existing
+            .Where(e => !combinedMap.Values.Contains(e))
+            .Select(e => e.Id)
+            .ToList();
+
+        if (duplicateIds.Count > 0) {
+            // Delete DuAnBuocManHinhs first (cascade), then DuAnBuoc duplicates
+            await DuAnBuoc.GetQueryableSet()
+                .Where(e => duplicateIds.Contains(e.Id))
+                .ExecuteDeleteAsync(cancellationToken);
+        }
 
         /*
          * Số ngày thực hiện dự kiến mỗi bước
@@ -96,16 +114,44 @@ internal class DuAnBuocCloneCommandHandler : IRequestHandler<DuAnBuocCloneComman
 
         foreach (var step in orderedSteps) {
             var isUpdate = combinedMap.TryGetValue(step.Id, out var node);
-            node ??= new DuAnBuoc {
-                DuAnId = request.DuAn.Id,
-                BuocId = step.BuocId ?? 0,
-                TenBuoc = step.OriginalTen, // buoc.Ten có thêm ký tự rồi không dùng được
-                PartialView = step.PartialView,
-                Used = true,
-                DuAnBuocManHinhs = step.BuocManHinhs?
-                    .Select(m => new DuAnBuocManHinh { ManHinhId = m.ManHinhId })
-                    .ToList(),
-            };
+            if (node == null) {
+                // Create new from DanhMucBuoc data
+                node = new DuAnBuoc {
+                    DuAnId = request.DuAn.Id,
+                    BuocId = step.BuocId ?? 0,
+                    TenBuoc = step.OriginalTen,
+                    PartialView = step.PartialView,
+                    Used = true,
+                    DuAnBuocManHinhs = step.BuocManHinhs?
+                        .Select(m => new DuAnBuocManHinh { RightId = m.RightId, Stt = m.Stt })
+                        .ToList(),
+                };
+            } else {
+                // Update existing with new data from DanhMucBuoc
+                node.TenBuoc = step.OriginalTen;
+                node.PartialView = step.PartialView;
+                node.Used = true;
+
+                // Sync DuAnBuocManHinhs with DanhMucBuocManHinhs (1-1)
+                var requestManHinhs = step.BuocManHinhs?.ToList() ?? [];
+                var existingManHinhs = node.DuAnBuocManHinhs?.ToList() ?? [];
+                var requestRightIds = requestManHinhs.Select(m => m.RightId).ToHashSet();
+                var existingByRightId = existingManHinhs.ToDictionary(m => m.RightId, m => m);
+
+                // Remove entities not in DanhMucBuocManHinhs
+                foreach (var mhToRemove in existingManHinhs.Where(m => !requestRightIds.Contains(m.RightId))) {
+                    node.DuAnBuocManHinhs?.Remove(mhToRemove);
+                }
+
+                // Add new or update Stt
+                foreach (var m in requestManHinhs) {
+                    if (existingByRightId.TryGetValue(m.RightId, out var existingMh)) {
+                        existingMh.Stt = m.Stt;
+                    } else {
+                        node.DuAnBuocManHinhs?.Add(new DuAnBuocManHinh { RightId = m.RightId, Stt = m.Stt });
+                    }
+                }
+            }
 
             //Là node lá
             step.Path ??= "/";
@@ -137,11 +183,16 @@ internal class DuAnBuocCloneCommandHandler : IRequestHandler<DuAnBuocCloneComman
             await DuAnBuoc.AddRangeAsync(toAdd, cancellationToken);
 
         //Xóa các bước không nằm trong dmBuoc
-        var toRemove = existing
-            .Where(dab => !buocs.Select(b => b.Id).Contains(dab.BuocId))
+        var buocIds = buocs.Select(b => b.Id).ToList();
+        var toRemoveIds = combinedMap.Keys
+            .Where(buocId => !buocIds.Contains(buocId))
             .ToList();
-        if (toRemove.Count > 0)
-            DuAnBuoc.BulkDelete(toRemove);
+
+        if (toRemoveIds.Count > 0) {
+            await DuAnBuoc.GetQueryableSet()
+                .Where(dab => dab.DuAnId == request.DuAn.Id && toRemoveIds.Contains(dab.BuocId))
+                .ExecuteDeleteAsync(cancellationToken);
+        }
     }
     #endregion
 }

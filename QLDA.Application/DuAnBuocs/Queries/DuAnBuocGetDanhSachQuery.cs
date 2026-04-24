@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.Common.Mapping;
 using QLDA.Application.DuAnBuocs.DTOs;
 
@@ -30,9 +31,22 @@ public record DuAnBuocGetDanhSachQueryHandler(IServiceProvider ServiceProvider)
                 )
             ;
 
-        return await query
+        var entities = await query
             .OrderBy(e => e.Buoc!.Level).ThenBy(e => e.Buoc!.Stt)
-            .Select(entity => new DuAnBuocDto() {
+            .Include(e => e.DuAnBuocManHinhs!)
+                .ThenInclude(m => m.ManHinh)
+            .Include(e => e.Buoc!)
+                .ThenInclude(b => b.BuocManHinhs!)
+                .ThenInclude(m => m.ManHinh)
+            .ToListAsync(cancellationToken);
+
+        var dtos = entities.Select(entity => {
+            var manHinhs = entity.DuAnBuocManHinhs is { Count: > 0 }
+                ? entity.DuAnBuocManHinhs.OrderByDefault().Select(i => i.RightId).ToList()
+                : entity.Buoc?.BuocManHinhs?.OrderByDefault().Select(i => i.RightId).ToList() ?? [];
+            var pv = entity.PartialView ?? entity.Buoc?.PartialView;
+
+            return new DuAnBuocDto() {
                 Id = entity.Id,
                 DuAnId = entity.DuAnId,
                 ParentId = entity.Buoc!.ParentId,
@@ -43,11 +57,11 @@ public record DuAnBuocGetDanhSachQueryHandler(IServiceProvider ServiceProvider)
                 QuyTrinhId = entity.Buoc.QuyTrinhId,
                 BuocId = entity.BuocId,
                 TenBuoc = entity.TenBuoc ?? entity.Buoc.Ten,
-                PartialView = entity.PartialView ?? entity.Buoc.PartialView,
-                DanhSachManHinh = entity.DuAnBuocManHinhs!.Count != 0
-                    ? entity.DuAnBuocManHinhs!.Select(i => i.ManHinhId).ToList()
-                    : entity.Buoc.BuocManHinhs!.Select(i => i.ManHinhId).ToList()
-            })
-            .PaginatedListAsync(request.Skip(), request.Take(), cancellationToken);
+                PartialView = entity.PartialView,
+                DanhSachManHinh = manHinhs
+            };
+        });
+
+        return PaginatedList<DuAnBuocDto>.Create(dtos, request.Skip(), request.Take());
     }
 }

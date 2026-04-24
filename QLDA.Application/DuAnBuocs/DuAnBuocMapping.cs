@@ -1,3 +1,4 @@
+using QLDA.Application.Common.Constants;
 using QLDA.Application.DanhMucBuocs.DTOs;
 using QLDA.Application.DuAnBuocs.DTOs;
 
@@ -18,9 +19,9 @@ public static class DuAnBuocMapping {
                 NgayDuKienBatDau = entity.NgayDuKienBatDau,
                 NgayDuKienKetThuc = entity.NgayDuKienKetThuc,
                 GiaiDoan = entity.Buoc?.GiaiDoan?.ToPhaseDto(),
-                DanhSachManHinh = [.. new List<int>()
-                    .Union(entity.DuAnBuocManHinhs?.Select(e => e.ManHinhId).ToList() ??
-                           entity.Buoc?.BuocManHinhs?.Select(e => e.ManHinhId).ToList() ?? [])]
+                DanhSachManHinh = entity.DuAnBuocManHinhs is { Count: > 0 }
+                    ? entity.DuAnBuocManHinhs.OrderByDefault().Select(e => e.RightId).ToList()
+                    : entity.Buoc?.BuocManHinhs?.OrderByDefault().Select(e => e.RightId).ToList() ?? []
             };
 
     public static DuAnBuocDuAnUpdateStateDto ToUpdateStateDto(this DuAnBuoc entity)
@@ -52,9 +53,29 @@ public static class DuAnBuocMapping {
         entity.Used = dto.Used;
         entity.NgayDuKienBatDau = dto.NgayDuKienBatDau;
         entity.NgayDuKienKetThuc = dto.NgayDuKienKetThuc;
-        entity.DuAnBuocManHinhs = [.. dto.DanhSachManHinh?.Select(manHinhId => new DuAnBuocManHinh() {
-            BuocId = entity.Id,
-            ManHinhId = manHinhId
-        }) ?? []];
+
+        // Proper sync for DuAnBuocManHinhs instead of replacing collection
+        if (dto.DanhSachManHinh?.Count > 0) {
+            var existingManHinhs = entity.DuAnBuocManHinhs?.ToList() ?? [];
+            var requestRightIds = dto.DanhSachManHinh.ToHashSet();
+            var existingByKey = existingManHinhs.ToDictionary(m => m.RightId, m => m);
+
+            // Remove entities not in request
+            foreach (var existingMh in existingManHinhs.Where(m => !requestRightIds.Contains(m.RightId))) {
+                entity.DuAnBuocManHinhs?.Remove(existingMh);
+            }
+
+            // Add new entities or update existing Stt
+            foreach (var (rightId, index) in dto.DanhSachManHinh.Select((id, i) => (id, i))) {
+                if (existingByKey.TryGetValue(rightId, out var existingMh)) {
+                    existingMh.Stt = index + 1;
+                } else {
+                    entity.DuAnBuocManHinhs?.Add(new DuAnBuocManHinh {
+                        RightId = rightId,
+                        Stt = index + 1
+                    });
+                }
+            }
+        }
     }
 }

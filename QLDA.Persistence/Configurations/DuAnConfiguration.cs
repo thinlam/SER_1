@@ -45,12 +45,12 @@ public class DuAnConfiguration : AggregateRootConfiguration<DuAn> {
 
         builder.HasMany(e => e.DuAnNguonVons)
             .WithOne(e => e.DuAn)
-            .HasForeignKey(e => e.DuAnId)
+            .HasForeignKey(e => e.LeftId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(e => e.DuAnChiuTrachNhiemXuLys)
             .WithOne(e => e.DuAn)
-            .HasForeignKey(e => e.DuAnId)
+            .HasForeignKey(e => e.LeftId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(e => e.GoiThaus)

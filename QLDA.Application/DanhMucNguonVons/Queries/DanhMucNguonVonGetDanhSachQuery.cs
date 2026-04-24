@@ -23,7 +23,7 @@ public record DanhMucNguonVonGetDanhSachQueryHandler(IServiceProvider ServicePro
             .WhereIf(request.Ids != null, e => request.Ids!.Contains(e.Id) || e.Used || request.GetAll, e => request.GetAll || e.Used)
 
             .WhereIf(!string.IsNullOrWhiteSpace(request.DuAnId),
-                e => e.DuAnNguonVons!.Any(i => i.DuAnId.ToString() == request.DuAnId))
+                e => e.DuAnNguonVons!.Any(i => i.LeftId.ToString() == request.DuAnId))
             .WhereFunc(request.IsTracking, e => e.AsNoTracking());
 
 

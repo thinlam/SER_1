@@ -1,5 +1,5 @@
-
 using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Common.Constants;
 using QLDA.Application.DanhMucBuocs.DTOs;
 using QLDA.Application.DuAnBuocs.DTOs;
 using QLDA.Application.DuAnBuocs.Extensions;
@@ -15,6 +15,8 @@ internal class DuAnBuocGetTreeListQueryHandler(IServiceProvider serviceProvider)
     : IRequestHandler<DuAnBuocGetTreeListQuery, List<DuAnBuocStateDto>> {
     private readonly IRepository<DuAnBuoc, int> DuAnBuoc =
         serviceProvider.GetRequiredService<IRepository<DuAnBuoc, int>>();
+    private readonly IRepository<DanhMucManHinh, int> DanhMucManHinh =
+        serviceProvider.GetRequiredService<IRepository<DanhMucManHinh, int>>();
 
     public async Task<List<DuAnBuocStateDto>> Handle(DuAnBuocGetTreeListQuery request,
         CancellationToken cancellationToken = default) {
@@ -34,14 +36,14 @@ internal class DuAnBuocGetTreeListQueryHandler(IServiceProvider serviceProvider)
                 Id = e.origin.Id,
                 TenDuAn = e.origin.DuAn?.TenDuAn ?? ErrorMessageConstants.Unknown,
                 TenQuyTrinh = e.origin.Buoc?.QuyTrinh?.Ten ?? ErrorMessageConstants.Unknown,
-                TenGiaiDoan =  e.origin.Buoc?.GiaiDoan?.Ten ?? ErrorMessageConstants.Unknown,
+                TenGiaiDoan = e.origin.Buoc?.GiaiDoan?.Ten ?? ErrorMessageConstants.Unknown,
                 GiaiDoanId = e.origin.Buoc?.GiaiDoanId,
                 BuocId = e.origin.BuocId,
                 TenBuoc = e.step.Ten,
                 QuyTrinhId = e.step.Id,
                 ParentId = e.step.ParentId,
                 Level = e.step.Level,
-                PartialView = e.origin.PartialView ?? e.step.PartialView,
+                PartialView = e.origin.PartialView,
                 Path = e.step.Path,
                 Stt = e.step.Stt,
                 GhiChu = e.origin.GhiChu,

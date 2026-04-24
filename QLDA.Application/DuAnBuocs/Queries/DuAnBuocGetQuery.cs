@@ -17,10 +17,11 @@ internal class DuAnBuocGetDQueryHandler(IServiceProvider serviceProvider)
     public async Task<DuAnBuoc> Handle(DuAnBuocGetQuery request,
         CancellationToken cancellationToken = default) {
         var entity = await DuAnBuoc.GetOrderedSet()
-            .Include(e => e.Buoc!.BuocManHinhs)
+            .Include(e => e.Buoc!.BuocManHinhs!)
+            .ThenInclude(bm => bm.ManHinh)
             .WhereFunc(request.IsNoTracking, q => q.AsNoTracking())
             .WhereFunc(request.IncludeDuAn, q => q.Include(e => e.DuAn))
-            .WhereFunc(request.IncludeManHinh, q => q.Include(e => e.DuAnBuocManHinhs))
+            .WhereFunc(request.IncludeManHinh, q => q.Include(e => e.DuAnBuocManHinhs!).ThenInclude(bm => bm.ManHinh))
             .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
         ManagedException.ThrowIf(entity == null, "Không tìm thấy dữ liệu");

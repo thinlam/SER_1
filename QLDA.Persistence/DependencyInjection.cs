@@ -46,6 +46,7 @@ public static class DependencyInjection {
         services.AddScoped<DbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped(typeof(IJunctionRepository<>), typeof(JunctionRepository<>));
         services.AddScoped(typeof(IDapperRepository), typeof(DapperRepository));
 
         // UnitOfWork (use QLDA's interface)
