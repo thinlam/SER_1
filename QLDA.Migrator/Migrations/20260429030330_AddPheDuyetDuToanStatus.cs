@@ -36,7 +36,7 @@ namespace QLDA.Migrator.Migrations
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "TrangThaiPheDuyetDuToanId",
+                name: "TrangThaiId",
                 table: "PheDuyetDuToan",
                 type: "int",
                 nullable: false,
@@ -73,7 +73,7 @@ namespace QLDA.Migrator.Migrations
                     PheDuyetDuToanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DuAnId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NguoiXuLyId = table.Column<long>(type: "bigint", nullable: true),
-                    TrangThaiActionId = table.Column<int>(type: "int", nullable: false),
+                    TrangThaiId = table.Column<int>(type: "int", nullable: false),
                     NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NgayXuLy = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -87,8 +87,8 @@ namespace QLDA.Migrator.Migrations
                 {
                     table.PrimaryKey("PK_PheDuyetDuToanHistory", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PheDuyetDuToanHistory_DmTrangThaiPheDuyetDuToan_TrangThaiActionId",
-                        column: x => x.TrangThaiActionId,
+                        name: "FK_PheDuyetDuToanHistory_DmTrangThaiPheDuyetDuToan_TrangThaiId",
+                        column: x => x.TrangThaiId,
                         principalTable: "DmTrangThaiPheDuyetDuToan",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -111,10 +111,10 @@ namespace QLDA.Migrator.Migrations
                 columns: new[] { "Id", "CreatedBy", "IsDeleted", "Ma", "MoTa", "Stt", "Ten", "UpdatedAt", "UpdatedBy", "Used" },
                 values: new object[,]
                 {
-                    { 1, "", false, "DT", null, 1, "Dự thảo", null, "", false },
-                    { 2, "", false, "ĐTr", null, 2, "Đã trình", null, "", false },
-                    { 3, "", false, "ĐD", null, 3, "Đã duyệt", null, "", false },
-                    { 4, "", false, "TL", null, 4, "Trả lại", null, "", false }
+                    { 1, "", false, "DT", null, 1, "Dự thảo", null, "", true },
+                    { 2, "", false, "ĐTr", null, 2, "Đã trình", null, "", true },
+                    { 3, "", false, "ĐD", null, 3, "Đã duyệt", null, "", true },
+                    { 4, "", false, "TL", null, 4, "Trả lại", null, "", true }
                 });
 
             migrationBuilder.CreateIndex(
@@ -123,9 +123,9 @@ namespace QLDA.Migrator.Migrations
                 column: "DanhMucChucVuId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PheDuyetDuToan_TrangThaiPheDuyetDuToanId",
+                name: "IX_PheDuyetDuToan_TrangThaiId",
                 table: "PheDuyetDuToan",
-                column: "TrangThaiPheDuyetDuToanId");
+                column: "TrangThaiId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DmTrangThaiPheDuyetDuToan_Index",
@@ -157,9 +157,9 @@ namespace QLDA.Migrator.Migrations
                 column: "PheDuyetDuToanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PheDuyetDuToanHistory_TrangThaiActionId",
+                name: "IX_PheDuyetDuToanHistory_TrangThaiId",
                 table: "PheDuyetDuToanHistory",
-                column: "TrangThaiActionId");
+                column: "TrangThaiId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_PheDuyetDuToan_DmChucVu_ChucVuId",
@@ -177,9 +177,9 @@ namespace QLDA.Migrator.Migrations
                 principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_PheDuyetDuToan_DmTrangThaiPheDuyetDuToan_TrangThaiPheDuyetDuToanId",
+                name: "FK_PheDuyetDuToan_DmTrangThaiPheDuyetDuToan_TrangThaiId",
                 table: "PheDuyetDuToan",
-                column: "TrangThaiPheDuyetDuToanId",
+                column: "TrangThaiId",
                 principalTable: "DmTrangThaiPheDuyetDuToan",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
@@ -197,7 +197,7 @@ namespace QLDA.Migrator.Migrations
                 table: "PheDuyetDuToan");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_PheDuyetDuToan_DmTrangThaiPheDuyetDuToan_TrangThaiPheDuyetDuToanId",
+                name: "FK_PheDuyetDuToan_DmTrangThaiPheDuyetDuToan_TrangThaiId",
                 table: "PheDuyetDuToan");
 
             migrationBuilder.DropTable(
@@ -211,7 +211,7 @@ namespace QLDA.Migrator.Migrations
                 table: "PheDuyetDuToan");
 
             migrationBuilder.DropIndex(
-                name: "IX_PheDuyetDuToan_TrangThaiPheDuyetDuToanId",
+                name: "IX_PheDuyetDuToan_TrangThaiId",
                 table: "PheDuyetDuToan");
 
             migrationBuilder.DropColumn(
@@ -227,7 +227,7 @@ namespace QLDA.Migrator.Migrations
                 table: "PheDuyetDuToan");
 
             migrationBuilder.DropColumn(
-                name: "TrangThaiPheDuyetDuToanId",
+                name: "TrangThaiId",
                 table: "PheDuyetDuToan");
 
             migrationBuilder.AddForeignKey(

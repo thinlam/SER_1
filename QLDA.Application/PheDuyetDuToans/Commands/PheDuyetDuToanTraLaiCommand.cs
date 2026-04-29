@@ -27,10 +27,9 @@ internal class PheDuyetDuToanTraLaiCommandHandler : IRequestHandler<PheDuyetDuTo
 
     public async Task<int> Handle(PheDuyetDuToanTraLaiCommand request, CancellationToken cancellationToken) {
         // Permission check: BGĐ role only
-        //tạm thời bỏ check role
-        // if (!_userProvider.AuthInfo.HasRole("BGĐ")) {
-        //     throw new ManagedException("Chỉ Ban Giám đốc có quyền trả lại phê duyệt dự toán");
-        // }
+        if (!_userProvider.AuthInfo.HasRole("BGĐ")) {
+            throw new ManagedException("Chỉ Ban Giám đốc có quyền trả lại phê duyệt dự toán");
+        }
 
         // Validate NoiDung is required
         if (string.IsNullOrWhiteSpace(request.NoiDung)) {
