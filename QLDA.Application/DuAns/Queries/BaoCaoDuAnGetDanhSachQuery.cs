@@ -16,11 +16,13 @@ internal class BaoCaoDuAnGetDanhSachQueryHandler
     private readonly IRepository<DuAn, Guid> _duAn;
     private readonly IRepository<NghiemThu, Guid> _nghiemThu;
     private readonly IRepository<ThanhToan, Guid> _thanhToan;
+    private readonly IRepository<DuToan, Guid> _duToan;
 
     public BaoCaoDuAnGetDanhSachQueryHandler(IServiceProvider serviceProvider) {
         _duAn = serviceProvider.GetRequiredService<IRepository<DuAn, Guid>>();
         _nghiemThu = serviceProvider.GetRequiredService<IRepository<NghiemThu, Guid>>();
         _thanhToan = serviceProvider.GetRequiredService<IRepository<ThanhToan, Guid>>();
+        _duToan = serviceProvider.GetRequiredService<IRepository<DuToan, Guid>>();
     }
 
     public async Task<PaginatedList<BaoCaoDuAnDto>> Handle(
@@ -76,6 +78,24 @@ internal class BaoCaoDuAnGetDanhSachQueryHandler
                 .Select(g => new { DuAnId = g.Key, Sum = g.Sum(x => (long)x.GiaTri.GetValueOrDefault()) })
                 .ToDictionaryAsync(x => x.DuAnId, x => x.Sum, cancellationToken);
 
+        var duToanList = duAnIds.Count == 0 ? new List<DuToan>()
+            : await _duToan.GetQueryableSet()
+                .AsNoTracking()
+                .Where(e => !e.IsDeleted && duAnIds.Contains(e.DuAnId))
+                .OrderBy(e => e.DuAnId).ThenBy(e => e.NamDuToan)
+                .ToListAsync(cancellationToken);
+
+        var duToanDict = duToanList
+            .GroupBy(e => e.DuAnId)
+            .ToDictionary(
+                g => g.Key,
+                g => {
+                    var list = g.ToList();
+                    var banDau = (long?)list.First().SoDuToan;
+                    var dieuChinh = list.Count > 2 ? (long?)list.Last().SoDuToan : null;
+                    return (BanDau: banDau, DieuChinh: dieuChinh);
+                });
+
         // Map to DTOs
         var result = duAnList.Select(duAn => {
             var giaTriNghiemThu = nghiemThuDict.GetValueOrDefault(duAn.Id, 0);
@@ -87,23 +107,23 @@ internal class BaoCaoDuAnGetDanhSachQueryHandler
                 ? null
                 : $"{tenGiaiDoan}{(string.IsNullOrEmpty(tenGiaiDoan) || string.IsNullOrEmpty(tenBuoc) ? "" : " - ")}{tenBuoc}";
 
+            var duToanInfo = duToanDict.GetValueOrDefault(duAn.Id);
+
             return new BaoCaoDuAnDto {
-                // Id = duAn.Id,
-                // TenDuAn = duAn.TenDuAn,
-                // DonViPhuTrachChinhId = duAn.DonViPhuTrachChinhId,
-                // LoaiDuAnTheoNamId = duAn.LoaiDuAnTheoNamId,
-                // KhaiToanKinhPhi = duAn.KhaiToanKinhPhi,
-                // ThoiGianKhoiCong = duAn.ThoiGianKhoiCong,
-                // ThoiGianHoanThanh = duAn.ThoiGianHoanThanh,
-                // DuToanBanDau = duAn.SoDuToanCuoiCung,
-                // DuToanDieuChinh = duAn.SoDuToanCuoiCung,
-                // TienDo = tienDo,
-                // GiaTriNghiemThu = giaTriNghiemThu > 0 ? giaTriNghiemThu : null,
-                // GiaTriGiaiNgan = giaTriGiaiNgan > 0 ? giaTriGiaiNgan : null,
-                // HinhThucDauTuId = duAn.HinhThucDauTuId,
-                // LoaiDuAnId = duAn.LoaiDuAnId,
-                // NgayQuyetDinhDuToan = duAn.NgayQuyetDinhDuToan ?? duAn.NgayKyDuToan,
-                // SoQuyetDinhDuToan = duAn.SoQuyetDinhDuToan,
+                Id = duAn.Id,
+                TenDuAn = duAn.TenDuAn,
+                DonViPhuTrachChinhId = duAn.DonViPhuTrachChinhId,
+                LoaiDuAnTheoNamId = duAn.LoaiDuAnTheoNamId,
+                KhaiToanKinhPhi = duAn.KhaiToanKinhPhi,
+                ThoiGianKhoiCong = duAn.ThoiGianKhoiCong,
+                ThoiGianHoanThanh = duAn.ThoiGianHoanThanh,
+                DuToanBanDau = duToanInfo.BanDau,
+                DuToanDieuChinh = duToanInfo.DieuChinh,
+                TienDo = tienDo,
+                GiaTriNghiemThu = giaTriNghiemThu > 0 ? giaTriNghiemThu : null,
+                GiaTriGiaiNgan = giaTriGiaiNgan > 0 ? giaTriGiaiNgan : null,
+                HinhThucDauTuId = duAn.HinhThucDauTuId,
+                LoaiDuAnId = duAn.LoaiDuAnId,
             };
         }).ToList();
 
