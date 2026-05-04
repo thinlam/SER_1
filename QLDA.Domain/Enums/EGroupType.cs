@@ -40,7 +40,8 @@ public enum EGroupType {
     /// <summary>
     /// Tệp quyết định phê duyệt nhiệm vụ và dự toán kinh phí của Dự án
     /// </summary>
-    QuyetDinhPheDuyetNhiemVu
+    QuyetDinhPheDuyetNhiemVu,
+    HoSoDeXuatCapDoCntt,
 
 
 }
