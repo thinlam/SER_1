@@ -19,5 +19,10 @@ public class HoSoDeXuatCapDoCnttConfiguration : AggregateRootConfiguration<HoSoD
             .WithMany(e => e.HoSoDeXuatCapDoCntts)
             .HasForeignKey(e => e.CapDoId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasOne(e => e.TrangThai)
+            .WithMany()
+            .HasForeignKey(e => e.TrangThaiId)
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

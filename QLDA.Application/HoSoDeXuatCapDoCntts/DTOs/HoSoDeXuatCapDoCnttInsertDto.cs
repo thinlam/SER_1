@@ -7,7 +7,7 @@ namespace QLDA.Application.HoSoDeXuatCapDoCntts.DTOs;
 public class HoSoDeXuatCapDoCnttInsertDto : IMayHaveTepDinhKemDto {
     public Guid DuAnId { get; set; }          // Ẩn trên UI, truyền từ context
     public int? BuocId { get; set; }          // Ẩn trên UI, truyền từ context
-    public int? TrangThaiId { get; set; }     // Khởi tạo (default)
+    public int? TrangThaiId { get; set; }     
     public int? CapDoId { get; set; }
     public DateTime? NgayTrinh { get; set; }
     public int? DonViChuTriId { get; set; }
