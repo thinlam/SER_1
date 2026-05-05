@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLDA.Persistence;
 
@@ -11,9 +12,11 @@ using QLDA.Persistence;
 namespace QLDA.Migrator.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260504080837_AddDmCapDoCnttAndHoSoDeXuatCapDoCntt")]
+    partial class AddDmCapDoCnttAndHoSoDeXuatCapDoCntt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3949,8 +3952,6 @@ namespace QLDA.Migrator.Migrations
 
                     SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Index"), false);
 
-                    b.HasIndex("TrangThaiId");
-
                     b.ToTable("HoSoDeXuatCapDoCntt", (string)null);
                 });
 
@@ -4081,8 +4082,8 @@ namespace QLDA.Migrator.Migrations
                     b.Property<DateTimeOffset?>("NgayKy")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("NguonVonId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("NguonVonId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SoQuyetDinh")
                         .HasMaxLength(100)
@@ -4108,8 +4109,6 @@ namespace QLDA.Migrator.Migrations
                     b.HasIndex("Index");
 
                     SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Index"), false);
-
-                    b.HasIndex("NguonVonId");
 
                     b.ToTable("KeHoachVon", (string)null);
                 });
@@ -6031,16 +6030,9 @@ namespace QLDA.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", "TrangThai")
-                        .WithMany()
-                        .HasForeignKey("TrangThaiId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.Navigation("CapDo");
 
                     b.Navigation("DuAn");
-
-                    b.Navigation("TrangThai");
                 });
 
             modelBuilder.Entity("QLDA.Domain.Entities.HopDong", b =>
@@ -6088,14 +6080,7 @@ namespace QLDA.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucNguonVon", "NguonVon")
-                        .WithMany()
-                        .HasForeignKey("NguonVonId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("DuAn");
-
-                    b.Navigation("NguonVon");
                 });
 
             modelBuilder.Entity("QLDA.Domain.Entities.KetQuaTrungThau", b =>

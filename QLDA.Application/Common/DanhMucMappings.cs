@@ -155,6 +155,14 @@ public static class DanhMucMappings {
                 Stt = dto.Stt,
                 Used = dto.Used
             },
+            EDanhMuc.DmCapDoCntt => new DmCapDoCntt {
+                Ma = dto.Ma,
+                Ten = dto.Ten,
+                MoTa = dto.MoTa,
+                Stt = dto.Stt,
+                Used = dto.Used
+            },
+            
             _ => throw new ArgumentException($"Unsupported int-based DanhMuc type: {danhMucType}")
         };
     }
@@ -356,6 +364,14 @@ public static class DanhMucMappings {
             {
                 Id = dto.Id,
                 Ma= dto.Ma,
+                Ten = dto.Ten,
+                MoTa = dto.MoTa,
+                Stt = dto.Stt,
+                Used = dto.Used
+            },
+            EDanhMuc.DmCapDoCntt => new DmCapDoCntt {
+                Id = dto.Id,
+                Ma = dto.Ma,
                 Ten = dto.Ten,
                 MoTa = dto.MoTa,
                 Stt = dto.Stt,

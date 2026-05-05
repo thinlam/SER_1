@@ -85,6 +85,9 @@ internal class DanhMucGetDanhSachQueryHandler(IServiceProvider serviceProvider)
     private readonly IRepository<DanhMucTinhTrangThucHienLcnt, int> DanhMucTinhTrangThucHienLcnt =
         serviceProvider.GetRequiredService<IRepository<DanhMucTinhTrangThucHienLcnt, int>>();
 
+    private readonly IRepository<DmCapDoCntt, int> DmCapDoCntt =
+        serviceProvider.GetRequiredService<IRepository<DmCapDoCntt, int>>();
+
     public async Task<object> Handle(DanhMucGetDanhSachQuery request,
         CancellationToken cancellationToken) {
         return request.DanhMuc switch {
@@ -134,6 +137,9 @@ internal class DanhMucGetDanhSachQueryHandler(IServiceProvider serviceProvider)
                 request, cancellationToken),
             EDanhMuc.DanhMucTinhTrangThucHienLcnt => await GetDanhMucAsync<DanhMucTinhTrangThucHienLcnt, int, DanhMucDto<int>>(
                 DanhMucTinhTrangThucHienLcnt,
+                request, cancellationToken),
+            EDanhMuc.DmCapDoCntt => await GetDanhMucAsync<DmCapDoCntt, int, DanhMucDto<int>>(
+                DmCapDoCntt,
                 request, cancellationToken),
             _ => Enumerable.Empty<object>()
         };
