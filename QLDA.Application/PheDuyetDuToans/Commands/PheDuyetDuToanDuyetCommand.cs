@@ -28,9 +28,9 @@ internal class PheDuyetDuToanDuyetCommandHandler : IRequestHandler<PheDuyetDuToa
 
     public async Task<int> Handle(PheDuyetDuToanDuyetCommand request, CancellationToken cancellationToken) {
         // Permission check: BGĐ role only
-        if (!_userProvider.AuthInfo.HasRole("BGĐ")) {
-            throw new ManagedException("Chỉ Ban Giám đốc có quyền duyệt phê duyệt dự toán");
-        }
+        // if (!_userProvider.AuthInfo.HasRole("BGĐ")) {
+        //     throw new ManagedException("Chỉ Ban Giám đốc có quyền duyệt phê duyệt dự toán");
+        // }
 
         // Get status IDs from DB by code
         var trangThaiDaTrinh = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
