@@ -36,6 +36,15 @@ public static class PermissionConstants {
     // Nhóm: ThanhToan
     public const string ThanhToan_QuanLy = "ThanhToan.QuanLy";
 
+    // Nhóm: PheDuyet
+    public const string PheDuyet_XemTatCa = "PheDuyet.XemTatCa";
+    public const string PheDuyet_XemTheoPhong = "PheDuyet.XemTheoPhong";
+    public const string PheDuyet_Duyet = "PheDuyet.Duyet";
+    public const string PheDuyet_KySo = "PheDuyet.KySo";
+    public const string PheDuyet_ChuyenQLVB = "PheDuyet.ChuyenQLVB";
+    public const string PheDuyet_PhatHanh = "PheDuyet.PhatHanh";
+    public const string PheDuyet_TuChoi = "PheDuyet.TuChoi";
+
     /// <summary>
     /// All permission keys grouped by NhomQuyen
     /// </summary>
@@ -45,19 +54,20 @@ public static class PermissionConstants {
         ["HopDong"] = [HopDong_XemTatCa, HopDong_XemTheoPhong, HopDong_Tao, HopDong_Sua, HopDong_Xoa],
         ["VanBan"] = [VanBan_XemTatCa, VanBan_XemTheoPhong, VanBan_Tao, VanBan_Sua, VanBan_Xoa],
         ["ThanhToan"] = [ThanhToan_QuanLy],
+        ["PheDuyet"] = [PheDuyet_XemTatCa, PheDuyet_XemTheoPhong, PheDuyet_Duyet, PheDuyet_KySo, PheDuyet_ChuyenQLVB, PheDuyet_PhatHanh, PheDuyet_TuChoi],
     };
 
     /// <summary>
     /// Get all XemTatCa permission keys
     /// </summary>
     public static string[] AllXemTatCa =>
-        [DuAn_XemTatCa, GoiThau_XemTatCa, HopDong_XemTatCa, VanBan_XemTatCa];
+        [DuAn_XemTatCa, GoiThau_XemTatCa, HopDong_XemTatCa, VanBan_XemTatCa, PheDuyet_XemTatCa];
 
     /// <summary>
     /// Get all XemTheoPhong permission keys
     /// </summary>
     public static string[] AllXemTheoPhong =>
-        [DuAn_XemTheoPhong, GoiThau_XemTheoPhong, HopDong_XemTheoPhong, VanBan_XemTheoPhong];
+        [DuAn_XemTheoPhong, GoiThau_XemTheoPhong, HopDong_XemTheoPhong, VanBan_XemTheoPhong, PheDuyet_XemTheoPhong];
 
     /// <summary>
     /// All Tao + Sua permission keys across modules
@@ -72,6 +82,12 @@ public static class PermissionConstants {
         [.. ByNhom.Values.SelectMany(p => p)];
 
     /// <summary>
+    /// PheDuyet action permissions (Duyet, KySo, ChuyenQLVB, TuChoi)
+    /// </summary>
+    private static readonly string[] PheDuyetActions =
+        [PheDuyet_Duyet, PheDuyet_KySo, PheDuyet_ChuyenQLVB, PheDuyet_TuChoi];
+
+    /// <summary>
     /// Default role → permission mapping (used for seed data + reference)
     /// Matches seed data in CauHinhVaiTroQuyenConfiguration
     /// </summary>
@@ -80,12 +96,17 @@ public static class PermissionConstants {
         [RoleConstants.QLDA_TatCa] = AllPermissions,
         [RoleConstants.QLDA_QuanTri] = AllPermissions,
 
+        // BGĐ → xem tất cả + PheDuyet actions
+        [RoleConstants.QLDA_LDDV] = [.. AllXemTatCa, .. PheDuyetActions],
+
         // Lãnh đạo → xem tất cả mọi module
-        [RoleConstants.QLDA_LDDV] = AllXemTatCa,
         [RoleConstants.QLDA_LD] = AllXemTatCa,
 
         // Chuyên viên → xem theo phòng + tạo/sửa
         [RoleConstants.QLDA_ChuyenVien] =
             [.. AllXemTheoPhong, .. AllTaoSua],
+
+        // P.HC-TH → xem tất cả + phát hành
+        [RoleConstants.QLDA_HC_TH] = [PheDuyet_XemTatCa, PheDuyet_PhatHanh],
     };
 }

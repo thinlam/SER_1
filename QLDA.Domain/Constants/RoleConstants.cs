@@ -22,6 +22,10 @@ public static class RoleConstants {
     /// </summary>
     public const string QLDA_LDDV = "QLDA_LDDV";
     /// <summary>
+    /// Phòng Hành chính - Tổng hợp
+    /// </summary>
+    public const string QLDA_HC_TH = "QLDA_HC_TH";
+    /// <summary>
     /// Quyền Admin hoặc Manager
     /// </summary>
     public const string GroupAdminOrManager = $"{QLDA_TatCa},{QLDA_QuanTri},{QLDA_LDDV}";

@@ -21,11 +21,15 @@ public interface IWebApiFixture {
     Guid SeededGoiThauId { get; }
     Guid SeededHopDongId { get; }
     Guid SeededPheDuyetDuToanId { get; }
+    Guid SeededVanBanQuyetDinhId { get; }
     HttpClient CreateAuthenticatedClient();
     HttpClient CreateBgdClient();
     HttpClient CreateKhTcClient();
     HttpClient CreateChuyenVienClient(long phongBanId = 100);
+    HttpClient CreateHcthClient();
     Task<Guid> CreatePheDuyetDuToanAsync();
+    Task<Guid> CreatePheDuyetNoiDungAsync(string trangThai = "CXL");
+    SqliteConnection GetSqliteConnection();
 }
 
 public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWebApiFixture {
@@ -38,6 +42,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
     public Guid SeededGoiThauId { get; private set; }
     public Guid SeededHopDongId { get; private set; }
     public Guid SeededPheDuyetDuToanId { get; private set; }
+    public Guid SeededVanBanQuyetDinhId { get; private set; }
 
     private const string TestJwtKey = "12345678901234567890123456789012";
 
@@ -164,6 +169,19 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         SeededGoiThauId = goiThau.Id;
         SeededHopDongId = hopDong.Id;
         SeededPheDuyetDuToanId = pheDuyetDuToan.Id;
+
+        var vbqd = new VanBanQuyetDinh {
+            DuAnId = duAn.Id,
+            TrichYeu = "Test Văn bản quyết định",
+            So = "VBQD_TEST_001",
+            Loai = "TEST",
+            CreatedAt = DateTimeOffset.UtcNow,
+            IsDeleted = false,
+        };
+        _seedDb.Set<VanBanQuyetDinh>().Add(vbqd);
+        await _seedDb.SaveChangesAsync();
+
+        SeededVanBanQuyetDinhId = vbqd.Id;
     }
 
     private string GenerateToken(long userId = 1, long donViId = 1, long phongBanId = 1, string[]? roles = null) {
@@ -216,7 +234,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
     /// Client with BGĐ role - can approve/reject (Duyệt/Trả lại)
     /// </summary>
     public HttpClient CreateBgdClient() {
-        var token = GenerateToken(userId: 10, phongBanId: 1, roles: [RoleConstants.QLDA_QuanTri]);
+        var token = GenerateToken(userId: 10, phongBanId: 1, roles: [RoleConstants.QLDA_QuanTri, RoleConstants.QLDA_LDDV]);
         return CreateClientWithToken(token);
     }
 
@@ -257,6 +275,37 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         await db.SaveChangesAsync();
         return entity.Id;
     }
+
+    /// <summary>
+    /// Client with P.HC-TH role - can publish (Phát hành)
+    /// </summary>
+    public HttpClient CreateHcthClient() {
+        var token = GenerateToken(userId: 40, phongBanId: 300, roles: [RoleConstants.QLDA_HC_TH]);
+        return CreateClientWithToken(token);
+    }
+
+    /// <summary>
+    /// Creates a fresh PheDuyetNoiDung in specified status for test isolation.
+    /// </summary>
+    public async Task<Guid> CreatePheDuyetNoiDungAsync(string trangThai = "CXL") {
+        var options = new DbContextOptionsBuilder<AppDbContext>()
+            .UseSqlite(_connection)
+            .Options;
+        using var db = new SqliteAppDbContext(options);
+
+        var entity = new PheDuyetNoiDung {
+            VanBanQuyetDinhId = SeededVanBanQuyetDinhId,
+            DuAnId = SeededDuAnId,
+            TrangThai = trangThai,
+            CreatedAt = DateTimeOffset.UtcNow,
+            IsDeleted = false,
+        };
+        db.Set<PheDuyetNoiDung>().Add(entity);
+        await db.SaveChangesAsync();
+        return entity.Id;
+    }
+
+    public SqliteConnection GetSqliteConnection() => _connection;
 }
 
 [CollectionDefinition("WebApi")]
