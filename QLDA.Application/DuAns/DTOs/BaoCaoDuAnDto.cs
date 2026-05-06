@@ -13,6 +13,9 @@ public class BaoCaoDuAnDto : IHasKey<Guid> {
     /// <summary>
     /// Khái toán kinh phí
     /// </summary>
+    /// 
+    
+    public long? GiaiDoanHienTaiId { get; set; }
     public decimal? KhaiToanKinhPhi { get; set; }
     public int? ThoiGianKhoiCong { get; set; }
     public int? ThoiGianHoanThanh { get; set; }
