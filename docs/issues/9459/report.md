@@ -12,8 +12,8 @@ Follow PheDuyetDuToan pattern nhưng thiết kế mới: **unified approval over
 
 ```
 VanBanQuyetDinh (existing) ← PheDuyetNoiDung (new, approval tracking)
-                                ├── TrangThai (string code: CXL/DD/TC/TL/DKS/DQLVB/DPH)
-                                ├── PheDuyetNoiDungHistory (audit trail)
+                                ├── TrangThaiId (int FK → DanhMucTrangThaiPheDuyet)
+                                ├── PheDuyetNoiDungHistory (audit trail, TrangThaiId FK)
                                 └── DanhMucTrangThaiPheDuyet (shared DanhMuc, discriminated by Loai)
 ```
 
@@ -33,6 +33,8 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 | NoiDung | 8 | DKS | Đã ký số |
 | NoiDung | 9 | DQLVB | Đã chuyển QLVB |
 | NoiDung | 10 | DPH | Đã phát hành |
+| NoiDung | 11 | DD | Đã duyệt |
+| NoiDung | 12 | TL | Trả lại |
 
 ### Constants
 
@@ -41,23 +43,29 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 - `TrangThaiPheDuyetCodes.DuToan.*` - DuToan status codes (DT, ĐTr, ĐD, TL, LEG)
 - `TrangThaiPheDuyetCodes.NoiDung.*` - NoiDung status codes (CXL, DD, TC, TL, DKS, DQLVB, DPH)
 
+### Status Tracking (FK-based)
+
+PheDuyetNoiDung & PheDuyetNoiDungHistory use `int? TrangThaiId` FK → `DanhMucTrangThaiPheDuyet` (not string codes). Commands lookup status via `_statusRepository` by `Ma + Loai`, then set `TrangThaiId`. DTOs expose `TrangThaiId`, `MaTrangThai`, `TenTrangThai`.
+
+Composite unique index on `(Ma, Loai)` allows same Ma across different Loai (e.g. "TL" for both DuToan and NoiDung).
+
 ## Files Created
 
 ### Domain Layer (3 files)
 - `QLDA.Domain/Constants/TrangThaiPheDuyetCodes.cs` - Merged status codes + Loai constants
-- `QLDA.Domain/Entities/PheDuyetNoiDung.cs` - Main entity
-- `QLDA.Domain/Entities/PheDuyetNoiDungHistory.cs` - History entity
+- `QLDA.Domain/Entities/PheDuyetNoiDung.cs` - Main entity (TrangThaiId FK)
+- `QLDA.Domain/Entities/PheDuyetNoiDungHistory.cs` - History entity (TrangThaiId FK)
 
 ### Persistence Layer (2 files)
 - `QLDA.Persistence/Configurations/PheDuyetNoiDungConfiguration.cs`
 - `QLDA.Persistence/Configurations/PheDuyetNoiDungHistoryConfiguration.cs`
 
 ### Application Layer (11 files)
-- `QLDA.Application/PheDuyetNoiDungs/Commands/` - 8 command handlers
+- `QLDA.Application/PheDuyetNoiDungs/Commands/` - 8 command handlers (all use `_statusRepository` for FK lookup)
   - Trinh, Duyet, TuChoi, TraLai, KySo, ChuyenQLVB, PhatHanh, GuiLai
-- `QLDA.Application/PheDuyetNoiDungs/Queries/` - 3 query handlers
+- `QLDA.Application/PheDuyetNoiDungs/Queries/` - 3 query handlers (`.Include(e => e.TrangThai)`)
   - GetDanhSach (paginated + visibility filter), GetChiTiet, GetLichSu
-- `QLDA.Application/PheDuyetNoiDungs/DTOs/` - 3 DTOs
+- `QLDA.Application/PheDuyetNoiDungs/DTOs/` - 3 DTOs (TrangThaiId, MaTrangThai, TenTrangThai)
   - PheDuyetNoiDungDto, PheDuyetNoiDungChiTietDto, PheDuyetNoiDungLichSuDto
 
 ### WebApi Layer (10 files)
@@ -75,9 +83,10 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 |------|--------|
 | `QLDA.Domain/Constants/RoleConstants.cs` | Added `QLDA_HC_TH` |
 | `QLDA.Domain/Constants/PermissionConstants.cs` | Added 7 PheDuyet permissions + ByNhom + RolePermissions |
-| `QLDA.Domain/Entities/PheDuyetDuToan.cs` | TrangThai navigation → DanhMucTrangThaiPheDuyet |
+| `QLDA.Domain/Entities/PheDuyetDuToan.cs` | TrangThai navigation → DanhMucTrangThaiPheDuyet (was DanhMucTrangThaiPheDuyetDuToan) |
 | `QLDA.Domain/Entities/PheDuyetDuToanHistory.cs` | TrangThai navigation → DanhMucTrangThaiPheDuyet |
 | `QLDA.Domain/Entities/HoSoDeXuatCapDoCntt.cs` | TrangThai navigation → DanhMucTrangThaiPheDuyet |
+| `QLDA.Domain/Entities/DanhMuc/DanhMucTrangThaiPheDuyet.cs` | Removed PheDuyetDuToans collection nav |
 | `QLDA.Application/Common/Enums/EDanhMuc.cs` | Added `DanhMucTrangThaiPheDuyet` |
 | `QLDA.Application/Providers/IAppSettingsProvider.cs` | Added `PhongHCTHID` |
 | `QLDA.Application/Common/Queries/DanhMucGetQuery.cs` | Added DanhMucTrangThaiPheDuyet handler |
@@ -85,19 +94,23 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 | `QLDA.Application/Common/Commands/DanhMucInsertOrUpdateCommand.cs` | Added DanhMucTrangThaiPheDuyet handler |
 | `QLDA.Application/PheDuyetDuToans/Commands/*` | Updated status repo + codes references |
 | `QLDA.Application/PheDuyetDuToans/DTOs/PheDuyetDuToanDto.cs` | Updated codes reference |
+| `QLDA.Persistence/Configurations/DanhMuc/DanhMucTrangThaiPheDuyetConfiguration.cs` | Composite unique (Ma+Loai), seed 12 entries, removed old nav |
+| `QLDA.Persistence/Configurations/DanhMuc/DanhMucQuyenConfiguration.cs` | Formatting, Ma max length |
+| `QLDA.Persistence/Configurations/PheDuyetDuToanConfiguration.cs` | TrangThai nav → WithMany() |
+| `QLDA.Persistence/Configurations/PheDuyetNoiDungConfiguration.cs` | Added TrangThai FK |
+| `QLDA.Persistence/Configurations/PheDuyetNoiDungHistoryConfiguration.cs` | Added TrangThai FK |
 | `QLDA.WebApi/ConfigurationOptions/AppSettings.cs` | Added `PhongHCTHID` |
 | `QLDA.WebApi/ConfigurationOptions/AppSettingsProvider.cs` | Added `PhongHCTHID` |
 | `QLDA.WebApi/appsettings.json` | Added `PhongHCTHID: 0` |
-| `QLDA.Tests/Fixtures/WebApiFixture.cs` | Added HCTH client + PheDuyetNoiDung helpers |
+| `QLDA.Tests/Fixtures/WebApiFixture.cs` | CreatePheDuyetNoiDungAsync takes int? TrangThaiId |
+| `QLDA.Tests/Integration/PheDuyetNoiDungControllerTests.cs` | Uses int TrangThaiId constants |
 
 ## Files Deleted (refactored away)
 
 | File | Reason |
 |------|--------|
-| `DanhMucTrangThaiPheDuyetDuToan.cs` | Renamed → `DanhMucTrangThaiPheDuyet.cs` |
-| `DanhMucTrangThaiPheDuyetDuToanConfiguration.cs` | Renamed → `DanhMucTrangThaiPheDuyetConfiguration.cs` |
-| `DanhMucTrangThaiPheDuyetNoiDung.cs` | Merged into shared `DanhMucTrangThaiPheDuyet` |
-| `DanhMucTrangThaiPheDuyetNoiDungConfiguration.cs` | Merged into shared config |
+| `DanhMucTrangThaiPheDuyetDuToan.cs` | Merged into shared `DanhMucTrangThaiPheDuyet` |
+| `DanhMucTrangThaiPheDuyetDuToanConfiguration.cs` | Replaced by shared `DanhMucTrangThaiPheDuyetConfiguration` |
 | `TrangThaiPheDuyetDuToanCodes.cs` | Merged into `TrangThaiPheDuyetCodes.cs` |
 | `TrangThaiPheDuyetNoiDungCodes.cs` | Merged into `TrangThaiPheDuyetCodes.cs` |
 
@@ -109,13 +122,14 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 
 ## Design Decisions
 
-1. **String status codes** thay vì int FK (khác PheDuyetDuToan) - đơn giản hơn, không cần DB lookup
+1. **FK-based status** (`int? TrangThaiId` → `DanhMucTrangThaiPheDuyet`) - consistent với PheDuyetDuToan, DB-enforced referential integrity
 2. **Separate entity** không inherit VanBanQuyetDinh - approval layer trên VBQD có sẵn
-3. **History tracks string status** - dễ đọc, không cần join DanhMuc
+3. **History tracks TrangThaiId FK** - join DanhMuc để display Ma/Ten trong DTOs
 4. **Visibility filter** reuse `ApplyDuAnChildVisibility` - consistent với existing modules
 5. **Role checks active** (không comment out như PheDuyetDuToan) - enforce security
 6. **Shared DanhMucTrangThaiPheDuyet** with `Loai` discriminator - DRY, single CRUD
 7. **Merged constants** `TrangThaiPheDuyetCodes` with nested DuToan/NoiDung/Loai classes
+8. **Composite unique index** on (Ma, Loai) - allows same Ma across different Loai types
 
 ## DanhMucTrangThaiPheDuyet CRUD Endpoints
 
@@ -131,6 +145,5 @@ Merged `DanhMucTrangThaiPheDuyetDuToan` + `DanhMucTrangThaiPheDuyetNoiDung` thà
 ## Unresolved Questions
 
 1. `PhongHCTHID` trong `appsettings.json` đang = 0, cần cấu hình ID phòng HC-TH thực tế
-2. Cần chạy EF migration: `dotnet ef migrations add AddPheDuyetNoiDung`
-3. Role `QLDA_HC_TH` cần được thêm vào hệ thống authentication/authorization
-4. Chưa có notification/gửi thông báo kết quả xử lý đến đơn vị trình duyệt (UC22 bước 7)
+2. Role `QLDA_HC_TH` cần được thêm vào hệ thống authentication/authorization
+3. Chưa có notification/gửi thông báo kết quả xử lý đến đơn vị trình duyệt (UC22 bước 7)
