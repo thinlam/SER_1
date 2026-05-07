@@ -5,6 +5,7 @@ using QLDA.Application.Common.Mapping;
 using QLDA.Application.PheDuyetNoiDungs.DTOs;
 using QLDA.Application.Providers;
 using QLDA.Application.TepDinhKems.DTOs;
+using QLDA.Domain.Constants;
 using QLDA.Domain.Entities;
 using QLDA.Domain.Enums;
 using PermissionConstants = QLDA.Domain.Constants.PermissionConstants;
@@ -38,9 +39,10 @@ internal class PheDuyetNoiDungGetDanhSachQueryHandler : IRequestHandler<PheDuyet
         var query = _repository.GetQueryableSet().AsNoTracking()
             .Include(e => e.VanBanQuyetDinh)
             .Include(e => e.DuAn)
+            .Include(e => e.TrangThai)
             .WhereIf(request.DuAnId.HasValue, e => e.DuAnId == request.DuAnId)
             .WhereIf(request.BuocId.HasValue, e => e.BuocId == request.BuocId)
-            .WhereIf(!string.IsNullOrWhiteSpace(request.TrangThai), e => e.TrangThai == request.TrangThai)
+            .WhereIf(!string.IsNullOrWhiteSpace(request.TrangThai), e => e.TrangThai != null && e.TrangThai.Ma == request.TrangThai)
             .WhereIf(!string.IsNullOrWhiteSpace(request.LoaiVanBan), e => e.VanBanQuyetDinh != null && e.VanBanQuyetDinh.Loai == request.LoaiVanBan)
             .WhereIf(!string.IsNullOrWhiteSpace(request.GlobalFilter),
                 e => (e.VanBanQuyetDinh != null && e.VanBanQuyetDinh.So != null && e.VanBanQuyetDinh.So.Contains(request.GlobalFilter!))
@@ -61,7 +63,9 @@ internal class PheDuyetNoiDungGetDanhSachQueryHandler : IRequestHandler<PheDuyet
                 Ngay = e.VanBanQuyetDinh != null ? e.VanBanQuyetDinh.Ngay : null,
                 TrichYeu = e.VanBanQuyetDinh != null ? e.VanBanQuyetDinh.TrichYeu : null,
                 LoaiVanBan = e.VanBanQuyetDinh != null ? e.VanBanQuyetDinh.Loai : null,
-                TrangThai = e.TrangThai,
+                TrangThaiId = e.TrangThaiId,
+                MaTrangThai = e.TrangThai != null ? e.TrangThai.Ma : null,
+                TenTrangThai = e.TrangThai != null ? e.TrangThai.Ten : null,
                 NoiDungPhanHoi = e.NoiDungPhanHoi,
                 DaChuyenQLVB = e.DaChuyenQLVB,
                 SoPhatHanh = e.SoPhatHanh,

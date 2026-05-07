@@ -4,6 +4,7 @@ using QLDA.Application.Common;
 using QLDA.Application.Providers;
 using QLDA.Domain.Constants;
 using QLDA.Domain.Entities;
+using QLDA.Domain.Entities.DanhMuc;
 
 namespace QLDA.Application.PheDuyetNoiDungs.Commands;
 
@@ -20,6 +21,7 @@ internal class PheDuyetNoiDungTrinhCommandHandler : IRequestHandler<PheDuyetNoiD
     private readonly IRepository<PheDuyetNoiDung, Guid> _repository;
     private readonly IRepository<PheDuyetNoiDungHistory, Guid> _historyRepository;
     private readonly IRepository<VanBanQuyetDinh, Guid> _vbqdRepository;
+    private readonly IRepository<DanhMucTrangThaiPheDuyet, int> _statusRepository;
     private readonly IUserProvider _userProvider;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -27,6 +29,7 @@ internal class PheDuyetNoiDungTrinhCommandHandler : IRequestHandler<PheDuyetNoiD
         _repository = serviceProvider.GetRequiredService<IRepository<PheDuyetNoiDung, Guid>>();
         _historyRepository = serviceProvider.GetRequiredService<IRepository<PheDuyetNoiDungHistory, Guid>>();
         _vbqdRepository = serviceProvider.GetRequiredService<IRepository<VanBanQuyetDinh, Guid>>();
+        _statusRepository = serviceProvider.GetRequiredService<IRepository<DanhMucTrangThaiPheDuyet, int>>();
         _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
         _unitOfWork = _repository.UnitOfWork;
     }
@@ -36,19 +39,22 @@ internal class PheDuyetNoiDungTrinhCommandHandler : IRequestHandler<PheDuyetNoiD
             .FirstOrDefaultAsync(e => e.Id == request.VanBanQuyetDinhId, cancellationToken);
         ManagedException.ThrowIfNull(vbqd, "Không tìm thấy văn bản quyết định");
 
-        // Check not already in PheDuyetNoiDung
         var exists = await _repository.GetQueryableSet()
             .AnyAsync(e => e.VanBanQuyetDinhId == request.VanBanQuyetDinhId && !e.IsDeleted, cancellationToken);
         if (exists) {
             throw new ManagedException("Nội dung này đã được trình phê duyệt");
         }
 
+        var trangThai = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.NoiDung.ChoXuLy && s.Loai == TrangThaiPheDuyetCodes.Loai.NoiDung, cancellationToken);
+        ManagedException.ThrowIfNull(trangThai, "Không tìm thấy trạng thái 'Chờ xử lý'");
+
         var entity = new PheDuyetNoiDung {
             Id = Guid.NewGuid(),
             VanBanQuyetDinhId = request.VanBanQuyetDinhId,
             DuAnId = request.DuAnId,
             BuocId = request.BuocId,
-            TrangThai = TrangThaiPheDuyetCodes.NoiDung.ChoXuLy,
+            TrangThaiId = trangThai.Id,
             NguoiXuLyId = _userProvider.Info.UserID
         };
 
@@ -59,7 +65,7 @@ internal class PheDuyetNoiDungTrinhCommandHandler : IRequestHandler<PheDuyetNoiD
             PheDuyetNoiDungId = entity.Id,
             DuAnId = entity.DuAnId,
             NguoiXuLyId = _userProvider.Info.UserID,
-            TrangThai = TrangThaiPheDuyetCodes.NoiDung.ChoXuLy,
+            TrangThaiId = trangThai.Id,
             NoiDung = request.NoiDung,
             NgayXuLy = DateTimeOffset.UtcNow
         };

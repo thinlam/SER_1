@@ -12,11 +12,18 @@ public class DanhMucTrangThaiPheDuyetConfiguration : AggregateRootConfiguration<
         builder.ToTable("DmTrangThaiPheDuyet");
         builder.ConfigureForDanhMuc();
 
-        builder.HasMany(e => e.PheDuyetDuToans)
-            .WithOne(e => e.TrangThai)
-            .HasForeignKey(e => e.TrangThaiId);
-
         builder.Property(e => e.Loai).HasMaxLength(50);
+
+        // Remove base unique index on Ma alone (set by ConfigureForDanhMuc) to allow same Ma across Loai
+        var baseMaIndex = builder.Metadata.GetIndexes().FirstOrDefault(i => i.Properties.Select(p => p.Name).SequenceEqual(new[] { "Ma" }) && i.IsUnique);
+        if (baseMaIndex != null) {
+            builder.Metadata.RemoveIndex(baseMaIndex);
+        }
+
+        // Replace with composite unique index allowing same Ma across different Loai
+        builder.HasIndex(e => new { e.Ma, e.Loai })
+            .IsUnique()
+            .HasFilter("[Ma] IS NOT NULL AND [Ma] <> '' AND [IsDeleted] = 0");
 
         builder.HasData(
             new DanhMucTrangThaiPheDuyet { Id = 1, Ma = "DT", Ten = "Dự thảo", Loai = TrangThaiPheDuyetCodes.Loai.DuToan, Stt = 1, Used = true, CreatedAt = SeedCreatedAt },
@@ -28,7 +35,9 @@ public class DanhMucTrangThaiPheDuyetConfiguration : AggregateRootConfiguration<
             new DanhMucTrangThaiPheDuyet { Id = 7, Ma = "TC", Ten = "Từ chối", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 11, Used = true, CreatedAt = SeedCreatedAt },
             new DanhMucTrangThaiPheDuyet { Id = 8, Ma = "DKS", Ten = "Đã ký số", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 12, Used = true, CreatedAt = SeedCreatedAt },
             new DanhMucTrangThaiPheDuyet { Id = 9, Ma = "DQLVB", Ten = "Đã chuyển QLVB", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 13, Used = true, CreatedAt = SeedCreatedAt },
-            new DanhMucTrangThaiPheDuyet { Id = 10, Ma = "DPH", Ten = "Đã phát hành", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 14, Used = true, CreatedAt = SeedCreatedAt }
+            new DanhMucTrangThaiPheDuyet { Id = 10, Ma = "DPH", Ten = "Đã phát hành", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 14, Used = true, CreatedAt = SeedCreatedAt },
+            new DanhMucTrangThaiPheDuyet { Id = 11, Ma = "DD", Ten = "Đã duyệt", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 15, Used = true, CreatedAt = SeedCreatedAt },
+            new DanhMucTrangThaiPheDuyet { Id = 12, Ma = "TL", Ten = "Trả lại", Loai = TrangThaiPheDuyetCodes.Loai.NoiDung, Stt = 16, Used = true, CreatedAt = SeedCreatedAt }
         );
     }
 }

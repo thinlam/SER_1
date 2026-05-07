@@ -5,12 +5,17 @@ using QLDA.Domain.Entities.DanhMuc;
 
 namespace QLDA.Persistence.Configurations.DanhMuc;
 
-public class DanhMucQuyenConfiguration : AggregateRootConfiguration<DanhMucQuyen> {
+public class DanhMucQuyenConfiguration : AggregateRootConfiguration<DanhMucQuyen>
+{
     private static readonly DateTimeOffset SeedCreatedAt = new(2025, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
-    public override void Configure(EntityTypeBuilder<DanhMucQuyen> builder) {
+    public override void Configure(EntityTypeBuilder<DanhMucQuyen> builder)
+    {
         builder.ToTable("DmQuyen");
         builder.ConfigureForDanhMuc();
+
+        builder.Property(e => e.Ma)
+            .HasMaxLength(100);
 
         builder.Property(e => e.NhomQuyen)
             .HasColumnOrder(5)
@@ -28,15 +33,19 @@ public class DanhMucQuyenConfiguration : AggregateRootConfiguration<DanhMucQuyen
         SeedPermissions(builder);
     }
 
-    private static void SeedPermissions(EntityTypeBuilder<DanhMucQuyen> builder) {
+    private static void SeedPermissions(EntityTypeBuilder<DanhMucQuyen> builder)
+    {
         var id = 1;
         var data = new List<DanhMucQuyen>();
 
-        foreach (var (nhom, permissions) in PermissionConstants.ByNhom) {
-            for (var i = 0; i < permissions.Length; i++) {
+        foreach (var (nhom, permissions) in PermissionConstants.ByNhom)
+        {
+            for (var i = 0; i < permissions.Length; i++)
+            {
                 var ma = permissions[i];
                 var action = ma.Split('.')[1];
-                data.Add(new DanhMucQuyen {
+                data.Add(new DanhMucQuyen
+                {
                     Id = id++,
                     Ma = ma,
                     Ten = $"{MapActionName(action)} {MapGroupName(nhom)}",
@@ -51,7 +60,8 @@ public class DanhMucQuyenConfiguration : AggregateRootConfiguration<DanhMucQuyen
         builder.HasData(data);
     }
 
-    private static string MapActionName(string action) => action switch {
+    private static string MapActionName(string action) => action switch
+    {
         "XemTatCa" => "Xem tất cả",
         "XemTheoPhong" => "Xem theo phòng",
         "Tao" => "Tạo",
@@ -62,7 +72,8 @@ public class DanhMucQuyenConfiguration : AggregateRootConfiguration<DanhMucQuyen
         _ => action
     };
 
-    private static string MapGroupName(string nhom) => nhom switch {
+    private static string MapGroupName(string nhom) => nhom switch
+    {
         "DuAn" => "dự án",
         "GoiThau" => "gói thầu",
         "HopDong" => "hợp đồng",

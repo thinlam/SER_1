@@ -4,8 +4,10 @@ using QLDA.Domain.Entities;
 
 namespace QLDA.Persistence.Configurations;
 
-public class PheDuyetNoiDungConfiguration : AggregateRootConfiguration<PheDuyetNoiDung> {
-    public override void Configure(EntityTypeBuilder<PheDuyetNoiDung> builder) {
+public class PheDuyetNoiDungConfiguration : AggregateRootConfiguration<PheDuyetNoiDung>
+{
+    public override void Configure(EntityTypeBuilder<PheDuyetNoiDung> builder)
+    {
         builder.ToTable(nameof(PheDuyetNoiDung));
         builder.ConfigureForBase();
 
@@ -27,6 +29,11 @@ public class PheDuyetNoiDungConfiguration : AggregateRootConfiguration<PheDuyetN
         builder.HasMany(e => e.Histories)
             .WithOne(e => e.PheDuyetNoiDung)
             .HasForeignKey(e => e.PheDuyetNoiDungId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(e => e.TrangThai)
+            .WithMany()
+            .HasForeignKey(e => e.TrangThaiId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

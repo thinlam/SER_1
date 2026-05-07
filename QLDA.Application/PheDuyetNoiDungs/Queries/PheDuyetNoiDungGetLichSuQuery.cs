@@ -15,11 +15,14 @@ internal class PheDuyetNoiDungGetLichSuQueryHandler : IRequestHandler<PheDuyetNo
 
     public async Task<List<PheDuyetNoiDungLichSuDto>> Handle(PheDuyetNoiDungGetLichSuQuery request, CancellationToken cancellationToken) {
         var results = await _repository.GetQueryableSet().AsNoTracking()
+            .Include(h => h.TrangThai)
             .Where(h => h.PheDuyetNoiDungId == request.PheDuyetNoiDungId)
             .Select(h => new PheDuyetNoiDungLichSuDto {
                 Id = h.Id,
                 NguoiXuLyId = h.NguoiXuLyId,
-                TrangThai = h.TrangThai,
+                TrangThaiId = h.TrangThaiId,
+                MaTrangThai = h.TrangThai != null ? h.TrangThai.Ma : null,
+                TenTrangThai = h.TrangThai != null ? h.TrangThai.Ten : null,
                 NoiDung = h.NoiDung,
                 NgayXuLy = h.NgayXuLy
             })

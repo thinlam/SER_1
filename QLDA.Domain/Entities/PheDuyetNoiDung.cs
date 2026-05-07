@@ -1,4 +1,4 @@
-using QLDA.Domain.Constants;
+using QLDA.Domain.Entities.DanhMuc;
 
 namespace QLDA.Domain.Entities;
 
@@ -9,7 +9,7 @@ public class PheDuyetNoiDung : Entity<Guid>, IAggregateRoot {
     public Guid VanBanQuyetDinhId { get; set; }
     public Guid DuAnId { get; set; }
     public int? BuocId { get; set; }
-    public string TrangThai { get; set; } = TrangThaiPheDuyetCodes.NoiDung.ChoXuLy;
+    public int? TrangThaiId { get; set; }
 
     /// <summary>
     /// USER_MASTER.UserPortalId
@@ -26,6 +26,7 @@ public class PheDuyetNoiDung : Entity<Guid>, IAggregateRoot {
     public VanBanQuyetDinh? VanBanQuyetDinh { get; set; }
     public DuAn? DuAn { get; set; }
     public DuAnBuoc? DuAnBuoc { get; set; }
+    public DanhMucTrangThaiPheDuyet? TrangThai { get; set; }
     public ICollection<PheDuyetNoiDungHistory>? Histories { get; set; } = [];
 
     #endregion

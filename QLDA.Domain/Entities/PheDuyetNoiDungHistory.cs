@@ -1,3 +1,5 @@
+using QLDA.Domain.Entities.DanhMuc;
+
 namespace QLDA.Domain.Entities;
 
 /// <summary>
@@ -12,7 +14,7 @@ public class PheDuyetNoiDungHistory : Entity<Guid>, IAggregateRoot {
     /// </summary>
     public long? NguoiXuLyId { get; set; }
 
-    public string TrangThai { get; set; } = string.Empty;
+    public int? TrangThaiId { get; set; }
     public string? NoiDung { get; set; }
     public DateTimeOffset NgayXuLy { get; set; }
 
@@ -20,6 +22,7 @@ public class PheDuyetNoiDungHistory : Entity<Guid>, IAggregateRoot {
 
     public PheDuyetNoiDung? PheDuyetNoiDung { get; set; }
     public DuAn? DuAn { get; set; }
+    public DanhMucTrangThaiPheDuyet? TrangThai { get; set; }
 
     #endregion
 }

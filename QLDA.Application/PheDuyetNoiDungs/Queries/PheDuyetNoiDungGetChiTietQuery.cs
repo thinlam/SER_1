@@ -22,16 +22,20 @@ internal class PheDuyetNoiDungGetChiTietQueryHandler : IRequestHandler<PheDuyetN
         var entity = await _repository.GetQueryableSet().AsNoTracking()
             .Include(e => e.VanBanQuyetDinh)
             .Include(e => e.DuAn)
+            .Include(e => e.TrangThai)
             .FirstOrDefaultAsync(e => e.Id == request.Id, cancellationToken);
 
         ManagedException.ThrowIfNull(entity, "Không tìm thấy nội dung phê duyệt");
 
         var lichSu = await _historyRepository.GetQueryableSet().AsNoTracking()
+            .Include(h => h.TrangThai)
             .Where(h => h.PheDuyetNoiDungId == entity.Id)
             .Select(h => new PheDuyetNoiDungLichSuDto {
                 Id = h.Id,
                 NguoiXuLyId = h.NguoiXuLyId,
-                TrangThai = h.TrangThai,
+                TrangThaiId = h.TrangThaiId,
+                MaTrangThai = h.TrangThai != null ? h.TrangThai.Ma : null,
+                TenTrangThai = h.TrangThai != null ? h.TrangThai.Ten : null,
                 NoiDung = h.NoiDung,
                 NgayXuLy = h.NgayXuLy
             })
@@ -54,7 +58,9 @@ internal class PheDuyetNoiDungGetChiTietQueryHandler : IRequestHandler<PheDuyetN
             Ngay = entity.VanBanQuyetDinh?.Ngay,
             TrichYeu = entity.VanBanQuyetDinh?.TrichYeu,
             LoaiVanBan = entity.VanBanQuyetDinh?.Loai,
-            TrangThai = entity.TrangThai,
+            TrangThaiId = entity.TrangThaiId,
+            MaTrangThai = entity.TrangThai?.Ma,
+            TenTrangThai = entity.TrangThai?.Ten,
             NoiDungPhanHoi = entity.NoiDungPhanHoi,
             DaChuyenQLVB = entity.DaChuyenQLVB,
             SoPhatHanh = entity.SoPhatHanh,

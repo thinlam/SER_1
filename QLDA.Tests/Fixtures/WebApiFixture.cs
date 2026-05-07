@@ -28,7 +28,7 @@ public interface IWebApiFixture {
     HttpClient CreateChuyenVienClient(long phongBanId = 100);
     HttpClient CreateHcthClient();
     Task<Guid> CreatePheDuyetDuToanAsync();
-    Task<Guid> CreatePheDuyetNoiDungAsync(string trangThai = "CXL");
+    Task<Guid> CreatePheDuyetNoiDungAsync(int? trangThaiId = null);
     SqliteConnection GetSqliteConnection();
 }
 
@@ -287,7 +287,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
     /// <summary>
     /// Creates a fresh PheDuyetNoiDung in specified status for test isolation.
     /// </summary>
-    public async Task<Guid> CreatePheDuyetNoiDungAsync(string trangThai = "CXL") {
+    public async Task<Guid> CreatePheDuyetNoiDungAsync(int? trangThaiId = null) {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlite(_connection)
             .Options;
@@ -296,7 +296,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         var entity = new PheDuyetNoiDung {
             VanBanQuyetDinhId = SeededVanBanQuyetDinhId,
             DuAnId = SeededDuAnId,
-            TrangThai = trangThai,
+            TrangThaiId = trangThaiId,
             CreatedAt = DateTimeOffset.UtcNow,
             IsDeleted = false,
         };

@@ -17,7 +17,9 @@ public class PheDuyetNoiDungDto {
     public string? TenLoaiVanBan { get; set; }
 
     // From PheDuyetNoiDung
-    public string TrangThai { get; set; } = string.Empty;
+    public int? TrangThaiId { get; set; }
+    public string? MaTrangThai { get; set; }
+    public string? TenTrangThai { get; set; }
     public string? NoiDungPhanHoi { get; set; }
     public bool DaChuyenQLVB { get; set; }
     public string? SoPhatHanh { get; set; }

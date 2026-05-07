@@ -18,5 +18,10 @@ public class PheDuyetNoiDungHistoryConfiguration : AggregateRootConfiguration<Ph
             .WithMany()
             .HasForeignKey(e => e.DuAnId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(e => e.TrangThai)
+            .WithMany()
+            .HasForeignKey(e => e.TrangThaiId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

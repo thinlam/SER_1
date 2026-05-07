@@ -11,9 +11,4 @@ public class DanhMucTrangThaiPheDuyet : DanhMuc<int>, IAggregateRoot, IMayHaveSt
     /// </summary>
     public string? Loai { get; set; }
 
-    #region Navigation Properties
-
-    public ICollection<PheDuyetDuToan>? PheDuyetDuToans { get; set; } = [];
-
-    #endregion
 }

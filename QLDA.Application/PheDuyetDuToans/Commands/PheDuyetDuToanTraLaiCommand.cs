@@ -13,14 +13,14 @@ public record PheDuyetDuToanTraLaiCommand(Guid Id, string NoiDung) : IRequest<in
 internal class PheDuyetDuToanTraLaiCommandHandler : IRequestHandler<PheDuyetDuToanTraLaiCommand, int> {
     private readonly IRepository<PheDuyetDuToan, Guid> _repository;
     private readonly IRepository<PheDuyetDuToanHistory, Guid> _historyRepository;
-    private readonly IRepository<DanhMucTrangThaiPheDuyetDuToan, int> _statusRepository;
+    private readonly IRepository<DanhMucTrangThaiPheDuyet, int> _statusRepository;
     private readonly IUserProvider _userProvider;
     private readonly IUnitOfWork _unitOfWork;
 
     public PheDuyetDuToanTraLaiCommandHandler(IServiceProvider serviceProvider) {
         _repository = serviceProvider.GetRequiredService<IRepository<PheDuyetDuToan, Guid>>();
         _historyRepository = serviceProvider.GetRequiredService<IRepository<PheDuyetDuToanHistory, Guid>>();
-        _statusRepository = serviceProvider.GetRequiredService<IRepository<DanhMucTrangThaiPheDuyetDuToan, int>>();
+        _statusRepository = serviceProvider.GetRequiredService<IRepository<DanhMucTrangThaiPheDuyet, int>>();
         _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
         _unitOfWork = _repository.UnitOfWork;
     }
@@ -38,9 +38,9 @@ internal class PheDuyetDuToanTraLaiCommandHandler : IRequestHandler<PheDuyetDuTo
 
         // Get status IDs from DB by code
         var trangThaiDaTrinh = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
-            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetDuToanCodes.DaTrinh, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.DuToan.DaTrinh && s.Loai == TrangThaiPheDuyetCodes.Loai.DuToan, cancellationToken);
         var trangThaiTraLai = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
-            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetDuToanCodes.TraLai, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.DuToan.TraLai && s.Loai == TrangThaiPheDuyetCodes.Loai.DuToan, cancellationToken);
 
         ManagedException.ThrowIfNull(trangThaiDaTrinh, "Không tìm thấy trạng thái 'Đã trình'");
         ManagedException.ThrowIfNull(trangThaiTraLai, "Không tìm thấy trạng thái 'Trả lại'");
