@@ -15,8 +15,7 @@ using Xunit;
 
 namespace QLDA.Tests.Fixtures;
 
-public interface IWebApiFixture
-{
+public interface IWebApiFixture {
     HttpClient Client { get; }
     Guid SeededDuAnId { get; }
     Guid SeededGoiThauId { get; }
@@ -29,8 +28,7 @@ public interface IWebApiFixture
     Task<Guid> CreatePheDuyetDuToanAsync();
 }
 
-public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWebApiFixture
-{
+public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWebApiFixture {
     private SqliteConnection _connection = null!;
     private SqliteAppDbContext _seedDb = null!;
 
@@ -43,31 +41,26 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
 
     private const string TestJwtKey = "12345678901234567890123456789012";
 
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-    {
+    protected override void ConfigureWebHost(IWebHostBuilder builder) {
         builder.UseEnvironment("Testing");
-        builder.ConfigureServices(services =>
-        {
+        builder.ConfigureServices(services => {
             // Remove existing AppDbContext + options + factory registrations
             foreach (var d in services.Where(d =>
                 d.ServiceType == typeof(DbContextOptions<AppDbContext>) ||
                 d.ServiceType == typeof(DbContextOptions) ||
-                d.ServiceType == typeof(IDbContextFactory<AppDbContext>)).ToList())
-            {
+                d.ServiceType == typeof(IDbContextFactory<AppDbContext>)).ToList()) {
                 services.Remove(d);
             }
             foreach (var d in services.Where(d =>
                 d.ServiceType == typeof(AppDbContext) ||
-                d.ImplementationType == typeof(AppDbContext)).ToList())
-            {
+                d.ImplementationType == typeof(AppDbContext)).ToList()) {
                 services.Remove(d);
             }
 
             // Open SQLite in-memory connection with FK enforcement disabled (DanhMuc not fully seeded)
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
-            using (var cmd = _connection.CreateCommand())
-            {
+            using (var cmd = _connection.CreateCommand()) {
                 cmd.CommandText = "PRAGMA foreign_keys = OFF;";
                 cmd.ExecuteNonQuery();
             }
@@ -78,17 +71,14 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
             // Override AppDbContext registration to create SqliteTestDbContext (clears SQL Server defaults)
             foreach (var d in services.Where(d => d.ServiceType == typeof(AppDbContext)).ToList())
                 services.Remove(d);
-            services.AddScoped<AppDbContext>(sp =>
-            {
+            services.AddScoped<AppDbContext>(sp => {
                 var options = sp.GetRequiredService<DbContextOptions<AppDbContext>>();
                 return new SqliteAppDbContext(options);
             });
 
             // Override JWT validation to accept test tokens
-            services.PostConfigure<JwtBearerOptions>("Bearer", options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
+            services.PostConfigure<JwtBearerOptions>("Bearer", options => {
+                options.TokenValidationParameters = new TokenValidationParameters {
                     RoleClaimType = ClaimConstants.Roles,
                     ValidateIssuer = false,
                     ValidateAudience = false,
@@ -103,8 +93,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         });
     }
 
-    public async Task InitializeAsync()
-    {
+    public async Task InitializeAsync() {
         Client = CreateClient();
 
         // Create SqliteTestDbContext for seeding (same model as DI-resolved instances)
@@ -117,18 +106,15 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         await SeedReferenceDataAsync();
     }
 
-    public new async Task DisposeAsync()
-    {
+    public new async Task DisposeAsync() {
         await _seedDb.DisposeAsync();
         await _connection.CloseAsync();
         await _connection.DisposeAsync();
         await base.DisposeAsync();
     }
 
-    private async Task SeedReferenceDataAsync()
-    {
-        var duAn = new DuAn
-        {
+    private async Task SeedReferenceDataAsync() {
+        var duAn = new DuAn {
             TenDuAn = "Test Dự án",
             MaDuAn = "TEST_DA_001",
             LoaiDuAnId = 1,
@@ -142,8 +128,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         _seedDb.Set<DuAn>().Add(duAn);
         await _seedDb.SaveChangesAsync();
 
-        var goiThau = new GoiThau
-        {
+        var goiThau = new GoiThau {
             DuAnId = duAn.Id,
             Ten = "Test Gói thầu",
             CreatedAt = DateTimeOffset.UtcNow,
@@ -152,8 +137,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         _seedDb.Set<GoiThau>().Add(goiThau);
         await _seedDb.SaveChangesAsync();
 
-        var hopDong = new HopDong
-        {
+        var hopDong = new HopDong {
             DuAnId = duAn.Id,
             GoiThauId = goiThau.Id,
             Ten = "Test Hợp đồng",
@@ -165,8 +149,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         _seedDb.Set<HopDong>().Add(hopDong);
         await _seedDb.SaveChangesAsync();
 
-        var pheDuyetDuToan = new PheDuyetDuToan
-        {
+        var pheDuyetDuToan = new PheDuyetDuToan {
             DuAnId = duAn.Id,
             TrichYeu = "Test Phê duyệt dự toán",
             So = "PDDT_TEST_001",
@@ -183,8 +166,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         SeededPheDuyetDuToanId = pheDuyetDuToan.Id;
     }
 
-    private string GenerateToken(long userId = 1, long donViId = 1, long phongBanId = 1, string[]? roles = null)
-    {
+    private string GenerateToken(long userId = 1, long donViId = 1, long phongBanId = 1, string[]? roles = null) {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TestJwtKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -195,13 +177,10 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
             new("PhongBanId", phongBanId.ToString()),
         };
 
-        if (roles != null)
-        {
+        if (roles != null) {
             foreach (var role in roles)
                 claims.Add(new Claim(ClaimConstants.Roles, role));
-        }
-        else
-        {
+        } else {
             // Default: admin roles
             claims.Add(new Claim(ClaimConstants.Roles, RoleConstants.QLDA_QuanTri));
             claims.Add(new Claim(ClaimConstants.Roles, RoleConstants.QLDA_TatCa));
@@ -218,38 +197,33 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private HttpClient CreateClientWithToken(string token)
-    {
+    private HttpClient CreateClientWithToken(string token) {
         var client = CreateClient();
         client.DefaultRequestHeaders.Authorization =
             new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         return client;
     }
 
-    public string GenerateTestToken()
-    {
+    public string GenerateTestToken() {
         return GenerateToken();
     }
 
-    public HttpClient CreateAuthenticatedClient()
-    {
+    public HttpClient CreateAuthenticatedClient() {
         return CreateClientWithToken(GenerateToken());
     }
 
     /// <summary>
     /// Client with BGĐ role - can approve/reject (Duyệt/Trả lại)
     /// </summary>
-    public HttpClient CreateBgdClient()
-    {
-        var token = GenerateToken(userId: 10, phongBanId: 1, roles: [RoleConstants.QLDA_QuanTri, "BGĐ"]);
+    public HttpClient CreateBgdClient() {
+        var token = GenerateToken(userId: 10, phongBanId: 1, roles: [RoleConstants.QLDA_QuanTri]);
         return CreateClientWithToken(token);
     }
 
     /// <summary>
     /// Client with KH-TC department (PhongBanId=219) - can submit (Trình)
     /// </summary>
-    public HttpClient CreateKhTcClient()
-    {
+    public HttpClient CreateKhTcClient() {
         var token = GenerateToken(userId: 20, phongBanId: 219);
         return CreateClientWithToken(token);
     }
@@ -257,8 +231,7 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
     /// <summary>
     /// Client with ChuyenVien role - restricted to department-scoped visibility
     /// </summary>
-    public HttpClient CreateChuyenVienClient(long phongBanId = 100)
-    {
+    public HttpClient CreateChuyenVienClient(long phongBanId = 100) {
         var token = GenerateToken(userId: 30, phongBanId: phongBanId, roles: [RoleConstants.QLDA_ChuyenVien]);
         return CreateClientWithToken(token);
     }
@@ -266,15 +239,13 @@ public class WebApiFixture : WebApplicationFactory<Program>, IAsyncLifetime, IWe
     /// <summary>
     /// Creates a fresh PheDuyetDuToan in Dự thảo status for test isolation.
     /// </summary>
-    public async Task<Guid> CreatePheDuyetDuToanAsync()
-    {
+    public async Task<Guid> CreatePheDuyetDuToanAsync() {
         var options = new DbContextOptionsBuilder<AppDbContext>()
             .UseSqlite(_connection)
             .Options;
         using var db = new SqliteAppDbContext(options);
 
-        var entity = new PheDuyetDuToan
-        {
+        var entity = new PheDuyetDuToan {
             DuAnId = SeededDuAnId,
             TrichYeu = $"Test PDDT {Guid.NewGuid():N}",
             So = $"PDDT_{Guid.NewGuid():N}",

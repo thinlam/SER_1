@@ -1,5 +1,3 @@
-using QLDA.Domain.Enums;
-
 namespace QLDA.Application.KySos.DTOs;
 
 public class KySoInsertDto {
@@ -9,7 +7,7 @@ public class KySoInsertDto {
 
     public int? ChucVuId { get; set; }
 
-    public EPhamViKySo? PhamVi { get; set; }
+    public string? PhamVi { get; set; }
 
     public int? PhongBanId { get; set;}
 
@@ -17,9 +15,9 @@ public class KySoInsertDto {
 
     public string? ToChucCap { get; set;}
 
-    public DateTime? HieuLucTu { get; set;}
+    public DateOnly? HieuLucTu { get; set;}
 
-    public DateTime? HieuLucDen { get; set;}
+    public DateOnly? HieuLucDen { get; set;}
 
     public int? PhuongThucKySoId { get; set;}
 }
