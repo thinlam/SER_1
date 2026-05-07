@@ -25,7 +25,7 @@ public class HoSoDeXuatCapDoCntt : Entity<Guid>, IAggregateRoot
     #region Navigation Properties
     public DuAn? DuAn { get; set; }
     public DmCapDoCntt? CapDo { get; set; }
-    public DanhMucTrangThaiPheDuyetDuToan? TrangThai { get; set; }
+    public DanhMucTrangThaiPheDuyet? TrangThai { get; set; }
     #endregion
 
 

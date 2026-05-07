@@ -23,7 +23,7 @@ public class PheDuyetDuToan : VanBanQuyetDinh {
     #region Navigation Properties
 
     public DanhMucChucVu? ChucVu { get; set; }
-    public DanhMucTrangThaiPheDuyetDuToan? TrangThai { get; set; }
+    public DanhMucTrangThaiPheDuyet? TrangThai { get; set; }
     public ICollection<PheDuyetDuToanHistory>? Histories { get; set; } = [];
 
     #endregion

@@ -33,6 +33,7 @@ internal class DanhMucInsertOrUpdateCommandHandler : IRequestHandler<DanhMucInse
     private readonly ICrudService<DanhMucMucDoKhoKhan, int> DanhMucMucDoKhoKhan;
     private readonly ICrudService<DanhMucTinhTrangThucHienLcnt, int> DanhMucTinhTrangThucHienLcnt;
     private readonly ICrudService<DmCapDoCntt, int> DmCapDoCntt;
+    private readonly ICrudService<DanhMucTrangThaiPheDuyet, int> DanhMucTrangThaiPheDuyet;
     private readonly IUnitOfWork _unitOfWork;
 
     public DanhMucInsertOrUpdateCommandHandler(IServiceProvider serviceProvider) {
@@ -63,6 +64,7 @@ internal class DanhMucInsertOrUpdateCommandHandler : IRequestHandler<DanhMucInse
         DanhMucMucDoKhoKhan = serviceProvider.GetRequiredService<ICrudService<DanhMucMucDoKhoKhan, int>>();
         DanhMucTinhTrangThucHienLcnt = serviceProvider.GetRequiredService<ICrudService<DanhMucTinhTrangThucHienLcnt, int>>();
         DmCapDoCntt = serviceProvider.GetRequiredService<ICrudService<DmCapDoCntt, int>>();
+        DanhMucTrangThaiPheDuyet = serviceProvider.GetRequiredService<ICrudService<DanhMucTrangThaiPheDuyet, int>>();
         _unitOfWork = DanhMucQuyTrinh.UnitOfWork;
     }
 
@@ -207,6 +209,11 @@ internal class DanhMucInsertOrUpdateCommandHandler : IRequestHandler<DanhMucInse
                 }
             case EDanhMuc.DmCapDoCntt: {
                     await DmCapDoCntt.AddOrUpdateAsync((DmCapDoCntt)request.Entity,
+                        cancellationToken: cancellationToken);
+                    break;
+                }
+            case EDanhMuc.DanhMucTrangThaiPheDuyet: {
+                    await DanhMucTrangThaiPheDuyet.AddOrUpdateAsync((DanhMucTrangThaiPheDuyet)request.Entity,
                         cancellationToken: cancellationToken);
                     break;
                 }

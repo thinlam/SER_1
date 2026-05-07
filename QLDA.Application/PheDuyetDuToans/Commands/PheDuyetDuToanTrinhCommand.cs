@@ -14,14 +14,14 @@ public record PheDuyetDuToanTrinhCommand(Guid Id, string? NoiDung = null) : IReq
 internal class PheDuyetDuToanTrinhCommandHandler : IRequestHandler<PheDuyetDuToanTrinhCommand, int> {
     private readonly IRepository<PheDuyetDuToan, Guid> _repository;
     private readonly IRepository<PheDuyetDuToanHistory, Guid> _historyRepository;
-    private readonly IRepository<DanhMucTrangThaiPheDuyetDuToan, int> _statusRepository;
+    private readonly IRepository<DanhMucTrangThaiPheDuyet, int> _statusRepository;
     private readonly IUserProvider _userProvider;
     private readonly IUnitOfWork _unitOfWork;
 
     public PheDuyetDuToanTrinhCommandHandler(IServiceProvider serviceProvider) {
         _repository = serviceProvider.GetRequiredService<IRepository<PheDuyetDuToan, Guid>>();
         _historyRepository = serviceProvider.GetRequiredService<IRepository<PheDuyetDuToanHistory, Guid>>();
-        _statusRepository = serviceProvider.GetRequiredService<IRepository<DanhMucTrangThaiPheDuyetDuToan, int>>();
+        _statusRepository = serviceProvider.GetRequiredService<IRepository<DanhMucTrangThaiPheDuyet, int>>();
         _userProvider = serviceProvider.GetRequiredService<IUserProvider>();
         _unitOfWork = _repository.UnitOfWork;
     }
@@ -35,11 +35,11 @@ internal class PheDuyetDuToanTrinhCommandHandler : IRequestHandler<PheDuyetDuToa
 
         // Get status IDs from DB by code
         var trangThaiDuThao = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
-            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetDuToanCodes.DuThao, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.DuToan.DuThao && s.Loai == TrangThaiPheDuyetCodes.Loai.DuToan, cancellationToken);
         var trangThaiTraLai = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
-            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetDuToanCodes.TraLai, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.DuToan.TraLai && s.Loai == TrangThaiPheDuyetCodes.Loai.DuToan, cancellationToken);
         var trangThaiDaTrinh = await _statusRepository.GetQueryableSet(OnlyUsed: true, OnlyNotDeleted: true, OrderByIndex: false)
-            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetDuToanCodes.DaTrinh, cancellationToken);
+            .FirstOrDefaultAsync(s => s.Ma == TrangThaiPheDuyetCodes.DuToan.DaTrinh && s.Loai == TrangThaiPheDuyetCodes.Loai.DuToan, cancellationToken);
 
         ManagedException.ThrowIfNull(trangThaiDaTrinh, "Không tìm thấy trạng thái 'Đã trình'");
 
