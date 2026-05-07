@@ -20,7 +20,7 @@ public class PheDuyetDuToanHistory : Entity<Guid>, IAggregateRoot {
 
     public PheDuyetDuToan? PheDuyetDuToan { get; set; }
     public DuAn? DuAn { get; set; }
-    public DanhMuc.DanhMucTrangThaiPheDuyetDuToan? TrangThai { get; set; }
+    public DanhMuc.DanhMucTrangThaiPheDuyet? TrangThai { get; set; }
 
     #endregion
 }

@@ -34,4 +34,5 @@ public enum EDanhMuc {
     [Description("Danh mục tình trạng thực hiện LCNT")] DanhMucTinhTrangThucHienLcnt,
     [Description("Danh mục phương thức ký sổ")] DanhMucPhuongThucKySo,
     [Description("Danh mục cấp độ CNTT")] DmCapDoCntt,
+    [Description("Trạng thái phê duyệt nội dung")] DanhMucTrangThaiPheDuyet,
 }

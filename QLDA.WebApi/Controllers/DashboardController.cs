@@ -121,4 +121,13 @@ public class DashboardController(IServiceProvider serviceProvider)
         var result = await Mediator.Send(new DashboardGetGiaiNganTheoNguonVonQuery(duAnId));
         return ResultApi.Ok(result);
     }
+
+    // Danh sách so sánh giải ngân theo nguồn vốn
+    [HttpGet("api/thong-ke/tien-do-giai-ngan-nguon-von")]
+    [ProducesResponseType<ResultApi<List<TinhHinhGiaiNganDto>>>(StatusCodes.Status200OK)]
+    public async Task<ResultApi> TienDoGiaiNganNguonVon([FromQuery] TinhHinhGiaiNganSearchDto req)
+    {
+        var result = await Mediator.Send(new DashboardTienDoGiaiNganNguonVonQuery(req));
+        return ResultApi.Ok(result);
+    }
 }

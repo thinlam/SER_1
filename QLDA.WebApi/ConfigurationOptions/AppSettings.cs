@@ -9,4 +9,9 @@ public class AppSettings {
     /// ID phòng kế toán - đơn vị có quyền CRUD ThanhToan
     /// </summary>
     public long PhongKeToanID { get; set; }
+
+    /// <summary>
+    /// ID phòng Hành chính - Tổng hợp (phát hành PheDuyetNoiDung)
+    /// </summary>
+    public long PhongHCTHID { get; set; }
 }

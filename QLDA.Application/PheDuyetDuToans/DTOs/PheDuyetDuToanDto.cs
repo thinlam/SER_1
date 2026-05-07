@@ -37,7 +37,7 @@ public class PheDuyetDuToanDto : IHasKey<Guid?>, IMustHaveId<Guid>, IMayHaveTepD
     /// <summary>
     /// Dùng để phân biệt với các bước khác, nếu có gửi duyệt thì sẽ có giá trị true, ngược lại là false.
     /// </summary>
-    public bool IsSend => MaTrangThai == TrangThaiPheDuyetDuToanCodes.DaTrinh;
+    public bool IsSend => MaTrangThai == TrangThaiPheDuyetCodes.DuToan.DaTrinh;
 
     /// <summary>
     /// USER_MASTER.UserPortalId

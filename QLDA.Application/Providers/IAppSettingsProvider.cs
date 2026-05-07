@@ -8,4 +8,9 @@ public interface IAppSettingsProvider {
     /// ID phòng kế toán - đơn vị có quyền CRUD ThanhToan
     /// </summary>
     long PhongKeToanID { get; }
+
+    /// <summary>
+    /// ID phòng Hành chính - Tổng hợp (phát hành PheDuyetNoiDung)
+    /// </summary>
+    long PhongHCTHID { get; }
 }

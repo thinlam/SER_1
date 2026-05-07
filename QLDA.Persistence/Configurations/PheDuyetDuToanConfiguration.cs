@@ -3,21 +3,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace QLDA.Persistence.Configurations;
 
-public class PheDuyetDuToanConfiguration : IEntityTypeConfiguration<PheDuyetDuToan> {
-    public void Configure(EntityTypeBuilder<PheDuyetDuToan> builder) {
+public class PheDuyetDuToanConfiguration : IEntityTypeConfiguration<PheDuyetDuToan>
+{
+    public void Configure(EntityTypeBuilder<PheDuyetDuToan> builder)
+    {
         // TPT inheritance: derived type has its own table, key configured on base type (VanBanQuyetDinh)
         builder.ToTable(nameof(PheDuyetDuToan));
 
         // Configure derived properties only
         builder.Property(e => e.GiaTriDuThau).HasPrecision(18, 2);
-        builder.Property(e=>e.TrangThaiId).HasDefaultValue(5); //Default : Migrated
+        builder.Property(e => e.TrangThaiId).HasDefaultValue(5); //Default : Migrated
         builder.HasOne(e => e.ChucVu)
             .WithMany(e => e.PheDuyetDuToans)
             .HasForeignKey(e => e.ChucVuId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(e => e.TrangThai)
-            .WithMany(e => e.PheDuyetDuToans)
+            .WithMany()
             .HasForeignKey(e => e.TrangThaiId)
             .OnDelete(DeleteBehavior.Restrict);
 

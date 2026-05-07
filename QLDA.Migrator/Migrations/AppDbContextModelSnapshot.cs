@@ -417,9 +417,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 1,
+                            QuyenId = 23,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -429,9 +429,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 2,
+                            QuyenId = 24,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -441,9 +441,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 3,
+                            QuyenId = 25,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -453,9 +453,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 4,
+                            QuyenId = 26,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -465,9 +465,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 5,
+                            QuyenId = 27,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -477,9 +477,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 6,
+                            QuyenId = 28,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -489,9 +489,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 7,
+                            QuyenId = 29,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_QuanTri"
+                            VaiTro = "QLDA_TatCa"
                         },
                         new
                         {
@@ -501,7 +501,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 8,
+                            QuyenId = 1,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -513,7 +513,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 9,
+                            QuyenId = 2,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -525,7 +525,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 10,
+                            QuyenId = 3,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -537,7 +537,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 11,
+                            QuyenId = 4,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -549,7 +549,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 12,
+                            QuyenId = 5,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -561,7 +561,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 13,
+                            QuyenId = 6,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -573,7 +573,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 14,
+                            QuyenId = 7,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -585,7 +585,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 15,
+                            QuyenId = 8,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -597,7 +597,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 16,
+                            QuyenId = 9,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -609,7 +609,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 17,
+                            QuyenId = 10,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -621,7 +621,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 18,
+                            QuyenId = 11,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -633,7 +633,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 19,
+                            QuyenId = 12,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -645,7 +645,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 20,
+                            QuyenId = 13,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -657,7 +657,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 21,
+                            QuyenId = 14,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -669,7 +669,7 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 22,
+                            QuyenId = 15,
                             UpdatedBy = "",
                             VaiTro = "QLDA_QuanTri"
                         },
@@ -681,9 +681,9 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
-                            QuyenId = 1,
+                            QuyenId = 16,
                             UpdatedBy = "",
-                            VaiTro = "QLDA_LDDV"
+                            VaiTro = "QLDA_QuanTri"
                         },
                         new
                         {
@@ -693,13 +693,181 @@ namespace QLDA.Migrator.Migrations
                             Index = 0L,
                             IsDeleted = false,
                             KichHoat = true,
+                            QuyenId = 17,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 18,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 19,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 20,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 21,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 22,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 52,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 23,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 24,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 25,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 55,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 26,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 56,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 27,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 57,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 28,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 58,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 29,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_QuanTri"
+                        },
+                        new
+                        {
+                            Id = 59,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 1,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_LDDV"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
                             QuyenId = 7,
                             UpdatedBy = "",
                             VaiTro = "QLDA_LDDV"
                         },
                         new
                         {
-                            Id = 47,
+                            Id = 61,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -711,7 +879,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 48,
+                            Id = 62,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -723,7 +891,19 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 49,
+                            Id = 63,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 23,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_LDDV"
+                        },
+                        new
+                        {
+                            Id = 64,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -735,7 +915,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 50,
+                            Id = 65,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -747,7 +927,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 51,
+                            Id = 66,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -759,7 +939,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 52,
+                            Id = 67,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -771,7 +951,19 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 53,
+                            Id = 68,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 23,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_LD"
+                        },
+                        new
+                        {
+                            Id = 69,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -783,7 +975,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 54,
+                            Id = 70,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -795,7 +987,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 55,
+                            Id = 71,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -807,7 +999,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 56,
+                            Id = 72,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -819,7 +1011,19 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 57,
+                            Id = 73,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            KichHoat = true,
+                            QuyenId = 24,
+                            UpdatedBy = "",
+                            VaiTro = "QLDA_ChuyenVien"
+                        },
+                        new
+                        {
+                            Id = 74,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -831,7 +1035,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 58,
+                            Id = 75,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -843,7 +1047,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 59,
+                            Id = 76,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -855,7 +1059,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 60,
+                            Id = 77,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -867,7 +1071,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 61,
+                            Id = 78,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -879,7 +1083,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 62,
+                            Id = 79,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -891,7 +1095,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 63,
+                            Id = 80,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -903,7 +1107,7 @@ namespace QLDA.Migrator.Migrations
                         },
                         new
                         {
-                            Id = 64,
+                            Id = 81,
                             CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
@@ -2494,8 +2698,8 @@ namespace QLDA.Migrator.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Ma")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("MoTa")
                         .HasMaxLength(400)
@@ -2847,6 +3051,104 @@ namespace QLDA.Migrator.Migrations
                             Ten = "Quản lý thanh toán",
                             UpdatedBy = "",
                             Used = true
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.XemTatCa",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 1,
+                            Ten = "Xem tất cả PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.XemTheoPhong",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 2,
+                            Ten = "Xem theo phòng PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.Duyet",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 3,
+                            Ten = "Duyet PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.KySo",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 4,
+                            Ten = "KySo PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.ChuyenQLVB",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 5,
+                            Ten = "ChuyenQLVB PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.PhatHanh",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 6,
+                            Ten = "PhatHanh PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Ma = "PheDuyet.TuChoi",
+                            NhomQuyen = "PheDuyet",
+                            Stt = 7,
+                            Ten = "TuChoi PheDuyet",
+                            UpdatedBy = "",
+                            Used = true
                         });
                 });
 
@@ -3089,7 +3391,7 @@ namespace QLDA.Migrator.Migrations
                         });
                 });
 
-            modelBuilder.Entity("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", b =>
+            modelBuilder.Entity("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3113,6 +3415,10 @@ namespace QLDA.Migrator.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Loai")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Ma")
                         .HasMaxLength(20)
@@ -3145,20 +3451,21 @@ namespace QLDA.Migrator.Migrations
 
                     SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Index"), false);
 
-                    b.HasIndex("Ma")
+                    b.HasIndex("Ma", "Loai")
                         .IsUnique()
-                        .HasFilter("[Ma] IS NOT NULL AND [Ma] <> ''");
+                        .HasFilter("[Ma] IS NOT NULL AND [Ma] <> '' AND [IsDeleted] = 0");
 
-                    b.ToTable("DmTrangThaiPheDuyetDuToan", (string)null);
+                    b.ToTable("DmTrangThaiPheDuyet", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
                             IsDeleted = false,
+                            Loai = "DuToan",
                             Ma = "DT",
                             Stt = 1,
                             Ten = "Dự thảo",
@@ -3168,10 +3475,11 @@ namespace QLDA.Migrator.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
                             IsDeleted = false,
+                            Loai = "DuToan",
                             Ma = "ĐTr",
                             Stt = 2,
                             Ten = "Đã trình",
@@ -3181,10 +3489,11 @@ namespace QLDA.Migrator.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
                             IsDeleted = false,
+                            Loai = "DuToan",
                             Ma = "ĐD",
                             Stt = 3,
                             Ten = "Đã duyệt",
@@ -3194,10 +3503,11 @@ namespace QLDA.Migrator.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
                             IsDeleted = false,
+                            Loai = "DuToan",
                             Ma = "TL",
                             Stt = 4,
                             Ten = "Trả lại",
@@ -3207,15 +3517,114 @@ namespace QLDA.Migrator.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             CreatedBy = "",
                             Index = 0L,
                             IsDeleted = false,
+                            Loai = "DuToan",
                             Ma = "LEG",
                             Stt = 0,
                             Ten = "Migrated",
                             UpdatedBy = "",
                             Used = false
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "CXL",
+                            Stt = 10,
+                            Ten = "Chờ xử lý",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "TC",
+                            Stt = 11,
+                            Ten = "Từ chối",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "DKS",
+                            Stt = 12,
+                            Ten = "Đã ký số",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "DQLVB",
+                            Stt = 13,
+                            Ten = "Đã chuyển QLVB",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "DPH",
+                            Stt = 14,
+                            Ten = "Đã phát hành",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "DD",
+                            Stt = 15,
+                            Ten = "Đã duyệt",
+                            UpdatedBy = "",
+                            Used = true
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedAt = new DateTimeOffset(new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            CreatedBy = "",
+                            Index = 0L,
+                            IsDeleted = false,
+                            Loai = "NoiDung",
+                            Ma = "TL",
+                            Stt = 16,
+                            Ten = "Trả lại",
+                            UpdatedBy = "",
+                            Used = true
                         });
                 });
 
@@ -4485,6 +4894,145 @@ namespace QLDA.Migrator.Migrations
                     b.HasIndex("TrangThaiId");
 
                     b.ToTable("PheDuyetDuToanHistory", (string)null);
+                });
+
+            modelBuilder.Entity("QLDA.Domain.Entities.PheDuyetNoiDung", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<int?>("BuocId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DaChuyenQLVB")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("DuAnId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValueSql("DATEDIFF(SECOND, '19700101', GETUTCDATE())");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("NgayPhatHanh")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("NguoiXuLyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NoiDungPhanHoi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SoPhatHanh")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TrangThaiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("VanBanQuyetDinhId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BuocId");
+
+                    b.HasIndex("DuAnId");
+
+                    b.HasIndex("Index");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Index"), false);
+
+                    b.HasIndex("TrangThaiId");
+
+                    b.HasIndex("VanBanQuyetDinhId");
+
+                    b.ToTable("PheDuyetNoiDung", (string)null);
+                });
+
+            modelBuilder.Entity("QLDA.Domain.Entities.PheDuyetNoiDungHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DuAnId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<long>("Index")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValueSql("DATEDIFF(SECOND, '19700101', GETUTCDATE())");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("NgayXuLy")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<long?>("NguoiXuLyId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("NoiDung")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PheDuyetNoiDungId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("TrangThaiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DuAnId");
+
+                    b.HasIndex("Index");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("Index"), false);
+
+                    b.HasIndex("PheDuyetNoiDungId");
+
+                    b.HasIndex("TrangThaiId");
+
+                    b.ToTable("PheDuyetNoiDungHistory", (string)null);
                 });
 
             modelBuilder.Entity("QLDA.Domain.Entities.PhuLucHopDong", b =>
@@ -6031,7 +6579,7 @@ namespace QLDA.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", "TrangThai")
+                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", "TrangThai")
                         .WithMany()
                         .HasForeignKey("TrangThaiId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -6221,7 +6769,7 @@ namespace QLDA.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", "TrangThai")
+                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", "TrangThai")
                         .WithMany()
                         .HasForeignKey("TrangThaiId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -6230,6 +6778,65 @@ namespace QLDA.Migrator.Migrations
                     b.Navigation("DuAn");
 
                     b.Navigation("PheDuyetDuToan");
+
+                    b.Navigation("TrangThai");
+                });
+
+            modelBuilder.Entity("QLDA.Domain.Entities.PheDuyetNoiDung", b =>
+                {
+                    b.HasOne("QLDA.Domain.Entities.DuAnBuoc", "DuAnBuoc")
+                        .WithMany()
+                        .HasForeignKey("BuocId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("QLDA.Domain.Entities.DuAn", "DuAn")
+                        .WithMany()
+                        .HasForeignKey("DuAnId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", "TrangThai")
+                        .WithMany()
+                        .HasForeignKey("TrangThaiId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("QLDA.Domain.Entities.VanBanQuyetDinh", "VanBanQuyetDinh")
+                        .WithMany()
+                        .HasForeignKey("VanBanQuyetDinhId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DuAn");
+
+                    b.Navigation("DuAnBuoc");
+
+                    b.Navigation("TrangThai");
+
+                    b.Navigation("VanBanQuyetDinh");
+                });
+
+            modelBuilder.Entity("QLDA.Domain.Entities.PheDuyetNoiDungHistory", b =>
+                {
+                    b.HasOne("QLDA.Domain.Entities.DuAn", "DuAn")
+                        .WithMany()
+                        .HasForeignKey("DuAnId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QLDA.Domain.Entities.PheDuyetNoiDung", "PheDuyetNoiDung")
+                        .WithMany("Histories")
+                        .HasForeignKey("PheDuyetNoiDungId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", "TrangThai")
+                        .WithMany()
+                        .HasForeignKey("TrangThaiId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("DuAn");
+
+                    b.Navigation("PheDuyetNoiDung");
 
                     b.Navigation("TrangThai");
                 });
@@ -6454,8 +7061,8 @@ namespace QLDA.Migrator.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", "TrangThai")
-                        .WithMany("PheDuyetDuToans")
+                    b.HasOne("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyet", "TrangThai")
+                        .WithMany()
                         .HasForeignKey("TrangThaiId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -6719,11 +7326,6 @@ namespace QLDA.Migrator.Migrations
                     b.Navigation("DuAns");
                 });
 
-            modelBuilder.Entity("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiPheDuyetDuToan", b =>
-                {
-                    b.Navigation("PheDuyetDuToans");
-                });
-
             modelBuilder.Entity("QLDA.Domain.Entities.DanhMuc.DanhMucTrangThaiTienDo", b =>
                 {
                     b.Navigation("DanhMucBuocTrangThaiTienDos");
@@ -6813,6 +7415,11 @@ namespace QLDA.Migrator.Migrations
                     b.Navigation("NghiemThuPhuLucHopDongs");
 
                     b.Navigation("ThanhToan");
+                });
+
+            modelBuilder.Entity("QLDA.Domain.Entities.PheDuyetNoiDung", b =>
+                {
+                    b.Navigation("Histories");
                 });
 
             modelBuilder.Entity("QLDA.Domain.Entities.PhuLucHopDong", b =>
