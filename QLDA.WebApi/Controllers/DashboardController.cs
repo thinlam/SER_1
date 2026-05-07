@@ -1,5 +1,6 @@
 using QLDA.Application.Dashboard.Queries;
 using QLDA.Domain.DTOs;
+using QLDA.Domain.Entities;
 
 namespace QLDA.WebApi.Controllers;
 
@@ -106,6 +107,27 @@ public class DashboardController(IServiceProvider serviceProvider)
     [ProducesResponseType<ResultApi<List<DashboardTheoGiaiDoanDto>>>(StatusCodes.Status200OK)]
     public async Task<ResultApi> GetTheoGiaiDoan([FromQuery] int nam) {
         var result = await Mediator.Send(new DashboardGetTheoGiaiDoanQuery(nam));
+        return ResultApi.Ok(result);
+    }
+
+    /// <summary>
+    /// Thống kê giải ngân theo nguồn vốn
+    /// </summary>
+    /// <param name="duAnId">ID dự án (bắt buộc)</param>
+    /// <returns>Danh sách giải ngân theo nguồn vốn</returns>
+    [HttpGet("api/thong-ke/giai-ngan-theo-nguon-von")]
+    [ProducesResponseType<ResultApi<List<DashboardGiaiNganTheoNguonVonDto>>>(StatusCodes.Status200OK)]
+    public async Task<ResultApi> GetGiaiNganTheoNguonVon([FromQuery] Guid duAnId) {
+        var result = await Mediator.Send(new DashboardGetGiaiNganTheoNguonVonQuery(duAnId));
+        return ResultApi.Ok(result);
+    }
+
+    // Danh sách so sánh giải ngân theo nguồn vốn
+    [HttpGet("api/thong-ke/tien-do-giai-ngan-nguon-von")]
+    [ProducesResponseType<ResultApi<List<TinhHinhGiaiNganDto>>>(StatusCodes.Status200OK)]
+    public async Task<ResultApi> TienDoGiaiNganNguonVon([FromQuery] TinhHinhGiaiNganSearchDto req)
+    {
+        var result = await Mediator.Send(new DashboardTienDoGiaiNganNguonVonQuery(req));
         return ResultApi.Ok(result);
     }
 }
