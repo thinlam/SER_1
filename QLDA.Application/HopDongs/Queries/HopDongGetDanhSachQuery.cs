@@ -81,6 +81,10 @@ internal class
                 LoaiHopDongId = e.LoaiHopDongId,
                 DonViThucHienId = e.DonViThucHienId,
                 IsBienBan = e.IsBienBan,
+                TenDuAn = e.DuAn != null ? e.DuAn.TenDuAn : null,
+                TenBuoc = e.DuAnBuoc != null ? e.DuAnBuoc.TenBuoc : null,
+                TenDonViThucHien = e.DonViThucHien != null ? e.DonViThucHien.Ten : null,
+                TenLoaiHopDong = e.LoaiHopDong != null ? e.LoaiHopDong.Ten : null,
                 DanhSachTepDinhKem = TepDinhKem.GetQueryableSet()
                     .Where(i => i.GroupId == e.Id.ToString())
                     .Select(i => i.ToDto()).ToList(),
