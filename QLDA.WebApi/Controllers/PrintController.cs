@@ -47,12 +47,14 @@ using QLDA.WebApi.Models.BaoCaoTienDos;
 using QLDA.WebApi.Models.DeXuatChuTruongChuyenTieps;
 using QLDA.WebApi.Models.DeXuatNhuCauKinhPhiNams;
 using QLDA.WebApi.Models.DeXuatNhuCauKinhPhis;
+using QLDA.WebApi.Models.DuAns;
 using QLDA.WebApi.Models.KhoKhanVuongMacs;
 using QLDA.WebApi.Models.PhanKhaiKinhPhis;
 using QLDA.WebApi.Models.PhuLucHopDongs;
 using QLDA.WebApi.Models.TongHopDeXuatChuTruongs;
 using QLDA.WebApi.Models.TongHopVanBanQuyetDinhs;
 using Serilog;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QLDA.WebApi.Controllers;
 
@@ -629,28 +631,28 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
     /// usp_In_DanhSachTreHanPhongBan - DanhSachTreHanBuocPhongBan.xlsx
     /// </summary>
     /// <returns></returns>
-    [HttpGet("api/print/danh-sach-tre-han-phong-ban")]
-    public async Task<IActionResult>
-        InDanhSachTreHanPhongBan() {
+    [HttpGet("api/print/danh-sach-tre-han-phong-ban")]//here
+    public async Task<IActionResult>   InDanhSachTreHanPhongBan([FromQuery] DuAnSearchOverdueDto searchDto) {
         var fileNameTemplate = "DanhSachTreHanBuocPhongBan.xlsx";
-        var procedureName = "usp_In_DanhSachTreHanPhongBan";
+      
         var templatePath = Path.Combine(
-            AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
-            "PrintTemplates", // chính xác tên folder trong project
+            AppContext.BaseDirectory, 
+            "PrintTemplates", 
             fileNameTemplate
         );
-
+        searchDto.IsChiTiet= false; // map danh sách tổng
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
         ManagedException.ThrowIf(_userProvider.Id == 0, "Vui lòng đăng nhập");
-        var query = new GetStoreQuery() {
-            PathTemplate = templatePath,
-            ProcName = procedureName,
-            Params = null,
-            HiddenColumns = []
-        };
-        var exportResult = await Mediator.Send(query);
+       
+        var data = await Mediator.Send(new DuAnGetDanhSachTreHanExcell(searchDto));
 
+        var exportResult = _excelExporter.Export(new AsposeInstruction<DuAnTreHanDto> {
+            TemplatePath = templatePath,
+            Items = data,
+            HiddenColumns = [],
+            AutoFitColumnsAndRows = false,
+        });
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {
             FileDownloadName = GetDownloadFileName(fileNameTemplate)

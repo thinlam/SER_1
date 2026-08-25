@@ -24,16 +24,8 @@ public record DuAnSearchOverdueDto : AggregateRootPagination, IMayHaveGlobalFilt
     /// <example>-1</example>
     public long? DonViPhuTrachChinhId { get; init; }
 
-    /// <summary>
-    /// Tìm theo bước dự án <br/>
-    /// BuocId > 0
-    /// </summary>
-    /// <example>-1</example>
     public int? BuocId { get; init; }
-
-    /// <summary>
-    /// Tìm trong toàn bộ danh sách giá trị gần giống
-    /// </summary>
-    /// <example>TLTP.Test</example>
+    public int? TrangThaiId { get; init; }
     public string? GlobalFilter { get; set; }
+    public bool IsChiTiet { get; set; } = false;    
 }
