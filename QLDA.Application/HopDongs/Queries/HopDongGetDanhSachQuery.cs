@@ -34,34 +34,12 @@ internal class
     public async Task<PaginatedList<HopDongDto>> Handle(HopDongGetDanhSachQuery request,
         CancellationToken cancellationToken = default)
     {
-        var queryable = _buocAuth.FilterVisibleChildEntities(_authManager.FilterVisible(HopDong.GetQueryableSet(), AuthorizationResourceKeys.DuAn), _duAnBuocRepo, _authContext, e => e.BuocId)
-            .Where(e => !e.DuAn!.IsDeleted)
-            .Where(e => !e.GoiThau!.IsDeleted)
-            .WhereIf(request.SearchDto.IsBienBan.HasValue, e => e.IsBienBan == request.SearchDto.IsBienBan)
-            .WhereIf(request.SearchDto.DuAnId != null, e => e.DuAnId == request.SearchDto.DuAnId)
-            .WhereIf(request.SearchDto.LoaiDuAnTheoNamId > 0,
-                e => e.DuAn!.LoaiDuAnTheoNamId == request.SearchDto.LoaiDuAnTheoNamId)
-            .WhereIf(request.SearchDto.DonViThucHienId != null, e => e.DonViThucHienId == request.SearchDto.DonViThucHienId)
-            .WhereIf(request.SearchDto.TamUngId != null, e => e.TamUng!.Id == request.SearchDto.TamUngId)
-            .WhereIf(request.SearchDto.GoiThauId != null, e => e.GoiThauId == request.SearchDto.GoiThauId)
-            .WhereIf(request.SearchDto.KeHoachLuaChonNhaThauId != null,
-                e => e.GoiThau!.KeHoachLuaChonNhaThauId == request.SearchDto.KeHoachLuaChonNhaThauId)
-            .WhereIf(request.SearchDto.BuocId > 0, e => e.BuocId == request.SearchDto.BuocId)
-            .WhereIf(request.SearchDto.Ten.IsNotNullOrWhitespace(), e => e.Ten!.ToLower().Contains(request.SearchDto.Ten!.ToLower()))
-            .WhereIf(request.SearchDto.SoHopDong.IsNotNullOrWhitespace(),
-                e => e.SoHopDong!.ToLower().Contains(request.SearchDto.SoHopDong!.ToLower()))
-            .WhereIf(request.SearchDto.NoiDung.IsNotNullOrWhitespace(),
-                e => e.NoiDung!.ToLower().Contains(request.SearchDto.NoiDung!.ToLower()))
-            .WhereIf(request.SearchDto.LoaiHopDongId > 0, e => e.LoaiHopDongId == request.SearchDto.LoaiHopDongId)
-            .WhereGlobalFilter(
-                request.SearchDto,
-                e => e.Ten,
-                e => e.NoiDung,
-                e => e.SoHopDong,
-                e => e.GoiThau!.Ten,
-                e => e.DonViThucHien!.Ten,
-                e => e.LoaiHopDong!.Ten
-            );
+        var queryable = HopDong.GetHopDongQueryable(
+                                _duAnBuocRepo,
+                                _buocAuth,
+                                _authManager,
+                                _authContext,
+                                request.SearchDto);
 
         return await queryable
             .Select(e => new HopDongDto()

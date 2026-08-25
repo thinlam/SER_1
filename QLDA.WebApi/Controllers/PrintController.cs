@@ -1,5 +1,6 @@
 using System.Data;
 using System.Globalization;
+using Aspose.Words;
 using BuildingBlocks.Application.Common.Converters;
 using BuildingBlocks.Infrastructure.Offices;
 using EntityFrameworkCore.SqlServer.SimpleBulks.Extensions;
@@ -18,6 +19,7 @@ using QLDA.Application.DuAns.Queries;
 using QLDA.Application.GoiThaus.DTOs;
 using QLDA.Application.GoiThaus.Queries;
 using QLDA.Application.HopDongs.DTOs;
+using QLDA.Application.HopDongs.Queries;
 using QLDA.Application.KeHoachTrienKhaiHangMucs.DTOs;
 using QLDA.Application.KeHoachTrienKhaiHangMucs.Queries;
 using QLDA.Application.KhoKhanVuongMacs.DTOs;
@@ -51,7 +53,6 @@ using QLDA.WebApi.Models.PhuLucHopDongs;
 using QLDA.WebApi.Models.TongHopDeXuatChuTruongs;
 using QLDA.WebApi.Models.TongHopVanBanQuyetDinhs;
 using Serilog;
-using Aspose.Words;
 
 namespace QLDA.WebApi.Controllers;
 
@@ -290,9 +291,9 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
     /// <param name="searchDto"></param>
     /// <returns></returns>
     [HttpGet("api/print/danh-sach-hop-dong")]
-    public async Task<IActionResult> InHopDong([FromQuery] HopDongPrintSearchDto searchDto) {
+    public async Task<IActionResult> InHopDong([FromQuery] HopDongSearchDto searchDto) {
         var fileNameTemplate = "DanhSachHopDong.xlsx";
-        var procedureName = "usp_In_DanhSach_HopDong";
+       // var procedureName = "usp_In_DanhSach_HopDong";
         var templatePath = Path.Combine(
             AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
             "PrintTemplates", // chính xác tên folder trong project
@@ -301,27 +302,34 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
-        var query = new GetStoreQuery() {
-            PathTemplate = templatePath,
-            ProcName = procedureName,
-            Params = new {
-                searchDto.DuAnId,
-                searchDto.BuocId,
-                searchDto.Ten,
-                searchDto.SoHopDong,
-                searchDto.NoiDung,
-                searchDto.LoaiHopDongId,
-                searchDto.DonViThucHienId,
-                searchDto.IsBienBan,
-                searchDto.GlobalFilter,
-                searchDto.LoaiDuAnTheoNamId,
-                PageIndex = 0,
-                PageSize = 0,
-            },
-            HiddenColumns = searchDto.HiddenColumns
-        };
-        var exportResult = await Mediator.Send(query);
+        //var query = new GetStoreQuery() {
+        //    PathTemplate = templatePath,
+        //    ProcName = procedureName,
+        //    Params = new {
+        //        searchDto.DuAnId,
+        //        searchDto.BuocId,
+        //        searchDto.Ten,
+        //        searchDto.SoHopDong,
+        //        searchDto.NoiDung,
+        //        searchDto.LoaiHopDongId,
+        //        searchDto.DonViThucHienId,
+        //        searchDto.IsBienBan,
+        //        searchDto.GlobalFilter,
+        //        searchDto.LoaiDuAnTheoNamId,
+        //        PageIndex = 0,
+        //        PageSize = 0,
+        //    },
+        //    HiddenColumns = searchDto.HiddenColumns
+        //};
+        // var exportResult = await Mediator.Send(query);
+        var data = await Mediator.Send(new HopDongGetPrintQuery(searchDto));
 
+        var exportResult = _excelExporter.Export(new AsposeInstruction<HopDongPrintResultDto> {
+            TemplatePath = templatePath,
+            Items = data,
+            HiddenColumns = searchDto.HiddenColumns ?? [],
+            AutoFitColumnsAndRows = false,
+        });
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {
             FileDownloadName = GetDownloadFileName(fileNameTemplate)
