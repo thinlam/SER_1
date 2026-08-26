@@ -6,6 +6,8 @@ using BuildingBlocks.Infrastructure.Offices;
 using EntityFrameworkCore.SqlServer.SimpleBulks.Extensions;
 using QLDA.Application.BanGiaoHoSos.DTOs;
 using QLDA.Application.BanGiaoHoSos.Queries;
+using QLDA.Application.BaoCaoTienDos.DTOs;
+using QLDA.Application.BaoCaoTienDos.Queries;
 using QLDA.Application.DeXuatChuyenTieps.DTOs;
 using QLDA.Application.DeXuatChuyenTieps.Queries;
 using QLDA.Application.DeXuatNhuCauKinhPhiNams.DTOs;
@@ -384,17 +386,19 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
     #endregion
 
-    #region usp_In_DanhSach_BaoCaoTienDo
+    #region DanhSachBaoCaoTienDo
 
     /// <summary>
-    /// usp_In_DanhSach_BaoCaoTienDo - DanhSachBaoCaoTienDo.xlsx
+    /// DanhSachBaoCaoTienDo.xlsx — Export danh sách báo cáo tiến độ (filter giống danh-sach-tien-do)
     /// </summary>
     /// <param name="searchModel"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("api/print/danh-sach-bao-cao-tien-do")]
-    public async Task<IActionResult> InBaoCaoTienDo([FromQuery] BaoCaoTienDoPrintSearchModel searchModel) {
+    public async Task<IActionResult> InBaoCaoTienDo(
+        [FromQuery] BaoCaoTienDoPrintSearchModel searchModel,
+        CancellationToken cancellationToken = default) {
         var fileNameTemplate = "DanhSachBaoCaoTienDo.xlsx";
-        var procedureName = "usp_In_DanhSach_BaoCaoTienDo";
         var templatePath = Path.Combine(
             AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
             "PrintTemplates", // chính xác tên folder trong project
@@ -403,25 +407,33 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
-        ManagedException.ThrowIf(_userProvider.Id == 0, "Vui lòng đăng nhập");
-        var query = new GetStoreQuery() {
-            PathTemplate = templatePath,
-            ProcName = procedureName,
-            Params = new {
-                NguoiBaoCaoId = _userProvider.Id,
-                searchModel.DuAnId,
-                searchModel.BuocId,
-                searchModel.NoiDung,
-                searchModel.GlobalFilter,
-                PageIndex = 0,
-                PageSize = 0,
-                TuNgay = searchModel.TuNgay?.ToStartOfDayUtc(),
-                DenNgay = searchModel.DenNgay?.ToEndOfDayUtc(),
-                searchModel.LoaiDuAnTheoNamId,
-            },
-            HiddenColumns = searchModel.HiddenColumns
-        };
-        var exportResult = await Mediator.Send(query);
+        var pagedResult = await Mediator.Send(new BaoCaoTienDoGetDanhSachQuery {
+            DuAnId = searchModel.DuAnId,
+            BuocId = searchModel.BuocId,
+            NoiDung = searchModel.NoiDung,
+            TuNgay = searchModel.TuNgay,
+            DenNgay = searchModel.DenNgay,
+            GlobalFilter = searchModel.GlobalFilter,
+            LoaiDuAnTheoNamId = searchModel.LoaiDuAnTheoNamId,
+            PageIndex = 0,
+            PageSize = 0,
+            IsNoTracking = true
+        }, cancellationToken);
+
+        var exportData = pagedResult.Data.Select((x, index) => new BaoCaoTienDoExportDto {
+            STT = index + 1,
+            TenDuAn = x.TenDuAn,
+            TenBuoc = x.TenBuoc,
+            NgayBaoCao = x.Ngay?.ToString("dd/MM/yyyy"),
+            UserId = x.TenNguoiBaoCao,
+            NoiDung = x.NoiDung
+        }).ToList();
+
+        var exportResult = _excelExporter.Export(new AsposeInstruction<BaoCaoTienDoExportDto> {
+            TemplatePath = templatePath,
+            Items = exportData,
+            HiddenColumns = searchModel.HiddenColumns ?? []
+        });
 
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {
