@@ -4,5 +4,6 @@ namespace QLDA.Domain.Entities.DanhMuc;
 /// </summary>
 public class DanhMucTrangThaiDuAn : DanhMuc<int>, IAggregateRoot, IMayHaveStt {
     public int? Stt { get; set; }
+    public bool? IsHoanThanh  { get; set; }
     public ICollection<DuAn>? DuAns { get; set; } = [];
 }

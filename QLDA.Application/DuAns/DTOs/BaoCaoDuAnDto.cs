@@ -14,6 +14,11 @@ public class BaoCaoDuAnDto : IHasKey<Guid> {
     /// </summary>
     /// 
     
+    public string? TenGiaiDoanHienTai { get; set; }
+    public string? TenBuoc { get; set; }
+    public string? PhongBanPhuTrach { get; set; }
+    public string? NguoiPhuTrach { get; set; }
+    public string? DonViPhoiHops { get; set; }
     public long? GiaiDoanHienTaiId { get; set; }
     public decimal? KhaiToanKinhPhi { get; set; }
     public int? ThoiGianKhoiCong { get; set; }

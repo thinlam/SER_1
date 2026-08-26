@@ -175,7 +175,7 @@ namespace QLDA.WebApi.Controllers
         [ProducesResponseType<ResultApi>(StatusCodes.Status400BadRequest)]
         public async Task<ResultApi> GetProjectOverdue([FromQuery] DuAnSearchOverdueDto searchDto)
         {
-            var res = await Mediator.Send(new DuAnGetDanhSachTreHanQuery(searchDto));
+            var res = await Mediator.Send(new DuAnGetDanhSachTreHan(searchDto));
             return ResultApi.Ok(res);
         }
 

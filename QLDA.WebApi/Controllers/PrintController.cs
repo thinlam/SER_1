@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Globalization;
+using Aspose.Words;
 using BuildingBlocks.Application.Common.Converters;
 using BuildingBlocks.Infrastructure.Offices;
 using EntityFrameworkCore.SqlServer.SimpleBulks.Extensions;
@@ -48,13 +49,14 @@ using QLDA.WebApi.Models.BaoCaoTienDos;
 using QLDA.WebApi.Models.DeXuatChuTruongChuyenTieps;
 using QLDA.WebApi.Models.DeXuatNhuCauKinhPhiNams;
 using QLDA.WebApi.Models.DeXuatNhuCauKinhPhis;
+using QLDA.WebApi.Models.DuAns;
 using QLDA.WebApi.Models.KhoKhanVuongMacs;
 using QLDA.WebApi.Models.PhanKhaiKinhPhis;
 using QLDA.WebApi.Models.PhuLucHopDongs;
 using QLDA.WebApi.Models.TongHopDeXuatChuTruongs;
 using QLDA.WebApi.Models.TongHopVanBanQuyetDinhs;
 using Serilog;
-using Aspose.Words;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QLDA.WebApi.Controllers;
 
@@ -291,12 +293,9 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
     /// DanhSachHopDong.xlsx — Export danh sách hợp đồng (filter giống danh-sach-tien-do)
     /// </summary>
     /// <param name="searchDto"></param>
-    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("api/print/danh-sach-hop-dong")]
-    public async Task<IActionResult> InHopDong(
-        [FromQuery] HopDongPrintSearchDto searchDto,
-        CancellationToken cancellationToken = default) {
+    public async Task<IActionResult> InHopDong([FromQuery] HopDongSearchDto searchDto) {
         var fileNameTemplate = "DanhSachHopDong.xlsx";
         var templatePath = Path.Combine(
             AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
@@ -306,31 +305,14 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
-        var pagedResult = await Mediator.Send(new HopDongGetDanhSachQuery(searchDto) {
-            IsNoTracking = true
-        }, cancellationToken);
+        var data = await Mediator.Send(new HopDongGetPrintQuery(searchDto));
 
-        var exportData = pagedResult.Data.Select((x, index) => new HopDongExportDto {
-            STT = index + 1,
-            TenDuAn = x.TenDuAn,
-            TenBuoc = x.TenBuoc,
-            SoHopDong = x.SoHopDong,
-            Ten = x.Ten,
-            NoiDung = x.NoiDung,
-            DonViThucHienId = x.TenDonViThucHien,
-            GiaTri = x.GiaTri,
-            LoaiHopDongId = x.TenLoaiHopDong,
-            NgayHopDong = x.NgayKy?.ToString("dd/MM/yyyy"),
-            NgayHieuLuc = x.NgayHieuLuc?.ToString("dd/MM/yyyy"),
-            NgayKetThuc = x.NgayDuKienKetThucHopDong?.ToString("dd/MM/yyyy")
-        }).ToList();
-
-        var exportResult = _excelExporter.Export(new AsposeInstruction<HopDongExportDto> {
+        var exportResult = _excelExporter.Export(new AsposeInstruction<HopDongPrintResultDto> {
             TemplatePath = templatePath,
-            Items = exportData,
-            HiddenColumns = searchDto.HiddenColumns ?? []
+            Items = data,
+            HiddenColumns = searchDto.HiddenColumns ?? [],
+            AutoFitColumnsAndRows = false,
         });
-
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {
             FileDownloadName = GetDownloadFileName(fileNameTemplate)
@@ -646,28 +628,28 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
     /// usp_In_DanhSachTreHanPhongBan - DanhSachTreHanBuocPhongBan.xlsx
     /// </summary>
     /// <returns></returns>
-    [HttpGet("api/print/danh-sach-tre-han-phong-ban")]
-    public async Task<IActionResult>
-        InDanhSachTreHanPhongBan() {
+    [HttpGet("api/print/danh-sach-tre-han-phong-ban")]//here
+    public async Task<IActionResult>   InDanhSachTreHanPhongBan([FromQuery] DuAnSearchOverdueDto searchDto) {
         var fileNameTemplate = "DanhSachTreHanBuocPhongBan.xlsx";
-        var procedureName = "usp_In_DanhSachTreHanPhongBan";
+      
         var templatePath = Path.Combine(
-            AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
-            "PrintTemplates", // chính xác tên folder trong project
+            AppContext.BaseDirectory, 
+            "PrintTemplates", 
             fileNameTemplate
         );
-
+        searchDto.IsChiTiet= false; // map danh sách tổng
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
         ManagedException.ThrowIf(_userProvider.Id == 0, "Vui lòng đăng nhập");
-        var query = new GetStoreQuery() {
-            PathTemplate = templatePath,
-            ProcName = procedureName,
-            Params = null,
-            HiddenColumns = []
-        };
-        var exportResult = await Mediator.Send(query);
+       
+        var data = await Mediator.Send(new DuAnGetDanhSachTreHanExcell(searchDto));
 
+        var exportResult = _excelExporter.Export(new AsposeInstruction<DuAnTreHanDto> {
+            TemplatePath = templatePath,
+            Items = data,
+            HiddenColumns = [],
+            AutoFitColumnsAndRows = false,
+        });
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {
             FileDownloadName = GetDownloadFileName(fileNameTemplate)

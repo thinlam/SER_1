@@ -27,7 +27,6 @@ internal class ThanhToanUpdateCommandHandler : IRequestHandler<ThanhToanUpdateCo
 
     public async Task<ThanhToan> Handle(ThanhToanUpdateCommand request, CancellationToken cancellationToken = default)
     {
-        await ValidateAsync(request, cancellationToken);
 
         var entity = await ThanhToan.GetQueryableSet()
             .FirstOrDefaultAsync(e => e.Id == request.Dto.Id, cancellationToken);
@@ -55,9 +54,7 @@ internal class ThanhToanUpdateCommandHandler : IRequestHandler<ThanhToanUpdateCo
     }
     #region  Private helper methods
 
-    private async Task ValidateAsync(ThanhToanUpdateCommand request, CancellationToken cancellationToken)
-    {
-    }
+ 
     private async Task UpdateAsync(ThanhToan entity, CancellationToken cancellationToken)
     {
         await ThanhToan.UpdateAsync(entity, cancellationToken);
