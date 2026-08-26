@@ -1,4 +1,4 @@
-using BuildingBlocks.Application.Attachments.Common;
+﻿using BuildingBlocks.Application.Attachments.Common;
 using Microsoft.EntityFrameworkCore;
 using QLDA.Application.Authorization;
 
@@ -82,12 +82,15 @@ internal class
             {
                 Id = e.Id,
                 DuAnId = e.DuAnId,
+                TenDuAn = e.DuAn != null ? e.DuAn.TenDuAn : null,
                 BuocId = e.BuocId,
+                TenBuoc = e.DuAnBuoc != null ? e.DuAnBuoc.TenBuoc : null,
                 Ten = e.Ten,
                 SoPhuLucHopDong = e.SoPhuLucHopDong,
                 NoiDung = e.NoiDung,
                 Ngay = e.Ngay,
                 HopDongId = e.HopDongId,
+                TenHopDong = e.HopDong != null ? e.HopDong.Ten : null,
                 GiaTri = e.GiaTri,
                 NgayDuKienKetThuc = e.NgayDuKienKetThuc,
                 DanhSachTepDinhKem = TepDinhKem.GetQueryableSet()
