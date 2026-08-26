@@ -1,4 +1,4 @@
-using System.Data;
+﻿using System.Data;
 using System.Globalization;
 using Aspose.Words;
 using BuildingBlocks.Application.Common.Converters;
@@ -28,6 +28,8 @@ using QLDA.Application.KySos.DTOs;
 using QLDA.Application.KySos.Queries;
 using QLDA.Application.PhanKhaiKinhPhis.DTOs;
 using QLDA.Application.PhanKhaiKinhPhis.Queries;
+using QLDA.Application.PhuLucHopDongs.DTOs;
+using QLDA.Application.PhuLucHopDongs.Queries;
 using QLDA.Application.QuanLyPheDuyet;
 using QLDA.Application.QuanLyPheDuyet.DTOs;
 using QLDA.Application.QuanLyPheDuyet.Queries;
@@ -285,17 +287,16 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
     #endregion
 
-    #region usp_In_DanhSach_HopDong
+    #region DanhSachHopDong
 
     /// <summary>
-    /// usp_In_DanhSach_HopDong - DanhSachHopDong.xlsx
+    /// DanhSachHopDong.xlsx — Export danh sách hợp đồng (filter giống danh-sach-tien-do)
     /// </summary>
     /// <param name="searchDto"></param>
     /// <returns></returns>
     [HttpGet("api/print/danh-sach-hop-dong")]
     public async Task<IActionResult> InHopDong([FromQuery] HopDongSearchDto searchDto) {
         var fileNameTemplate = "DanhSachHopDong.xlsx";
-       // var procedureName = "usp_In_DanhSach_HopDong";
         var templatePath = Path.Combine(
             AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
             "PrintTemplates", // chính xác tên folder trong project
@@ -304,26 +305,6 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
-        //var query = new GetStoreQuery() {
-        //    PathTemplate = templatePath,
-        //    ProcName = procedureName,
-        //    Params = new {
-        //        searchDto.DuAnId,
-        //        searchDto.BuocId,
-        //        searchDto.Ten,
-        //        searchDto.SoHopDong,
-        //        searchDto.NoiDung,
-        //        searchDto.LoaiHopDongId,
-        //        searchDto.DonViThucHienId,
-        //        searchDto.IsBienBan,
-        //        searchDto.GlobalFilter,
-        //        searchDto.LoaiDuAnTheoNamId,
-        //        PageIndex = 0,
-        //        PageSize = 0,
-        //    },
-        //    HiddenColumns = searchDto.HiddenColumns
-        //};
-        // var exportResult = await Mediator.Send(query);
         var data = await Mediator.Send(new HopDongGetPrintQuery(searchDto));
 
         var exportResult = _excelExporter.Export(new AsposeInstruction<HopDongPrintResultDto> {
@@ -340,16 +321,18 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
     #endregion
 
-    #region usp_In_DanhSach_PhuLucHopDong
+    #region DanhSachPhuLucHopDong
     /// <summary>
-    /// usp_In_DanhSach_PhuLucHopDong - DanhSachPhuLucHopDong.xlsx
+    /// DanhSachPhuLucHopDong.xlsx — Export danh sách phụ lục hợp đồng (filter giống danh-sach-tien-do)
     /// </summary>
     /// <param name="searchModel"></param>
+    /// <param name="cancellationToken"></param>
     /// <returns></returns>
     [HttpGet("api/print/danh-sach-phu-luc-hop-dong")]
-    public async Task<IActionResult> InPhuLucHopDong([FromQuery] PhuLucHopDongPrintSearchModel searchModel) {
+    public async Task<IActionResult> InPhuLucHopDong(
+        [FromQuery] PhuLucHopDongPrintSearchModel searchModel,
+        CancellationToken cancellationToken = default) {
         var fileNameTemplate = "DanhSachPhuLucHopDong.xlsx";
-        var procedureName = "usp_In_DanhSach_PhuLucHopDong";
         var templatePath = Path.Combine(
             AppContext.BaseDirectory, // ví dụ: ...\QLDA.WebApi
             "PrintTemplates", // chính xác tên folder trong project
@@ -358,26 +341,40 @@ public class PrintController(IServiceProvider serviceProvider) : AggregateRootCo
 
         ManagedException.ThrowIf(!System.IO.File.Exists(templatePath), "Không tìm thấy file template");
 
-        var query = new GetStoreQuery() {
-            PathTemplate = templatePath,
-            ProcName = procedureName,
-            Params = new {
-                searchModel.DuAnId,
-                searchModel.BuocId,
-                searchModel.Ten,
-                searchModel.SoPhuLucHopDong,
-                searchModel.NoiDung,
-                searchModel.HopDongId,
-                TuNgay = searchModel.TuNgay?.ToStartOfDayUtc(),
-                DenNgay = searchModel.DenNgay?.ToEndOfDayUtc(),
-                searchModel.GlobalFilter,
-                searchModel.LoaiDuAnTheoNamId,
-                PageIndex = 0,
-                PageSize = 0,
-            },
-            HiddenColumns = searchModel.HiddenColumns
-        };
-        var exportResult = await Mediator.Send(query);
+        var pagedResult = await Mediator.Send(new PhuLucHopDongGetDanhSachQuery {
+            DuAnId = searchModel.DuAnId,
+            BuocId = searchModel.BuocId,
+            Ten = searchModel.Ten,
+            SoPhuLucHopDong = searchModel.SoPhuLucHopDong,
+            NoiDung = searchModel.NoiDung,
+            HopDongId = searchModel.HopDongId,
+            TuNgay = searchModel.TuNgay,
+            DenNgay = searchModel.DenNgay,
+            GlobalFilter = searchModel.GlobalFilter,
+            LoaiDuAnTheoNamId = searchModel.LoaiDuAnTheoNamId,
+            PageIndex = 0,
+            PageSize = 0,
+            IsNoTracking = true
+        }, cancellationToken);
+
+        var exportData = pagedResult.Data.Select((x, index) => new PhuLucHopDongExportDto {
+            STT = index + 1,
+            TenDuAn = x.TenDuAn,
+            TenBuoc = x.TenBuoc,
+            SoPhuLucHopDong = x.SoPhuLucHopDong,
+            Ten = x.Ten,
+            HopDongId = x.TenHopDong,
+            GiaTri = x.GiaTri,
+            Ngay = x.Ngay?.ToString("dd/MM/yyyy"),
+            NgayDuKienKetThuc = x.NgayDuKienKetThuc?.ToString("dd/MM/yyyy"),
+            NoiDung = x.NoiDung
+        }).ToList();
+
+        var exportResult = _excelExporter.Export(new AsposeInstruction<PhuLucHopDongExportDto> {
+            TemplatePath = templatePath,
+            Items = exportData,
+            HiddenColumns = searchModel.HiddenColumns ?? []
+        });
 
         return new FileContentResult(exportResult.FileBytes,
             exportResult.ContentType) {

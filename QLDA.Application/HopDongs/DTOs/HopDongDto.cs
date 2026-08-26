@@ -58,7 +58,10 @@ public class HopDongDto : IHasKey<Guid?>, IMustHaveId<Guid>, IMayHaveTepDinhKemD
     /// </summary>
     public Guid? DonViThucHienId { get; set; }
 
-
+    public string? TenDuAn { get; set; }
+    public string? TenBuoc { get; set; }
+    public string? TenDonViThucHien { get; set; }
+    public string? TenLoaiHopDong { get; set; }
 
     public List<TepDinhKemDto>? DanhSachTepDinhKem { get; set; }
 }

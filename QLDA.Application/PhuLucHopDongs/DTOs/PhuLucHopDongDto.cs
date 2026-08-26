@@ -1,4 +1,4 @@
-using QLDA.Application.Common.Interfaces;
+﻿using QLDA.Application.Common.Interfaces;
 using QLDA.Application.TepDinhKems.DTOs;
 using QLDA.Domain.Interfaces;
 using SequentialGuid;
@@ -14,12 +14,15 @@ public class PhuLucHopDongDto : IHasKey<Guid?>, IMustHaveId<Guid>, IMayHaveTepDi
     }
 
     public Guid DuAnId { get; set; }
+    public string? TenDuAn { get; set; }
     public int? BuocId { get; set; }
+    public string? TenBuoc { get; set; }
     public string? Ten { get; set; }
     public string? SoPhuLucHopDong { get; set; }
     public string? NoiDung { get; set; }
     public DateTimeOffset? Ngay { get; set; }
     public Guid? HopDongId { get; set; }
+    public string? TenHopDong { get; set; }
     public long? GiaTri { get; set; }
     public DateTimeOffset? NgayDuKienKetThuc { get; set; }
 
