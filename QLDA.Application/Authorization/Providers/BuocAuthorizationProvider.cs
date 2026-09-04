@@ -311,6 +311,7 @@ public class BuocAuthorizationProvider(IRepository<DuAnBuoc, int> buocRepo) : IB
         IAuthorizationContext ctx,
         Expression<Func<T, int?>> buocIdSelector) where T : class {
         if (ctx.HasKhtcBypass) return query;
+        if (ctx.HasViewAll) return query;
 
         if (ctx.PhongBanId == 0 && ctx.UserId <= 0)
             return query.Where(e => false);

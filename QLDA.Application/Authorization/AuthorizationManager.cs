@@ -80,10 +80,10 @@ public class AuthorizationManager(
     /// </summary>
     public async Task EnsureCanExecuteAsync(int? buocId, Guid duAnId, IAuthorizationContext ctx, CancellationToken ct = default) {
         if (ctx.HasKhtcBypass) return;
-        if (ctx.HasViewAll) return;
+        //if (ctx.HasViewAll) return;
         //if (ctx.User.AuthInfo.HasRole(Domain.Constants.RoleConstants.QLDA_QuanTri)) return;
 
-        if (buocId.HasValue) {
+        if (buocId.HasValue || buocId!= 0) {
             await _buocAuth.EnsureCanExecuteStepAsync(buocId, ctx, ct);
             return;
         }
