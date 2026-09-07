@@ -1,3 +1,5 @@
+using QLDA.Application.Common;
+
 namespace QLDA.Application.Dashboard.Queries;
 
 /// <summary>
@@ -13,7 +15,11 @@ internal class DashboardGetGiaiNganTheoNguonVonQueryHandler(IServiceProvider ser
     public async Task<List<DashboardGiaiNganTheoNguonVonDto>> Handle(
         DashboardGetGiaiNganTheoNguonVonQuery request, CancellationToken cancellationToken) {
 
-        const string sql = """
+        var scope = await DashboardDataPermission.ResolveAsync(serviceProvider, cancellationToken);
+
+        var lanhDaoFilter = scope.IsTrinhVo ? "" : "\n                    AND da.LanhDaoPhuTrachId = @LanhDaoPhuTrachId";
+
+        var sql = $"""
             WITH GiaiNganTheoNguonVon AS (
                 SELECT
                     gt.NguonVonId,
@@ -23,9 +29,10 @@ internal class DashboardGetGiaiNganTheoNguonVonQueryHandler(IServiceProvider ser
                 JOIN dbo.NghiemThu nt ON nt.Id = tt.NghiemThuId
                 JOIN dbo.HopDong hd ON hd.Id = nt.HopDongId
                 JOIN dbo.GoiThau gt ON gt.Id = hd.GoiThauId
+                JOIN dbo.DuAn da ON da.Id = gt.DuAnId
                 WHERE tt.IsDeleted = 0
                   AND hd.IsDeleted = 0
-                  AND YEAR(tt.NgayHoaDon) = @Nam
+                  AND YEAR(tt.NgayHoaDon) = @Nam{lanhDaoFilter}
                 GROUP BY gt.NguonVonId
             ),
             KeHoachVonTheoNguonVon AS (
@@ -56,7 +63,12 @@ internal class DashboardGetGiaiNganTheoNguonVonQueryHandler(IServiceProvider ser
                 ON nv.Id = COALESCE(g.NguonVonId, k.NguonVonId)
             """;
 
-        var result = await _dapper.QueryAsync<DashboardGiaiNganTheoNguonVonDto>(sql, new { request.Nam });
+        object parameters = new { request.Nam };
+
+        if (!scope.IsTrinhVo)
+            parameters = new { request.Nam, LanhDaoPhuTrachId = scope.UserId };
+
+        var result = await _dapper.QueryAsync<DashboardGiaiNganTheoNguonVonDto>(sql, parameters);
         return [.. result];
     }
 }

@@ -1,3 +1,5 @@
+using QLDA.Application.Common;
+
 namespace QLDA.Application.Dashboard.Queries;
 
 /// <summary>
@@ -12,6 +14,8 @@ internal class DashboardGetChiTietGiaiNganQueryHandler(IServiceProvider serviceP
 
     public async Task<List<DashboardChiTietGiaiNganDto>> Handle(
         DashboardGetChiTietGiaiNganQuery request, CancellationToken cancellationToken) {
+
+        var scope = await DashboardDataPermission.ResolveAsync(serviceProvider, cancellationToken);
 
         var sql = """
             SELECT da.TenDuAn,
@@ -32,7 +36,15 @@ internal class DashboardGetChiTietGiaiNganQueryHandler(IServiceProvider serviceP
             sql += " AND gt.NguonVonId = @NguonVonId";
         }
 
-        var result = await _dapper.QueryAsync<DashboardChiTietGiaiNganDto>(sql, new { request.Nam, request.NguonVonId });
+        object parameters = new { request.Nam, request.NguonVonId };
+
+        if (!scope.IsTrinhVo)
+        {
+            sql += " AND da.LanhDaoPhuTrachId = @LanhDaoPhuTrachId";
+            parameters = new { request.Nam, request.NguonVonId, LanhDaoPhuTrachId = scope.UserId };
+        }
+
+        var result = await _dapper.QueryAsync<DashboardChiTietGiaiNganDto>(sql, parameters);
         return [.. result];
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
+using QLDA.Application.Common;
 using QLDA.Application.DuAns.DTOs;
 using QLDA.Domain.Entities;
 
@@ -22,9 +23,11 @@ internal class TongHopVonGiaiNganQueryHandler
     private readonly IRepository<UserMaster, long> _userMaster;
     private readonly IRepository<DmDonVi, long> _dmDonVi;
     private readonly IDapperRepository _dapper;
+    private readonly IServiceProvider _serviceProvider;
 
     public TongHopVonGiaiNganQueryHandler(IServiceProvider serviceProvider)
     {
+        _serviceProvider = serviceProvider;
         _duAn = serviceProvider.GetRequiredService<IRepository<DuAn, Guid>>();
         _dmDonVi = serviceProvider.GetRequiredService<IRepository<DmDonVi, long>>();
         _userMaster= serviceProvider.GetRequiredService<IRepository<UserMaster, long>>();
@@ -37,11 +40,16 @@ internal class TongHopVonGiaiNganQueryHandler
     public async Task<List<BaoCaoDuAnDto>> Handle(
        TongHopVonGiaiNganQuery request,
        CancellationToken cancellationToken = default) {
+        var scope = await DashboardDataPermission.ResolveAsync(_serviceProvider, cancellationToken);
+
         var query = _duAn.GetQueryableSet()
             .Include(d => d.GiaiDoanHienTai)
             .Include(d => d.BuocHienTai)
             .Include(d => d.DuAnChiuTrachNhiemXuLys)
             .AsNoTracking().Where(e => !e.IsDeleted);
+
+        if (!scope.IsTrinhVo)
+            query = query.Where(d => d.LanhDaoPhuTrachId == scope.UserId);
 
         var result = await query
             .Where(d =>_keHoachVon.GetQueryableSet()

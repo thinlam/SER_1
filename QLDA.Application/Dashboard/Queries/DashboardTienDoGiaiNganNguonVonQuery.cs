@@ -1,3 +1,5 @@
+using QLDA.Application.Common;
+
 namespace QLDA.Application.Dashboard.Queries;
 
 /// <summary>
@@ -16,12 +18,14 @@ internal class DashboardTienDoGiaiNganNguonVonQueryHandler(IServiceProvider serv
     {
         var req = request.Req;
 
+        var scope = await DashboardDataPermission.ResolveAsync(serviceProvider, cancellationToken);
+
         var firstDayOfYear =
             new DateTimeOffset(req.Nam, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
         var firstDayOfNextYear = firstDayOfYear.AddYears(1);
 
-        const string sql = """
+        var sql = """
         SELECT
             (SUM(tt.GiaTri)/1000000 ) AS GiaTriGiaiNgan,
             gt.NguonVonId,
@@ -48,16 +52,30 @@ internal class DashboardTienDoGiaiNganNguonVonQueryHandler(IServiceProvider serv
             MONTH(tt.NgayHoaDon),YEAR(tt.NgayHoaDon) 
         """;
 
-        var result = await _dapper.QueryAsync<TinhHinhGiaiNganDto>(
-            sql,
-            new
+        object parameters = new
+        {
+            req.LoaiDuAnId,
+            req.LoaiDuAnTheoNamId,
+            req.NguonVonId,
+            FirstDayOfYear = firstDayOfYear,
+            FirstDayOfNextYear = firstDayOfNextYear
+        };
+
+        if (!scope.IsTrinhVo)
+        {
+            sql += "\n            AND d.LanhDaoPhuTrachId = @LanhDaoPhuTrachId";
+            parameters = new
             {
                 req.LoaiDuAnId,
                 req.LoaiDuAnTheoNamId,
                 req.NguonVonId,
                 FirstDayOfYear = firstDayOfYear,
-                FirstDayOfNextYear = firstDayOfNextYear
-            });
+                FirstDayOfNextYear = firstDayOfNextYear,
+                LanhDaoPhuTrachId = scope.UserId
+            };
+        }
+
+        var result = await _dapper.QueryAsync<TinhHinhGiaiNganDto>(sql, parameters);
 
         return [.. result];
     }
