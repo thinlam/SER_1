@@ -18,9 +18,9 @@ public class DashboardGiaiNganTheoNguonVonDto {
 public class DashboardChiTietGiaiNganDto {
     public string? TenDuAn { get; set; }
     /// <summary>Số tiền đã giải ngân (ThanhToan.GiaTri)</summary>
-    public decimal GiaTriGiaiNgan { get; set; }
+    public long? GiaTriGiaiNgan { get; set; }
     /// <summary>Giá trị hợp đồng (HopDong.GiaTri)</summary>
-    public decimal GiaTriHopDong { get; set; }
+    public long? GiaTriHopDong { get; set; }
     public DateTimeOffset? Ngay { get; set; }
     public string? TrangThaiGiaiNgan { get; set; }
 }

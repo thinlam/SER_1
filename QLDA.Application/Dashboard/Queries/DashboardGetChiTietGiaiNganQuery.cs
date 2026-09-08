@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using QLDA.Application.Authorization;
+
 namespace QLDA.Application.Dashboard.Queries;
 
 /// <summary>
@@ -10,9 +13,32 @@ internal class DashboardGetChiTietGiaiNganQueryHandler(IServiceProvider serviceP
 
     private readonly IDapperRepository _dapper = serviceProvider.GetRequiredService<IDapperRepository>();
 
+    private readonly IRepository<ThanhToan, Guid> _thanhToan = serviceProvider.GetRequiredService<IRepository<ThanhToan, Guid>>();
+    private readonly IAuthorizationManager _authManager = serviceProvider.GetRequiredService<IAuthorizationManager>();
+
     public async Task<List<DashboardChiTietGiaiNganDto>> Handle(
         DashboardGetChiTietGiaiNganQuery request, CancellationToken cancellationToken) {
+     
 
+        var queryable = _authManager.FilterVisible(_thanhToan.GetQueryableSet(), AuthorizationResourceKeys.DuAn)
+            .Include(e => e.DuAn).ThenInclude(x => x!.DuAnNguonVons)
+              .Include(e => e.NghiemThu).ThenInclude(x => x!.HopDong)
+                    .Where(e => !e.DuAn!.IsDeleted).Where(e => !e!.IsDeleted)
+                    .WhereIf(request.NguonVonId > 0, e => e.DuAn!.DuAnNguonVons!.Select(i => i.RightId).Contains(request.NguonVonId ?? 0))
+                    ;
+        var result = await queryable
+       .Select(e => new DashboardChiTietGiaiNganDto {
+           TenDuAn = e.DuAn!.TenDuAn,
+           GiaTriGiaiNgan = e.GiaTri,
+           GiaTriHopDong = e.NghiemThu!.HopDong!.GiaTri,
+           Ngay = e.NgayHoaDon,
+           TrangThaiGiaiNgan = e.GiaTri > 0 ? "Đã giải ngân" : "Chưa giải ngân"
+       })
+       .ToListAsync();
+
+        return result;
+
+        /*
         var sql = """
             SELECT da.TenDuAn,
                 tt.GiaTri AS GiaTriGiaiNgan,
@@ -34,5 +60,6 @@ internal class DashboardGetChiTietGiaiNganQueryHandler(IServiceProvider serviceP
 
         var result = await _dapper.QueryAsync<DashboardChiTietGiaiNganDto>(sql, new { request.Nam, request.NguonVonId });
         return [.. result];
+*/
     }
 }
